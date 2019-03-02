@@ -1,0 +1,19 @@
+<configuration>
+    <property name="root.level.console" value="WARN"/>
+
+    <timestamp key="day" datePattern="yyyy-MM-dd"/>
+
+    <appender name="STDOUT" class="ch.qos.logback.core.ConsoleAppender">
+        <encoder>
+            <pattern>%d{HH:mm:ss.SSS} | %-5level | %40logger{0}: %msg%n</pattern>
+        </encoder>
+    </appender>
+
+    <logger name="at.ac.tuwien.sepm.assignment.individual" level="DEBUG" additivity="false">
+        <appender-ref ref="STDOUT"/>
+    </logger>
+
+    <root level="WARN">
+        <appender-ref ref="STDOUT"/>
+    </root>
+</configuration>
