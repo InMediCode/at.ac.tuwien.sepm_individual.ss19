@@ -31,4 +31,14 @@ public class HorseService implements IHorseService {
             throw new ServiceException(e.getMessage(), e);
         }
     }
+
+    @Override
+    public Horse insertHorse(Horse horse) throws  ServiceException {
+        LOGGER.info("Insert horse: " + horse);
+        try {
+            return horseDao.insertHorse(horse);
+        } catch (PersistenceException e) {
+            throw new ServiceException(e.getMessage(), e);
+        }
+    }
 }

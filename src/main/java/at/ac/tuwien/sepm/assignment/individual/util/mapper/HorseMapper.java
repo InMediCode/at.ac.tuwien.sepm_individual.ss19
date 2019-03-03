@@ -11,4 +11,8 @@ public class HorseMapper {
         return new HorseDto(horse.getId(), horse.getName(), horse.getBreed(), horse.getMinSpeed(), horse.getMaxSpeed(), horse.getCreated(), horse.getUpdated());
     }
 
+    public  Horse dtoToEntity(HorseDto horseDto) {
+        return  new Horse(horseDto.getId(), horseDto.getName(), horseDto.getBreed(), horseDto.getMinSpeed(), horseDto.getMaxSpeed(), horseDto.getCreated(), horseDto.getUpdated());
+    }
+
 }

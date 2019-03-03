@@ -1,5 +1,6 @@
 package at.ac.tuwien.sepm.assignment.individual.rest;
 
+import at.ac.tuwien.sepm.assignment.individual.entity.Horse;
 import at.ac.tuwien.sepm.assignment.individual.rest.dto.HorseDto;
 import at.ac.tuwien.sepm.assignment.individual.exceptions.NotFoundException;
 import at.ac.tuwien.sepm.assignment.individual.service.IHorseService;
@@ -40,6 +41,19 @@ public class HorseEndpoint {
         } catch (NotFoundException e) {
             throw new ResponseStatusException(HttpStatus.NOT_FOUND, "Error during reading horse: " + e.getMessage(), e);
         }
+    }
+
+    @RequestMapping(value = "/name={name}", method = RequestMethod.POST)
+    public HorseDto insertHorse(@PathVariable("name") String name) {
+        HorseDto horseDto = new HorseDto();
+        horseDto.setName(name);
+        try {
+            return horseMapper.entityToDto(horseService.insertHorse(horseMapper.dtoToEntity(horseDto)));
+        } catch (ServiceException e) {
+            //
+        }
+
+        return null;
     }
 
 }

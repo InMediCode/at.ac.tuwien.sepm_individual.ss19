@@ -60,4 +60,25 @@ public class HorseDao implements IHorseDao {
             throw new NotFoundException("Could not find horse with id " + id);
         }
     }
+
+    @Override
+    public Horse insertHorse(Horse horse) throws PersistenceException {
+        LOGGER.info("Insert horse: " + horse);
+        String sql = "INSERT INTO Horse (name, breed, minSpeed, maxSpeed) VALUES (?, ?, ? ,?)";
+
+        try {
+            PreparedStatement statement = dbConnectionManager.getConnection().prepareStatement(sql);
+            statement.setString(1, horse.getName());
+            statement.setString(2, horse.getBreed());
+            statement.setDouble(3, horse.getMinSpeed());
+            statement.setDouble(4, horse.getMaxSpeed());
+
+            ResultSet result = statement.executeQuery();
+        } catch (SQLException e) {
+            LOGGER.error("asdfasfd");
+            throw new PersistenceException("asdfasfd");
+        }
+
+        return null;
+    }
 }
