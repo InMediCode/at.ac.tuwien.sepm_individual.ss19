@@ -11,6 +11,7 @@ public class Horse {
     private Double maxSpeed;
     private LocalDateTime created;
     private LocalDateTime updated;
+    private Boolean deleted;
 
     public Horse() {
     }
@@ -24,6 +25,18 @@ public class Horse {
         this.maxSpeed = maxSpeed;
         this.created = created;
         this.updated = updated;
+        this.deleted = false;
+    }
+
+    public Horse(Integer id, String name, String breed, Double minSpeed, Double maxSpeed, LocalDateTime created, LocalDateTime updated, Boolean deleted) {
+        this.id = id;
+        this.name = name;
+        this.breed = breed;
+        this.minSpeed = minSpeed;
+        this.maxSpeed = maxSpeed;
+        this.created = created;
+        this.updated = updated;
+        this.deleted = deleted;
     }
 
     public Integer getId() {
@@ -82,6 +95,14 @@ public class Horse {
         this.updated = updated;
     }
 
+    public Boolean getDeleted() {
+        return deleted;
+    }
+
+    public void setDeleted(Boolean deleted) {
+        this.deleted = deleted;
+    }
+
     @Override
     public boolean equals(Object o) {
         if (this == o) return true;
@@ -93,13 +114,14 @@ public class Horse {
             Objects.equals(minSpeed, horse.minSpeed) &&
             Objects.equals(maxSpeed, horse.maxSpeed) &&
             Objects.equals(created, horse.created) &&
-            Objects.equals(updated, horse.updated);
+            Objects.equals(updated, horse.updated) &&
+            Objects.equals(deleted, horse.deleted);
     }
 
     @Override
     public int hashCode() {
 
-        return Objects.hash(id, name, breed, minSpeed, maxSpeed, created, updated);
+        return Objects.hash(id, name, breed, minSpeed, maxSpeed, created, updated, deleted);
     }
 
     @Override
@@ -112,6 +134,7 @@ public class Horse {
             ", maxSpeed=" + maxSpeed +
             ", created=" + created +
             ", updated=" + updated +
+            ", deleted=" + deleted +
             '}';
     }
 

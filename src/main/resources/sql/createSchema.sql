@@ -10,7 +10,8 @@ CREATE TABLE IF NOT EXISTS horse (
   min_speed DOUBLE       NOT NULL,
   max_speed DOUBLE       NOT NULL,
   created   DATETIME     NOT NULL,
-  updated   DATETIME     NOT NULL
+  updated   DATETIME     NOT NULL,
+  deleted   BOOL         NOT NULL
 );
 
 -- create table jockey if not exists
