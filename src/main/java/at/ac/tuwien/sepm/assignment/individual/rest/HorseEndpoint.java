@@ -14,6 +14,7 @@ import org.springframework.web.bind.annotation.*;
 import org.springframework.web.server.ResponseStatusException;
 
 import javax.websocket.server.PathParam;
+import java.util.ArrayList;
 
 @RestController
 @RequestMapping("/api/v1/horses")
@@ -39,6 +40,16 @@ public class HorseEndpoint {
             throw new ResponseStatusException(HttpStatus.INTERNAL_SERVER_ERROR, "Error during read horse with id " + id, e);
         } catch (NotFoundException e) {
             throw new ResponseStatusException(HttpStatus.NOT_FOUND, "Error during reading horse: " + e.getMessage(), e);
+        }
+    }
+
+    @RequestMapping(value = "", method = RequestMethod.GET)
+    public HorseDto[] getAll() {
+        LOGGER.info("GET " + BASE_URL);
+        try {
+            return horseMapper.entityListToDtoArray(horseService.getAll());
+        } catch (ServiceException e) {
+            throw new ResponseStatusException(HttpStatus.INTERNAL_SERVER_ERROR, "Error during reading horses", e);
         }
     }
 

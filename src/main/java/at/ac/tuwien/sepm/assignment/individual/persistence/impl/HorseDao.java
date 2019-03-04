@@ -13,6 +13,7 @@ import org.springframework.stereotype.Repository;
 import java.sql.PreparedStatement;
 import java.sql.ResultSet;
 import java.sql.SQLException;
+import java.util.ArrayList;
 
 
 @Repository
@@ -59,6 +60,24 @@ public class HorseDao implements IHorseDao {
         } else {
             throw new NotFoundException("Could not find horse with id " + id);
         }
+    }
+
+    @Override
+    public ArrayList<Horse> getAll() throws PersistenceException {
+        LOGGER.info("Get all horses");
+        String sql = "SELECT * FROM Horse WHERE deleted IS NOT TRUE";
+        ArrayList<Horse> horses = new ArrayList<Horse>();
+        try {
+            PreparedStatement statement = dbConnectionManager.getConnection().prepareStatement(sql);
+            ResultSet result = statement.executeQuery();
+            while (result.next()) {
+                horses.add(dbResultToHorseDto(result));
+            }
+        } catch (SQLException e) {
+            LOGGER.error("Problem while executing SQL select statement for reading all horses ", e);
+            throw new PersistenceException("Could not read horses", e);
+        }
+        return horses;
     }
 
     @Override

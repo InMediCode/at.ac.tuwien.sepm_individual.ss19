@@ -4,6 +4,8 @@ import at.ac.tuwien.sepm.assignment.individual.entity.Horse;
 import at.ac.tuwien.sepm.assignment.individual.exceptions.NotFoundException;
 import at.ac.tuwien.sepm.assignment.individual.persistence.exceptions.PersistenceException;
 
+import java.util.ArrayList;
+
 public interface IHorseDao {
 
     /**
@@ -13,6 +15,12 @@ public interface IHorseDao {
      * @throws NotFoundException    will be thrown if the horse could not be found in the database.
      */
     Horse findOneById(Integer id) throws PersistenceException, NotFoundException;
+
+    /**
+     * @return all horses as array that are not marked as deleted
+     * @throws PersistenceException will be thrown if something goes wrong during the database access.
+     */
+    ArrayList<Horse> getAll() throws PersistenceException;
 
     /**
      * @param horse to insert into table

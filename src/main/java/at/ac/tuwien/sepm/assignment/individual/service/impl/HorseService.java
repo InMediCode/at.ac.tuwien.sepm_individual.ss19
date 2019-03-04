@@ -11,6 +11,8 @@ import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
+import java.util.ArrayList;
+
 @Service
 public class HorseService implements IHorseService {
 
@@ -31,6 +33,17 @@ public class HorseService implements IHorseService {
             throw new ServiceException(e.getMessage(), e);
         }
     }
+
+    @Override
+    public ArrayList<Horse> getAll() throws ServiceException {
+        LOGGER.info("Get all horses");
+        try {
+            return horseDao.getAll();
+        } catch (PersistenceException e) {
+            throw new ServiceException(e.getMessage(), e);
+        }
+    }
+
 
     @Override
     public Horse insertHorse(Horse horse) throws  ServiceException {
