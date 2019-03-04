@@ -26,6 +26,6 @@ public interface IHorseDao {
      * @throws PersistenceException will be thrown if something goes wrong during the database access.
      * @throws NotFoundException    will be thrown if the horse could not be found in the database.
      */
-    void deleteOneById(Integer id) throws PersistenceException;
+    void deleteOneById(Integer id) throws PersistenceException, NotFoundException;
 
 }
