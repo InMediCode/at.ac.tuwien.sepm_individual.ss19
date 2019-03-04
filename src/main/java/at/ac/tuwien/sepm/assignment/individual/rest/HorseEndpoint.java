@@ -15,6 +15,7 @@ import org.springframework.web.server.ResponseStatusException;
 
 import javax.websocket.server.PathParam;
 import java.util.ArrayList;
+import java.util.Map;
 
 @RestController
 @RequestMapping("/api/v1/horses")
@@ -43,13 +44,48 @@ public class HorseEndpoint {
         }
     }
 
-    @RequestMapping(value = "", method = RequestMethod.GET)
-    public HorseDto[] getAll() {
+    private HorseDto[] getAll() {
         LOGGER.info("GET " + BASE_URL);
         try {
             return horseMapper.entityListToDtoArray(horseService.getAll());
         } catch (ServiceException e) {
             throw new ResponseStatusException(HttpStatus.INTERNAL_SERVER_ERROR, "Error during reading horses", e);
+        }
+    }
+
+    /*@RequestMapping(value = "", method = RequestMethod.GET)
+    public HorseDto[] getAllFilteredBy(@RequestParam Map<String, String> requestParams) {
+        String name = requestParams.get("name");
+        String breed = requestParams.get("breed");
+        Double minSpeed = Double.parseDouble(requestParams.get("minSpeed"));
+        Double maxSpeed = Double.parseDouble(requestParams.get("maxSpeed"));
+
+        try {
+            LOGGER.info("HERE");
+            return horseMapper.entityListToDtoArray(horseService.getAllFilteredBy(name, breed, minSpeed, maxSpeed));
+        } catch (ServiceException e) {
+            throw new ResponseStatusException(HttpStatus.INTERNAL_SERVER_ERROR, "Error during read horse with name " + name, e);
+        }
+    }*/
+
+    @RequestMapping(value = "", method = RequestMethod.GET)
+    public HorseDto[] getAllFilteredOrNot(@RequestParam Map<String, String> requestParams) {
+        String name = requestParams.get("name");
+        String breed = requestParams.get("breed");
+        String minString = requestParams.get("minSpeed");
+        String maxString = requestParams.get("maxSpeed");
+        Double minSpeed = minString == null ? null : Double.parseDouble(minString);
+        Double maxSpeed = maxString == null ? null : Double.parseDouble(maxString);
+
+        if (name == null || breed == null || minSpeed == null || maxSpeed == null ) {
+            return this.getAll();
+        } else {
+            try {
+                LOGGER.info("HERE");
+                return horseMapper.entityListToDtoArray(horseService.getAllFilteredBy(name, breed, minSpeed, maxSpeed));
+            } catch (ServiceException e) {
+                throw new ResponseStatusException(HttpStatus.INTERNAL_SERVER_ERROR, "Error during read horse with name " + name, e);
+            }
         }
     }
 

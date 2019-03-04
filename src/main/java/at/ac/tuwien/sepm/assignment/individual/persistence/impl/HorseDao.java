@@ -7,6 +7,7 @@ import at.ac.tuwien.sepm.assignment.individual.persistence.exceptions.Persistenc
 import at.ac.tuwien.sepm.assignment.individual.persistence.util.DBConnectionManager;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
+import org.springframework.aop.support.DelegatePerTargetObjectIntroductionInterceptor;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Repository;
 
@@ -76,6 +77,28 @@ public class HorseDao implements IHorseDao {
         } catch (SQLException e) {
             LOGGER.error("Problem while executing SQL select statement for reading all horses ", e);
             throw new PersistenceException("Could not read horses", e);
+        }
+        return horses;
+    }
+
+    @Override
+    public ArrayList<Horse> getAllFilteredBy(String name, String breed, Double minSpeed, Double maxSpeed) throws PersistenceException {
+        LOGGER.info("Get all horses filtered by name ", name, breed, minSpeed, maxSpeed);
+        String sql = "SELECT * FROM Horse WHERE name LIKE ? AND breed LIKE ? AND min_speed>=? AND max_speed<=? AND deleted IS NOT TRUE";
+        ArrayList<Horse> horses = new ArrayList<Horse>();
+        try {
+            PreparedStatement statement = dbConnectionManager.getConnection().prepareStatement(sql);
+            statement.setString(1, "%"+name+"%");
+            statement.setString(2, "%"+breed+"%");
+            statement.setDouble(3, minSpeed);
+            statement.setDouble(4, maxSpeed);
+            ResultSet result = statement.executeQuery();
+            while (result.next()) {
+                horses.add(dbResultToHorseDto(result));
+            }
+        } catch (SQLException e) {
+            LOGGER.error("Problem while executing SQL select statement for reading horses with ", e);
+            throw new PersistenceException("Get all horses filtered by name ", e);
         }
         return horses;
     }

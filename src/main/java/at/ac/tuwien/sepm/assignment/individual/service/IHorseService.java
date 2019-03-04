@@ -23,6 +23,16 @@ public interface IHorseService {
     ArrayList<Horse> getAll() throws ServiceException;
 
     /**
+     * @param name the horse contains.
+     * @param breed the horse contains.
+     * @param minSpeed greater or equal of the horse.
+     * @param maxSpeed smaller or equal of the horse.
+     * @return all horses as arraylist that are not marked as deleted
+     * @throws ServiceException  will be thrown if something goes wrong during data processing.
+     */
+    ArrayList<Horse> getAllFilteredBy(String name, String breed, Double minSpeed, Double maxSpeed) throws ServiceException;
+
+    /**
      *
      * @param horse to insert into table
      * @return the horse with the id

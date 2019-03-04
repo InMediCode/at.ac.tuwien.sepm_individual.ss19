@@ -44,6 +44,15 @@ public class HorseService implements IHorseService {
         }
     }
 
+    @Override
+    public ArrayList<Horse> getAllFilteredBy(String name, String breed, Double minSpeed, Double maxSpeed) throws ServiceException {
+        LOGGER.info("Get all horses with name " + name);
+        try {
+            return horseDao.getAllFilteredBy(name, breed, minSpeed, maxSpeed);
+        } catch (PersistenceException e) {
+            throw new ServiceException(e.getMessage(), e);
+        }
+    }
 
     @Override
     public Horse insertHorse(Horse horse) throws  ServiceException {
