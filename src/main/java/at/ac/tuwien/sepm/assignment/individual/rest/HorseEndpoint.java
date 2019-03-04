@@ -53,21 +53,6 @@ public class HorseEndpoint {
         }
     }
 
-    /*@RequestMapping(value = "", method = RequestMethod.GET)
-    public HorseDto[] getAllFilteredBy(@RequestParam Map<String, String> requestParams) {
-        String name = requestParams.get("name");
-        String breed = requestParams.get("breed");
-        Double minSpeed = Double.parseDouble(requestParams.get("minSpeed"));
-        Double maxSpeed = Double.parseDouble(requestParams.get("maxSpeed"));
-
-        try {
-            LOGGER.info("HERE");
-            return horseMapper.entityListToDtoArray(horseService.getAllFilteredBy(name, breed, minSpeed, maxSpeed));
-        } catch (ServiceException e) {
-            throw new ResponseStatusException(HttpStatus.INTERNAL_SERVER_ERROR, "Error during read horse with name " + name, e);
-        }
-    }*/
-
     @RequestMapping(value = "", method = RequestMethod.GET)
     public HorseDto[] getAllFilteredOrNot(@RequestParam Map<String, String> requestParams) {
         String name = requestParams.get("name");
