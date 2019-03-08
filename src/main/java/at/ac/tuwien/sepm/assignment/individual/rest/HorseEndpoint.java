@@ -10,6 +10,7 @@ import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
+import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 import org.springframework.web.server.ResponseStatusException;
 
@@ -87,7 +88,7 @@ public class HorseEndpoint {
     }
 
     @RequestMapping(value = "", method = RequestMethod.POST)
-    public @ResponseBody HorseDto insertHorse(@RequestBody HorseDto horseDto) {
+    public @ResponseBody ResponseEntity<HorseDto> insertHorse(@RequestBody HorseDto horseDto) {
         if (horseDto != null) {
             LOGGER.info("Name: " + horseDto.getName());
             LOGGER.info("Breed: " + horseDto.getBreed());
@@ -98,7 +99,8 @@ public class HorseEndpoint {
         }
 
         try {
-            return horseMapper.entityToDto(horseService.insertHorse(horseMapper.dtoToEntity(horseDto)));
+            horseDto = horseMapper.entityToDto(horseService.insertHorse(horseMapper.dtoToEntity(horseDto)));
+            return  ResponseEntity.status(HttpStatus.CREATED).body(horseDto);
         } catch (ServiceException e) {
             throw new ResponseStatusException(HttpStatus.INTERNAL_SERVER_ERROR, "Error during inserting new horse: " + horseDto, e);
         }
@@ -106,4 +108,14 @@ public class HorseEndpoint {
         //rotating log files
     }
 
+    @RequestMapping(value = "/{id}", method = RequestMethod.PUT)
+    public @ResponseBody HorseDto updateHorse(@PathVariable("id") Integer id, @RequestBody HorseDto horseDto) {
+        try {
+            return horseMapper.entityToDto(horseService.updateHorse(horseMapper.dtoToEntity(horseDto)));
+        } catch (ServiceException e) {
+            throw new ResponseStatusException(HttpStatus.INTERNAL_SERVER_ERROR, "Error during inserting new horse: " + horseDto, e);
+        } catch (NotFoundException e) {
+            throw new ResponseStatusException(HttpStatus.NOT_FOUND, "Error during updating horse: " + e.getMessage(), e);
+        }
+    }
 }

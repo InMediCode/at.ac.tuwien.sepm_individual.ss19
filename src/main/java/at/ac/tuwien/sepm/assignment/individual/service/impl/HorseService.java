@@ -65,6 +65,16 @@ public class HorseService implements IHorseService {
     }
 
     @Override
+    public Horse updateHorse(Horse horse) throws  ServiceException, NotFoundException {
+        LOGGER.info("Update horse " + horse);
+        try {
+            return horseDao.updateHorse(horse);
+        } catch (PersistenceException e) {
+            throw new ServiceException(e.getMessage(), e);
+        }
+    }
+
+    @Override
     public void deleteOneById(Integer id) throws  ServiceException, NotFoundException {
         LOGGER.info("Delete horse with id " + id);
         try {
