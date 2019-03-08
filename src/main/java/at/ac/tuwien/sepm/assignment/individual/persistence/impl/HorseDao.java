@@ -7,13 +7,11 @@ import at.ac.tuwien.sepm.assignment.individual.persistence.exceptions.Persistenc
 import at.ac.tuwien.sepm.assignment.individual.persistence.util.DBConnectionManager;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
-import org.springframework.aop.support.DelegatePerTargetObjectIntroductionInterceptor;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Repository;
 
-import java.sql.PreparedStatement;
-import java.sql.ResultSet;
-import java.sql.SQLException;
+import java.sql.*;
+import java.time.LocalDateTime;
 import java.util.ArrayList;
 
 
@@ -106,22 +104,32 @@ public class HorseDao implements IHorseDao {
     @Override
     public Horse insertHorse(Horse horse) throws PersistenceException {
         LOGGER.info("Insert horse: " + horse);
-        String sql = "INSERT INTO Horse (name, breed, minSpeed, maxSpeed) VALUES (?, ?, ? ,?)";
+        String sql = "INSERT INTO Horse (name, breed, min_speed, max_speed, created, updated, deleted) VALUES (?, ?, ? ,?, ?, ?, false)";
 
         try {
-            PreparedStatement statement = dbConnectionManager.getConnection().prepareStatement(sql);
+            horse.setCreated(LocalDateTime.now());
+            horse.setUpdated(horse.getCreated());
+
+            PreparedStatement statement = dbConnectionManager.getConnection().prepareStatement(sql,
+                Statement.RETURN_GENERATED_KEYS);
             statement.setString(1, horse.getName());
             statement.setString(2, horse.getBreed());
             statement.setDouble(3, horse.getMinSpeed());
             statement.setDouble(4, horse.getMaxSpeed());
+            statement.setDate(5, java.sql.Date.valueOf(horse.getCreated().toLocalDate()));
+            statement.setDate(6, java.sql.Date.valueOf(horse.getUpdated().toLocalDate()));
+            statement.executeUpdate();
 
-            ResultSet result = statement.executeQuery();
+            ResultSet result = statement.getGeneratedKeys();
+            result.next();
+
+            horse.setId(result.getInt(1));
         } catch (SQLException e) {
-            LOGGER.error("asdfasfd");
-            throw new PersistenceException("asdfasfd");
+            LOGGER.error("asdfasfd", e);
+            throw new PersistenceException("asdfasfd", e);
         }
 
-        return null;
+        return horse;
     }
 
     @Override

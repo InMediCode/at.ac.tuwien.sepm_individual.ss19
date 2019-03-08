@@ -86,17 +86,24 @@ public class HorseEndpoint {
         }
     }
 
-    @RequestMapping(value = "/name={name}", method = RequestMethod.POST)
-    public HorseDto insertHorse(@PathVariable("name") String name) {
-        HorseDto horseDto = new HorseDto();
-        horseDto.setName(name);
+    @RequestMapping(value = "", method = RequestMethod.POST)
+    public @ResponseBody HorseDto insertHorse(@RequestBody HorseDto horseDto) {
+        if (horseDto != null) {
+            LOGGER.info("Name: " + horseDto.getName());
+            LOGGER.info("Breed: " + horseDto.getBreed());
+            LOGGER.info("minSpeed: " + horseDto.getMinSpeed());
+            LOGGER.info("maxSpeed: " + horseDto.getMaxSpeed());
+        } else {
+            LOGGER.info("NO DATA");
+        }
+
         try {
             return horseMapper.entityToDto(horseService.insertHorse(horseMapper.dtoToEntity(horseDto)));
         } catch (ServiceException e) {
-            //
+            throw new ResponseStatusException(HttpStatus.INTERNAL_SERVER_ERROR, "Error during inserting new horse: " + horseDto, e);
         }
 
-        return null;
+        //rotating log files
     }
 
 }
