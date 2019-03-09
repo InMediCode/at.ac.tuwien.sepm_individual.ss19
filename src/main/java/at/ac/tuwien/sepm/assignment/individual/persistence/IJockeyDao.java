@@ -4,6 +4,8 @@ import at.ac.tuwien.sepm.assignment.individual.entity.Jockey;
 import at.ac.tuwien.sepm.assignment.individual.exceptions.NotFoundException;
 import at.ac.tuwien.sepm.assignment.individual.persistence.exceptions.PersistenceException;
 
+import java.util.ArrayList;
+
 public interface IJockeyDao {
 
     /**
@@ -13,6 +15,20 @@ public interface IJockeyDao {
      * @throws NotFoundException    will be thrown if the jockey could not be found in the database.
      */
     Jockey findOneById(Integer id) throws PersistenceException, NotFoundException;
+
+    /**
+     * @return all jockeys as arraylist that are not marked as deleted
+     * @throws PersistenceException will be thrown if something goes wrong during the database access.
+     */
+    ArrayList<Jockey> getAll() throws PersistenceException;
+
+    /**
+     * @param name the jockey contains.
+     * @param skill the jockey contains.
+     * @return all jockeys as arraylist that are not marked as deleted
+     * @throws PersistenceException will be thrown if something goes wrong during the database access.
+     */
+    ArrayList<Jockey> getAllFilteredBy(String name, Double skill) throws PersistenceException;
 
     /**
      * @param jockey to insert into table

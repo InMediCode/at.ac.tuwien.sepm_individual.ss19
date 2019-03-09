@@ -14,6 +14,8 @@ import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 import org.springframework.web.server.ResponseStatusException;
 
+import java.util.Map;
+
 @RestController
 @RequestMapping("/api/v1/jockeys")
 public class JockeyEndpoint {
@@ -40,6 +42,37 @@ public class JockeyEndpoint {
             throw new ResponseStatusException(HttpStatus.NOT_FOUND, "Error during reading jockey: " + e.getMessage(), e);
         }
     }
+
+    private JockeyDto[] getAll() {
+        LOGGER.info("GET " + BASE_URL);
+        try {
+            return jockeyMapper.entityListToDtoArray(jockeyService.getAll());
+        } catch (ServiceException e) {
+            throw new ResponseStatusException(HttpStatus.INTERNAL_SERVER_ERROR, "Error during reading jockeys", e);
+        }
+    }
+
+    @RequestMapping(value = "", method = RequestMethod.GET)
+    public JockeyDto[] getAllFilteredOrNot(@RequestParam Map<String, String> requestParams) {
+        String name = requestParams.get("name");
+        String skillString = requestParams.get("skill");
+        Double skill = skillString == null ? null : Double.parseDouble(skillString);
+
+        if (name == null || skill == null) {
+            return this.getAll();
+        } else {
+            try {
+                LOGGER.info("HERE");
+                return jockeyMapper.entityListToDtoArray(jockeyService.getAllFilteredBy(name, skill));
+            } catch (ServiceException e) {
+                throw new ResponseStatusException(HttpStatus.INTERNAL_SERVER_ERROR, "Error during read jockey with name " + name, e);
+            }
+        }
+    }
+
+
+
+    //
 
     @RequestMapping(value = "", method = RequestMethod.POST)
     public @ResponseBody ResponseEntity<JockeyDto> insertJockey(@RequestBody JockeyDto jockeyDto) {

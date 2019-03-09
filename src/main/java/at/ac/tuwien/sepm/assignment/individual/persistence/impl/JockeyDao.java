@@ -14,6 +14,7 @@ import org.springframework.stereotype.Repository;
 import java.sql.*;
 import java.time.LocalDateTime;
 import java.time.ZoneOffset;
+import java.util.ArrayList;
 
 @Repository
 public class JockeyDao implements IJockeyDao {
@@ -54,6 +55,44 @@ public class JockeyDao implements IJockeyDao {
         } else {
             throw new NotFoundException("Could not find jockey with id " + id);
         }
+    }
+
+    @Override
+    public ArrayList<Jockey> getAll() throws PersistenceException {
+        LOGGER.info("Get all jockeys");
+        String sql = "SELECT * FROM Jockey WHERE deleted IS NOT TRUE";
+        ArrayList<Jockey> jockey = new ArrayList<Jockey>();
+        try {
+            PreparedStatement statement = dbConnectionManager.getConnection().prepareStatement(sql);
+            ResultSet result = statement.executeQuery();
+            while (result.next()) {
+                jockey.add(dbResultToJockeyDto(result));
+            }
+        } catch (SQLException e) {
+            LOGGER.error("Problem while executing SQL select statement for reading all jockeys ", e);
+            throw new PersistenceException("Could not read jockeys", e);
+        }
+        return jockey;
+    }
+
+    @Override
+    public ArrayList<Jockey> getAllFilteredBy(String name, Double skill) throws PersistenceException {
+        LOGGER.info("Get all jockeys filtered by name ", name, skill);
+        String sql = "SELECT * FROM Jockey WHERE name LIKE ? AND  skill>=? AND deleted IS NOT TRUE";
+        ArrayList<Jockey> jockeys = new ArrayList<Jockey>();
+        try {
+            PreparedStatement statement = dbConnectionManager.getConnection().prepareStatement(sql);
+            statement.setString(1, "%"+name+"%");
+            statement.setDouble(2, skill);
+            ResultSet result = statement.executeQuery();
+            while (result.next()) {
+                jockeys.add(dbResultToJockeyDto(result));
+            }
+        } catch (SQLException e) {
+            LOGGER.error("Problem while executing SQL select statement for reading jockeys with ", e);
+            throw new PersistenceException("Get all jockeys filtered by name ", e);
+        }
+        return jockeys;
     }
 
     @Override

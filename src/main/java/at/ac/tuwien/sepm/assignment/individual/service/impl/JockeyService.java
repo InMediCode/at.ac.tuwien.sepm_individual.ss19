@@ -11,6 +11,8 @@ import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
+import java.util.ArrayList;
+
 @Service
 public class JockeyService implements IJockeyService {
 
@@ -25,6 +27,26 @@ public class JockeyService implements IJockeyService {
         LOGGER.info("Get jockey with id " + id);
         try {
             return jockeyDao.findOneById(id);
+        } catch (PersistenceException e) {
+            throw new ServiceException(e.getMessage(), e);
+        }
+    }
+
+    @Override
+    public ArrayList<Jockey> getAll() throws ServiceException {
+        LOGGER.info("Get all jockeys");
+        try {
+            return jockeyDao.getAll();
+        } catch (PersistenceException e) {
+            throw new ServiceException(e.getMessage(), e);
+        }
+    }
+
+    @Override
+    public ArrayList<Jockey> getAllFilteredBy(String name, Double skill) throws ServiceException {
+        LOGGER.info("Get all jockeys with name " + name);
+        try {
+            return jockeyDao.getAllFilteredBy(name, skill);
         } catch (PersistenceException e) {
             throw new ServiceException(e.getMessage(), e);
         }
