@@ -111,6 +111,7 @@ public class JockeyDao implements IJockeyDao {
             statement.setDouble(2, jockey.getSkill());
             statement.setTimestamp(3, new Timestamp(localDateTime.toInstant(ZoneOffset.ofTotalSeconds(0)).toEpochMilli()));
             statement.setTimestamp(4, new Timestamp(localDateTime.toInstant(ZoneOffset.ofTotalSeconds(0)).toEpochMilli()));
+            statement.executeUpdate();
 
             ResultSet result = statement.getGeneratedKeys();
             result.next();
