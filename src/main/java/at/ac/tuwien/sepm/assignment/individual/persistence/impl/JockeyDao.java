@@ -124,4 +124,22 @@ public class JockeyDao implements IJockeyDao {
 
         return jockey;
     }
+
+    @Override
+    public void deleteOneById(Integer id) throws PersistenceException, NotFoundException {
+        LOGGER.info("Delete jockey with id " + id);
+        String sql = "UPDATE Jockey SET deleted = TRUE WHERE id=? AND deleted IS NOT TRUE";
+        int count = 0;
+        try {
+            PreparedStatement statement = dbConnectionManager.getConnection().prepareStatement(sql);
+            statement.setInt(1, id);
+            count = statement.executeUpdate();
+        } catch (SQLException e) {
+            LOGGER.error("Problem while executing SQL select statement for deleting jockey with id " + id, e);
+            throw new PersistenceException("Could not delete jockeys with id " + id, e);
+        }
+        if (count == 0) {
+            throw new NotFoundException("Could not delete jockey with id " + id);
+        }
+    }
 }

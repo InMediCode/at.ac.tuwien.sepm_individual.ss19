@@ -61,4 +61,14 @@ public class JockeyService implements IJockeyService {
             throw new ServiceException(e.getMessage(), e);
         }
     }
+
+    @Override
+    public void deleteOneById(Integer id) throws  ServiceException, NotFoundException {
+        LOGGER.info("Delete jockey with id " + id);
+        try {
+            jockeyDao.deleteOneById(id);
+        } catch (PersistenceException e) {
+            throw new ServiceException(e.getMessage(), e);
+        }
+    }
 }

@@ -70,9 +70,17 @@ public class JockeyEndpoint {
         }
     }
 
-
-
-    //
+    @RequestMapping(value = "/{id}", method = RequestMethod.DELETE)
+    public void deleteOneById(@PathVariable("id") Integer id) {
+        LOGGER.info("DELETE " + BASE_URL + "/" + id);
+        try {
+            jockeyService.deleteOneById(id);
+        } catch (ServiceException e) {
+            throw new ResponseStatusException(HttpStatus.INTERNAL_SERVER_ERROR, "Error during deleting jockey with id " + id, e);
+        } catch (NotFoundException e) {
+            throw new ResponseStatusException(HttpStatus.NOT_FOUND, "Error during deleting jockey: " + e.getMessage(), e);
+        }
+    }
 
     @RequestMapping(value = "", method = RequestMethod.POST)
     public @ResponseBody ResponseEntity<JockeyDto> insertJockey(@RequestBody JockeyDto jockeyDto) {
