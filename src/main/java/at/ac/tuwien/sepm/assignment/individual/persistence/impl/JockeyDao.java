@@ -99,7 +99,7 @@ public class JockeyDao implements IJockeyDao {
     public Jockey insertJockey(Jockey jockey) throws PersistenceException {
         LOGGER.info("Insert jockey: " + jockey);
 
-        String sql = "INSERT INTO Jockey (name, skill, created, updated, deleted) VALUES (?, ?, ?, ?, false)";
+        String sql = "INSERT INTO Jockey (name, skill, created, updated, deleted, used_in_simulation, version) VALUES (?, ?, ?, ?, false, false, 1)";
 
         try {
             LocalDateTime localDateTime = LocalDateTime.now();
