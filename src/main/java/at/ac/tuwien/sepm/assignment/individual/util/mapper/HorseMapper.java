@@ -21,7 +21,7 @@ public class HorseMapper {
         return array;
     }
 
-    public  Horse dtoToEntity(HorseDto horseDto) {
+    public Horse dtoToEntity(HorseDto horseDto) {
         return  new Horse(horseDto.getId(), horseDto.getName(), horseDto.getBreed(), horseDto.getMinSpeed(), horseDto.getMaxSpeed(), horseDto.getCreated(), horseDto.getUpdated());
     }
 

@@ -12,6 +12,7 @@ public class Jockey {
     private Double skill;
     private LocalDateTime created;
     private LocalDateTime updated;
+    private Boolean deleted;
 
     public Jockey() {
     }
@@ -22,6 +23,16 @@ public class Jockey {
         this.skill = skill;
         this.created = created;
         this.updated = updated;
+        this.deleted = false;
+    }
+
+    public Jockey(Integer id, String name, Double skill, LocalDateTime created, LocalDateTime updated, Boolean deleted) {
+        this.id = id;
+        this.name = name;
+        this.skill = skill;
+        this.created = created;
+        this.updated = updated;
+        this.deleted = deleted;
     }
 
     public Integer getId() {
@@ -60,6 +71,14 @@ public class Jockey {
         this.updated = updated;
     }
 
+    public Boolean getDeleted() {
+        return deleted;
+    }
+
+    public void setDeleted(Boolean deleted) {
+        this.deleted = deleted;
+    }
+
     @Override
     public boolean equals(Object o) {
         if (this == o) return true;
@@ -69,7 +88,8 @@ public class Jockey {
                 Objects.equals(this.name, jockey.name) &&
                 Objects.equals(this.skill, jockey.skill) &&
                 Objects.equals(this.created, jockey.created) &&
-                Objects.equals(this.updated, jockey.updated);
+                Objects.equals(this.updated, jockey.updated) &&
+                Objects.equals(deleted, jockey.deleted);
     }
 
     @Override
@@ -86,6 +106,7 @@ public class Jockey {
                 ", skill=" + this.skill +
                 ", created=" + this.created +
                 ", updated=" + this.updated +
+                ", deleted=" + deleted +
                 '}';
     }
 }

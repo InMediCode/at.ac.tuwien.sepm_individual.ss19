@@ -8,11 +8,12 @@ import at.ac.tuwien.sepm.assignment.individual.persistence.util.DBConnectionMana
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.http.ResponseEntity;
 import org.springframework.stereotype.Repository;
 
-import java.sql.PreparedStatement;
-import java.sql.ResultSet;
-import java.sql.SQLException;
+import java.sql.*;
+import java.time.LocalDateTime;
+import java.time.ZoneOffset;
 
 @Repository
 public class JockeyDao implements IJockeyDao {
@@ -35,7 +36,7 @@ public class JockeyDao implements IJockeyDao {
     @Override
     public Jockey findOneById(Integer id) throws PersistenceException, NotFoundException {
         LOGGER.info("Get jockey with id " + id);
-        String sql = "SELECT * FROM Jockey WHERE id=?";
+        String sql = "SELECT * FROM Jockey WHERE id=? AND deleted IS NOT TRUE";
         Jockey jockey = null;
         try {
             PreparedStatement statement = dbConnectionManager.getConnection().prepareStatement(sql);
@@ -53,5 +54,34 @@ public class JockeyDao implements IJockeyDao {
         } else {
             throw new NotFoundException("Could not find jockey with id " + id);
         }
+    }
+
+    @Override
+    public Jockey insertJockey(Jockey jockey) throws PersistenceException {
+        LOGGER.info("Insert jockey: " + jockey);
+
+        String sql = "INSERT INTO Jockey (name, skill, created, updated, deleted) VALUES (?, ?, ?, ?, false)";
+
+        try {
+            LocalDateTime localDateTime = LocalDateTime.now();
+            jockey.setCreated(localDateTime);
+            jockey.setUpdated(localDateTime);
+
+            PreparedStatement statement = dbConnectionManager.getConnection().prepareStatement(sql, Statement.RETURN_GENERATED_KEYS);
+            statement.setString(1, jockey.getName());
+            statement.setDouble(2, jockey.getSkill());
+            statement.setTimestamp(3, new Timestamp(localDateTime.toInstant(ZoneOffset.ofTotalSeconds(0)).toEpochMilli()));
+            statement.setTimestamp(4, new Timestamp(localDateTime.toInstant(ZoneOffset.ofTotalSeconds(0)).toEpochMilli()));
+
+            ResultSet result = statement.getGeneratedKeys();
+            result.next();
+
+            jockey.setId(result.getInt(1));
+        } catch (SQLException e) {
+            LOGGER.error("asdfasfd", e);
+            throw new PersistenceException("asdfasfd", e);
+        }
+
+        return jockey;
     }
 }

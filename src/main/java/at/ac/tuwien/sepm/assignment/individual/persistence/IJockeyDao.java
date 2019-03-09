@@ -14,4 +14,11 @@ public interface IJockeyDao {
      */
     Jockey findOneById(Integer id) throws PersistenceException, NotFoundException;
 
+    /**
+     * @param jockey to insert into table
+     * @return the jockey with the id
+     * @throws PersistenceException will be thrown if something goes wrong during the database access.
+     */
+    Jockey insertJockey(Jockey jockey) throws PersistenceException;
+
 }

@@ -29,4 +29,14 @@ public class JockeyService implements IJockeyService {
             throw new ServiceException(e.getMessage(), e);
         }
     }
+
+    @Override
+    public Jockey insertJockey(Jockey jockey) throws  ServiceException {
+        LOGGER.info("Insert jockey: " + jockey);
+        try {
+            return jockeyDao.insertJockey(jockey);
+        } catch (PersistenceException e) {
+            throw new ServiceException(e.getMessage(), e);
+        }
+    }
 }

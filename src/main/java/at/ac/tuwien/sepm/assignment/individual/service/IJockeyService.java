@@ -14,4 +14,11 @@ public interface IJockeyService {
      */
     Jockey findOneById(Integer id) throws ServiceException, NotFoundException;
 
+    /**
+     *
+     * @param jockey to insert into table
+     * @return the jockey with the id
+     * @throws ServiceException will be thrown if something goes wrong during data processing.
+     */
+    Jockey insertJockey(Jockey jockey) throws  ServiceException;
 }

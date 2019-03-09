@@ -10,10 +10,8 @@ import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
-import org.springframework.web.bind.annotation.PathVariable;
-import org.springframework.web.bind.annotation.RequestMapping;
-import org.springframework.web.bind.annotation.RequestMethod;
-import org.springframework.web.bind.annotation.RestController;
+import org.springframework.http.ResponseEntity;
+import org.springframework.web.bind.annotation.*;
 import org.springframework.web.server.ResponseStatusException;
 
 @RestController
@@ -40,6 +38,23 @@ public class JockeyEndpoint {
             throw new ResponseStatusException(HttpStatus.INTERNAL_SERVER_ERROR, "Error during read jockey with id " + id, e);
         } catch (NotFoundException e) {
             throw new ResponseStatusException(HttpStatus.NOT_FOUND, "Error during reading jockey: " + e.getMessage(), e);
+        }
+    }
+
+    @RequestMapping(value = "", method = RequestMethod.POST)
+    public @ResponseBody ResponseEntity<JockeyDto> insertJockey(@RequestBody JockeyDto jockeyDto) {
+        if (jockeyDto != null) {
+            LOGGER.info("Name: " + jockeyDto.getName());
+            LOGGER.info("Skill: " + jockeyDto.getSkill());
+        } else {
+            LOGGER.info("NO DATA");
+        }
+
+        try {
+            jockeyDto = jockeyMapper.entityToDto(jockeyService.insertJockey(jockeyMapper.dtoToEntity(jockeyDto)));
+            return  ResponseEntity.status(HttpStatus.CREATED).body(jockeyDto);
+        } catch (ServiceException e) {
+            throw new ResponseStatusException(HttpStatus.INTERNAL_SERVER_ERROR, "Error during inserting new jockey: " + jockeyDto, e);
         }
     }
 }

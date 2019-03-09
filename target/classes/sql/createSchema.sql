@@ -21,5 +21,6 @@ CREATE TABLE IF NOT EXISTS jockey (
   name      VARCHAR(255) NOT NULL,
   skill     DOUBLE       NOT NULL,
   created   DATETIME     NOT NULL,
-  updated   DATETIME     NOT NULL
+  updated   DATETIME     NOT NULL,
+  deleted   BOOL         NOT NULL
 );
