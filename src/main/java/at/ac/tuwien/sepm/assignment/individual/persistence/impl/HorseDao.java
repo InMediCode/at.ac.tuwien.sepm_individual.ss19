@@ -109,7 +109,7 @@ public class HorseDao implements IHorseDao {
     public Horse insertHorse(Horse horse) throws PersistenceException {
         LOGGER.info("Insert horse: " + horse);
 
-        String sql = "INSERT INTO Horse (name, breed, min_speed, max_speed, created, updated, deleted, used_in_simulation, version) VALUES (?, ?, ?, ?, ?, ?, false, false, 1)";
+        String sql = "INSERT INTO Horse (name, breed, min_speed, max_speed, created, updated, deleted) VALUES (?, ?, ?, ?, ?, ?, false)";
 
         try {
             LocalDateTime localDateTime = LocalDateTime.now();
