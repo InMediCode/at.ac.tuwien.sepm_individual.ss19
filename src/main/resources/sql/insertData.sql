@@ -5,7 +5,7 @@ VALUES (1, 'Joe', 'Cob', 40.1, 50.0, CURRENT_TIMESTAMP(), CURRENT_TIMESTAMP(), f
   (2, 'Lisa', 'Arab', 40.5, 50.7, CURRENT_TIMESTAMP(), CURRENT_TIMESTAMP(), false),
   (3, 'Jim', 'Andalusian', 40.0, 60.0, CURRENT_TIMESTAMP(), CURRENT_TIMESTAMP(), false);
 
--- inser initial test data
+-- insert initial test data
 -- the id is hardcode to enable references between further test data
 INSERT INTO jockey(ID, NAME, SKILL, CREATED, UPDATED, DELETED)
 VALUES (1, 'Hans', 200.0, CURRENT_TIMESTAMP(), CURRENT_TIMESTAMP(), false),

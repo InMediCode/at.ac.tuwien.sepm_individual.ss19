@@ -34,7 +34,7 @@ CREATE TABLE IF NOT EXISTS simulation (
 
 --create table participant if not exists
 CREATE  TABLE  IF NOT EXISTS participants (
-  participantId   BIGINT AUTO_INCREMENT PRIMARY KEY,
+  id              BIGINT AUTO_INCREMENT PRIMARY KEY,
   simulationId    BIGINT        NOT NULL,
   horseId         BIGINT        NOT NULL,
   horseName       VARCHAR(255)  NOT NULL,

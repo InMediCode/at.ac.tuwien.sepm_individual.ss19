@@ -18,6 +18,13 @@ public class ParticipantDto {
         this.luckFactor = luckFactor;
     }
 
+    ParticipantDto(Integer horseId, Integer jockeyId, Double luckFactor) {
+        this.id = null;
+        this.horseId = horseId;
+        this.jockeyId = jockeyId;
+        this.luckFactor = luckFactor;
+    }
+
     public Integer getId() {
         return id;
     }

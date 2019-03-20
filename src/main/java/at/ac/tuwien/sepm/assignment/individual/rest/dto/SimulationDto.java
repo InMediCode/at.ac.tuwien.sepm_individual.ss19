@@ -1,17 +1,22 @@
 package at.ac.tuwien.sepm.assignment.individual.rest.dto;
 
+import com.fasterxml.jackson.databind.annotation.JsonSerialize;
+
+import javax.servlet.http.Part;
+import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.Objects;
 
 public class SimulationDto {
     private Integer id;
     private String name;
-    private ParticipantDto[] participants;
+    private ArrayList<ParticipantDto> participants;
+    //private ParticipantDto[] participants;
 
     public SimulationDto() {
     }
 
-    public SimulationDto(Integer id, String name, ParticipantDto[] participants) {
+    public SimulationDto(Integer id, String name, ArrayList<ParticipantDto> participants) {
         this.id = id;
         this.name = name;
         this.participants = participants;
@@ -21,23 +26,23 @@ public class SimulationDto {
         return id;
     }
 
-    public void setId(Integer id) {
-        this.id = id;
-    }
-
     public String getName() {
         return name;
+    }
+
+    public ArrayList<ParticipantDto> getParticipants() {
+        return participants;
+    }
+
+    public void setId(Integer id) {
+        this.id = id;
     }
 
     public void setName(String name) {
         this.name = name;
     }
 
-    public ParticipantDto[] getParticipants() {
-        return participants;
-    }
-
-    public void setParticipants(ParticipantDto[] participants) {
+    public void setParticipants(ArrayList<ParticipantDto> participants) {
         this.participants = participants;
     }
 
@@ -48,15 +53,12 @@ public class SimulationDto {
         SimulationDto simulationDto = (SimulationDto) o;
         return Objects.equals(id, simulationDto.id) &&
             Objects.equals(name, simulationDto.name) &&
-            Arrays.equals(participants, simulationDto.participants);
+            Objects.equals(participants, simulationDto.participants);
     }
 
     @Override
     public int hashCode() {
-
-        int result = Objects.hash(id, name);
-        result = 31 * result + Arrays.hashCode(participants);
-        return result;
+        return Objects.hash(id, name, participants);
     }
 
     @Override
