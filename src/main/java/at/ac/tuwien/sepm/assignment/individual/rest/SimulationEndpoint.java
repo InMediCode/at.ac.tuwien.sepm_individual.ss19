@@ -1,6 +1,5 @@
 package at.ac.tuwien.sepm.assignment.individual.rest;
 
-import at.ac.tuwien.sepm.assignment.individual.rest.dto.ParticipantDto;
 import at.ac.tuwien.sepm.assignment.individual.rest.dto.SimulationDto;
 import at.ac.tuwien.sepm.assignment.individual.service.ISimulationService;
 import at.ac.tuwien.sepm.assignment.individual.service.exceptions.ServiceException;
@@ -9,13 +8,9 @@ import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
-import org.springframework.http.MediaType;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 import org.springframework.web.server.ResponseStatusException;
-
-import javax.servlet.http.Part;
-import java.util.ArrayList;
 
 @RestController
 @RequestMapping("/api/v1/simulations")
@@ -34,7 +29,7 @@ public class SimulationEndpoint {
 
     @RequestMapping(value = "", method = RequestMethod.POST)
     public @ResponseBody ResponseEntity <SimulationDto> insertSimulation(@RequestBody SimulationDto simulationDto) {
-        if (simulationDto != null) {
+        /*if (simulationDto != null) {
             LOGGER.info("Name: " + simulationDto.getName());
             ArrayList<ParticipantDto> participants = simulationDto.getParticipants();
 
@@ -44,20 +39,18 @@ public class SimulationEndpoint {
                 LOGGER.info("Participants found: " + participants.size());
             }
 
-            /*for (ParticipantDto participant : participants) {
+            for (ParticipantDto participant : participants) {
                 LOGGER.info("Name: " + participant.toString());
-            }*/
+            }
         } else {
             LOGGER.info("NO DATA");
-        }
-
-        /*try {
-            //simulationDto = simulationMapper.entityToDto(simulationService.insertSimulation(simulationMapper.dtoToEntity(simulationDto)));
-            //return  ResponseEntity.status(HttpStatus.CREATED).body(simulationDto);
-        } catch (ServiceException e) {
-            throw new ResponseStatusException(HttpStatus.INTERNAL_SERVER_ERROR, "Error during inserting new simulation: " + simulationDto, e);
         }*/
 
-        return null;
+        try {
+            simulationDto = simulationMapper.entityToDto(simulationService.insertSimulation(simulationMapper.dtoToEntity(simulationDto)));
+            return ResponseEntity.status(HttpStatus.CREATED).body(simulationDto);
+        } catch (ServiceException e) {
+            throw new ResponseStatusException(HttpStatus.INTERNAL_SERVER_ERROR, "Error during inserting new simulation: " + simulationDto, e);
+        }
     }
 }

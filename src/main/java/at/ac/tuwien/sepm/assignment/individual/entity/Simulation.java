@@ -1,23 +1,21 @@
-package at.ac.tuwien.sepm.assignment.individual.rest.dto;
+package at.ac.tuwien.sepm.assignment.individual.entity;
 
 import com.fasterxml.jackson.annotation.JsonProperty;
-import com.fasterxml.jackson.databind.annotation.JsonSerialize;
 
-import javax.servlet.http.Part;
 import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.Objects;
 
-public class SimulationDto {
+public class Simulation {
     private Integer id;
     private String name;
     @JsonProperty("simulationParticipants")
-    private ArrayList<ParticipantDto> participants;
+    private ArrayList<Participant> participants;
 
-    public SimulationDto() {
+    public Simulation() {
     }
 
-    public SimulationDto(Integer id, String name, ArrayList<ParticipantDto> participants) {
+    public Simulation(Integer id, String name, ArrayList<Participant> participants) {
         this.id = id;
         this.name = name;
         this.participants = participants;
@@ -31,7 +29,7 @@ public class SimulationDto {
         return name;
     }
 
-    public ArrayList<ParticipantDto> getParticipants() {
+    public ArrayList<Participant> getParticipants() {
         return participants;
     }
 
@@ -43,7 +41,7 @@ public class SimulationDto {
         this.name = name;
     }
 
-    public void setParticipants(ArrayList<ParticipantDto> participants) {
+    public void setParticipants(ArrayList<Participant> participants) {
         this.participants = participants;
     }
 
@@ -51,10 +49,10 @@ public class SimulationDto {
     public boolean equals(Object o) {
         if (this == o) return true;
         if (o == null || getClass() != o.getClass()) return false;
-        SimulationDto simulationDto = (SimulationDto) o;
-        return Objects.equals(id, simulationDto.id) &&
-            Objects.equals(name, simulationDto.name) &&
-            Objects.equals(participants, simulationDto.participants);
+        Simulation simulation = (Simulation) o;
+        return Objects.equals(id, simulation.id) &&
+            Objects.equals(name, simulation.name) &&
+            Objects.equals(participants, simulation.participants);
     }
 
     @Override
@@ -64,7 +62,7 @@ public class SimulationDto {
 
     @Override
     public String toString() {
-        return "SimulationDto{" +
+        return "Simulation{" +
             "id=" + id +
             ", name='" + name + '\'' +
             ", participants=" + (participants == null ? null : Arrays.asList(participants)) +

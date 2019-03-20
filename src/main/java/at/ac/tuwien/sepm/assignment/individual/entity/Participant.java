@@ -1,24 +1,24 @@
-package at.ac.tuwien.sepm.assignment.individual.rest.dto;
+package at.ac.tuwien.sepm.assignment.individual.entity;
 
 import java.util.Objects;
 
-public class ParticipantDto {
+public class Participant {
     private Integer id;
     private Integer horseId;
     private Integer jockeyId;
     private Double luckFactor;
 
-    public ParticipantDto() {
+    public Participant() {
     }
 
-    public ParticipantDto(Integer id, Integer horseId, Integer jockeyId, Double luckFactor) {
+    public Participant(Integer id, Integer horseId, Integer jockeyId, Double luckFactor) {
         this.id = id;
         this.horseId = horseId;
         this.jockeyId = jockeyId;
         this.luckFactor = luckFactor;
     }
 
-    public ParticipantDto(Integer horseId, Integer jockeyId, Double luckFactor) {
+    public Participant(Integer horseId, Integer jockeyId, Double luckFactor) {
         this.id = null;
         this.horseId = horseId;
         this.jockeyId = jockeyId;
@@ -61,11 +61,11 @@ public class ParticipantDto {
     public boolean equals(Object o) {
         if (this == o) return true;
         if (o == null || getClass() != o.getClass()) return false;
-        ParticipantDto participantDto = (ParticipantDto) o;
-        return Objects.equals(id, participantDto.id) &&
-            Objects.equals(horseId, participantDto.horseId) &&
-            Objects.equals(jockeyId, participantDto.jockeyId) &&
-            Objects.equals(luckFactor, participantDto.luckFactor);
+        Participant participant = (Participant) o;
+        return Objects.equals(id, participant.id) &&
+            Objects.equals(horseId, participant.horseId) &&
+            Objects.equals(jockeyId, participant.jockeyId) &&
+            Objects.equals(luckFactor, participant.luckFactor);
     }
 
     @Override
@@ -76,7 +76,7 @@ public class ParticipantDto {
 
     @Override
     public String toString() {
-        return "ParticipantDto{" +
+        return "Participant{" +
             "id=" + id +
             "horseId=" + horseId +
             ", jockeyId=" + jockeyId +
