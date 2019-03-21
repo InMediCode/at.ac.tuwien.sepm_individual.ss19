@@ -4,10 +4,17 @@ import at.ac.tuwien.sepm.assignment.individual.service.ICalcService;
 import at.ac.tuwien.sepm.assignment.individual.service.exceptions.ServiceException;
 import at.ac.tuwien.sepm.assignment.individual.service.impl.CalcService;
 import org.junit.Test;
+import org.junit.runner.RunWith;
+import org.springframework.boot.test.context.SpringBootTest;
+import org.springframework.test.context.ActiveProfiles;
+import org.springframework.test.context.junit4.SpringRunner;
 
 import static org.junit.Assert.assertEquals;
 import static org.junit.Assert.assertNotEquals;
 
+/*@RunWith(SpringRunner.class)
+@SpringBootTest
+@ActiveProfiles(profiles = "test")*/
 public class CalcServiceTest {
     private final CalcService calcService = new CalcService();
     private final ICalcService iCalcService = new CalcService();

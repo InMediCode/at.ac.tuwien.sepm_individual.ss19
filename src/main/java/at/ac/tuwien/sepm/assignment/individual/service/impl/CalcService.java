@@ -46,6 +46,16 @@ public class CalcService implements ICalcService {
         return calcP(minSpeed, maxSpeed, luckFactor);
     }
 
+    @Override
+    public Double calcSkill(Double skill) throws ServiceException {
+        //skill != null && Double value
+        if (skill == null || Double.isInfinite(skill) || Double.isNaN(skill)) {
+            throw new ServiceException("skill not in given range");
+        }
+
+        return calcK(skill);
+    }
+
     public Double calcP(Double minSpeed, Double maxSpeed, Double luckFactor) {
         //p=(g−0.95)∗(pmax−pmin)/(1.05−0.95)+pmin
         Double p = (luckFactor - 0.95) * (maxSpeed - minSpeed) / (1.05 - 0.95) + minSpeed;
@@ -55,6 +65,7 @@ public class CalcService implements ICalcService {
     public Double calcK(Double skill) {
         //k‘=1+(0.15∗1/pi∗arctan(1/5∗k))
         Double k = 1.0 + (0.15 * 1.0 / Math.PI * Math.atan(1.0/5.0 * skill));
+
         return getRoundedResult(k);
     }
 

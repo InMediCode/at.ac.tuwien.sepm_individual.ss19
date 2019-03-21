@@ -21,4 +21,11 @@ public interface ICalcService {
      * @throws ServiceException will be thrown if something goes wrong during data processing.
      */
     Double calcHorseSpeed(Double minSpeed, Double maxSpeed, Double luckFactor) throws ServiceException;
+
+    /**
+     * @param skill of the jockey
+     * @return the calculated skill
+     * @throws ServiceException will be thrown if something goes wrong during data processing.
+     */
+    Double calcSkill(Double skill) throws ServiceException;
 }

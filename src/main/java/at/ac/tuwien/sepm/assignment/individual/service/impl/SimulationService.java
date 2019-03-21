@@ -89,7 +89,7 @@ public class SimulationService implements ISimulationService {
                 participantResult.setJockeyName(jockey.getName());
                 participantResult.setAvgSpeed(calcService.calcAvgSpeed(horse.getMinSpeed(), horse.getMaxSpeed(), jockey.getSkill(), participant.getLuckFactor()));
                 participantResult.setHorseSpeed(calcService.calcHorseSpeed(horse.getMinSpeed(), horse.getMaxSpeed(), participant.getLuckFactor()));
-                participantResult.setSkill(jockey.getSkill());
+                participantResult.setSkill(calcService.calcSkill(jockey.getSkill()));
                 participantResult.setLuckFactor(participant.getLuckFactor());
 
                 list.add(participantResult);
