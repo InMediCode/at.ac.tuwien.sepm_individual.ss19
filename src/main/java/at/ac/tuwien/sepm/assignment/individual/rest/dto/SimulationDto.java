@@ -9,7 +9,6 @@ import java.util.Arrays;
 import java.util.Objects;
 
 public class SimulationDto {
-    private Integer id;
     private String name;
     @JsonProperty("simulationParticipants")
     private ArrayList<ParticipantDto> participants;
@@ -17,14 +16,9 @@ public class SimulationDto {
     public SimulationDto() {
     }
 
-    public SimulationDto(Integer id, String name, ArrayList<ParticipantDto> participants) {
-        this.id = id;
+    public SimulationDto(String name, ArrayList<ParticipantDto> participants) {
         this.name = name;
         this.participants = participants;
-    }
-
-    public Integer getId() {
-        return id;
     }
 
     public String getName() {
@@ -33,10 +27,6 @@ public class SimulationDto {
 
     public ArrayList<ParticipantDto> getParticipants() {
         return participants;
-    }
-
-    public void setId(Integer id) {
-        this.id = id;
     }
 
     public void setName(String name) {
@@ -52,21 +42,19 @@ public class SimulationDto {
         if (this == o) return true;
         if (o == null || getClass() != o.getClass()) return false;
         SimulationDto simulationDto = (SimulationDto) o;
-        return Objects.equals(id, simulationDto.id) &&
-            Objects.equals(name, simulationDto.name) &&
+        return Objects.equals(name, simulationDto.name) &&
             Objects.equals(participants, simulationDto.participants);
     }
 
     @Override
     public int hashCode() {
-        return Objects.hash(id, name, participants);
+        return Objects.hash(name, participants);
     }
 
     @Override
     public String toString() {
         return "SimulationDto{" +
-            "id=" + id +
-            ", name='" + name + '\'' +
+            "name='" + name + '\'' +
             ", participants=" + (participants == null ? null : Arrays.asList(participants)) +
             '}';
     }

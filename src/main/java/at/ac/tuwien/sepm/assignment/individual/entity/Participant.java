@@ -3,7 +3,6 @@ package at.ac.tuwien.sepm.assignment.individual.entity;
 import java.util.Objects;
 
 public class Participant {
-    private Integer id;
     private Integer horseId;
     private Integer jockeyId;
     private Double luckFactor;
@@ -11,26 +10,10 @@ public class Participant {
     public Participant() {
     }
 
-    public Participant(Integer id, Integer horseId, Integer jockeyId, Double luckFactor) {
-        this.id = id;
-        this.horseId = horseId;
-        this.jockeyId = jockeyId;
-        this.luckFactor = luckFactor;
-    }
-
     public Participant(Integer horseId, Integer jockeyId, Double luckFactor) {
-        this.id = null;
         this.horseId = horseId;
         this.jockeyId = jockeyId;
         this.luckFactor = luckFactor;
-    }
-
-    public Integer getId() {
-        return id;
-    }
-
-    public void setId(Integer id) {
-        this.id = id;
     }
 
     public Integer getHorseId() {
@@ -62,8 +45,7 @@ public class Participant {
         if (this == o) return true;
         if (o == null || getClass() != o.getClass()) return false;
         Participant participant = (Participant) o;
-        return Objects.equals(id, participant.id) &&
-            Objects.equals(horseId, participant.horseId) &&
+        return Objects.equals(horseId, participant.horseId) &&
             Objects.equals(jockeyId, participant.jockeyId) &&
             Objects.equals(luckFactor, participant.luckFactor);
     }
@@ -71,13 +53,12 @@ public class Participant {
     @Override
     public int hashCode() {
 
-        return Objects.hash(id, horseId, jockeyId, luckFactor);
+        return Objects.hash(horseId, jockeyId, luckFactor);
     }
 
     @Override
     public String toString() {
         return "Participant{" +
-            "id=" + id +
             "horseId=" + horseId +
             ", jockeyId=" + jockeyId +
             ", luckFactor=" + luckFactor +

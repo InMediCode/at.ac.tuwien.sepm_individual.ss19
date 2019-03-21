@@ -6,11 +6,7 @@ import org.springframework.stereotype.Component;
 
 @Component
 public class ParticipantMapper {
-    public ParticipantDto entityToDto(Participant participant) {
-        return new ParticipantDto(participant.getId(), participant.getHorseId(), participant.getJockeyId(), participant.getLuckFactor());
-    }
-
     public Participant dtoToEntity(ParticipantDto participantDto) {
-        return new Participant(participantDto.getId(), participantDto.getHorseId(), participantDto.getJockeyId(), participantDto.getLuckFactor());
+        return new Participant(participantDto.getHorseId(), participantDto.getJockeyId(), participantDto.getLuckFactor());
     }
 }

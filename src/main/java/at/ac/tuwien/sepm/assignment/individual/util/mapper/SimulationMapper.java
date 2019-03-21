@@ -11,16 +11,11 @@ import java.util.ArrayList;
 
 @Component
 public class SimulationMapper {
-    private final ParticipantMapper participantMapper = new ParticipantMapper();
+    private final ParticipantMapper participantMapper;
 
-    public SimulationDto entityToDto(Simulation simulation) {
-        ArrayList<ParticipantDto> participantDtoList = new ArrayList<ParticipantDto>();
-
-        for (Participant participant: simulation.getParticipants()) {
-            participantDtoList.add(participantMapper.entityToDto(participant));
-        }
-
-        return new SimulationDto(simulation.getId(), simulation.getName(), participantDtoList);
+    @Autowired
+    public SimulationMapper(ParticipantMapper participantMapper) {
+        this.participantMapper = participantMapper;
     }
 
     public Simulation dtoToEntity(SimulationDto simulationDto) {
@@ -30,6 +25,6 @@ public class SimulationMapper {
             participantList.add(participantMapper.dtoToEntity(participantDto));
         }
 
-        return new Simulation(simulationDto.getId(), simulationDto.getName(), participantList);
+        return new Simulation(simulationDto.getName(), participantList);
     }
 }

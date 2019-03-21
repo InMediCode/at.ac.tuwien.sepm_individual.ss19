@@ -11,7 +11,7 @@ CREATE TABLE IF NOT EXISTS horse (
   max_speed           DOUBLE       NOT NULL,
   created             DATETIME     NOT NULL,
   updated             DATETIME     NOT NULL,
-  deleted             BOOL         NOT NULL,
+  deleted             BOOL         NOT NULL
 );
 
 -- create table jockey if not exists
@@ -22,25 +22,26 @@ CREATE TABLE IF NOT EXISTS jockey (
   skill               DOUBLE       NOT NULL,
   created             DATETIME     NOT NULL,
   updated             DATETIME     NOT NULL,
-  deleted             BOOL         NOT NULL,
+  deleted             BOOL         NOT NULL
 );
 
 --create table simulation if not exists
 CREATE TABLE IF NOT EXISTS simulation (
   -- use auto incrementing IDs as primary key
   id        BIGINT AUTO_INCREMENT PRIMARY KEY,
-  name      VARCHAR(255) NOT NULL
+  name      VARCHAR(255) NOT NULL,
+  created   DATETIME     NOT NULL
 );
 
 --create table participant if not exists
 CREATE  TABLE  IF NOT EXISTS participants (
   id              BIGINT AUTO_INCREMENT PRIMARY KEY,
-  simulationId    BIGINT        NOT NULL,
-  horseId         BIGINT        NOT NULL,
-  horseName       VARCHAR(255)  NOT NULL,
-  jockyId         BIGINT        NOT NULL,
-  jockeyName      VARCHAR(255)  NOT NULL,
-  skill           DOUBLE        NOT NULL,
-  avgSpeed        DOUBLE        NOT NULL,
+  simulation_id   BIGINT        NOT NULL,
   rank            INT           NOT NULL,
+  horse_name      VARCHAR(255)  NOT NULL,
+  jockey_name     VARCHAR(255)  NOT NULL,
+  avg_speed       DOUBLE        NOT NULL,
+  horse_speed     DOUBLE        NOT NULL,
+  skill           DOUBLE        NOT NULL,
+  luck_factor     DOUBLE        NOT NULL
 );

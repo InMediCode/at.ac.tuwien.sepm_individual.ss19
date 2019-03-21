@@ -28,6 +28,24 @@ public class CalcService implements ICalcService {
         return calcD(minSpeed, maxSpeed, skill, luckFactor);
     }
 
+    @Override
+    public Double calcHorseSpeed(Double minSpeed, Double maxSpeed, Double luckFactor) throws ServiceException {
+        //minSpeed >= 40
+        //maxSpeed <= 60
+        //luckFactor >= 0,95 && <= 1,05
+        if (minSpeed < 40.0 || minSpeed == null) {
+            throw new ServiceException("minSpeed not >= 40");
+        } else if (maxSpeed > 60.0 || maxSpeed == null) {
+            throw new ServiceException("maxSpeed not <= 60");
+        } else if (minSpeed > maxSpeed) {
+            throw new ServiceException("minSpeed greather than maxSpeed");
+        } else if (luckFactor == null || luckFactor < 0.95 || luckFactor > 1.05) {
+            throw new ServiceException("luckFactor not in range");
+        }
+
+        return calcP(minSpeed, maxSpeed, luckFactor);
+    }
+
     public Double calcP(Double minSpeed, Double maxSpeed, Double luckFactor) {
         //p=(g−0.95)∗(pmax−pmin)/(1.05−0.95)+pmin
         Double p = (luckFactor - 0.95) * (maxSpeed - minSpeed) / (1.05 - 0.95) + minSpeed;

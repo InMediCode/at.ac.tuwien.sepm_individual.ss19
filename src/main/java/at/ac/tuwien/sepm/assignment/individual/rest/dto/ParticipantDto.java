@@ -3,7 +3,6 @@ package at.ac.tuwien.sepm.assignment.individual.rest.dto;
 import java.util.Objects;
 
 public class ParticipantDto {
-    private Integer id;
     private Integer horseId;
     private Integer jockeyId;
     private Double luckFactor;
@@ -11,26 +10,10 @@ public class ParticipantDto {
     public ParticipantDto() {
     }
 
-    public ParticipantDto(Integer id, Integer horseId, Integer jockeyId, Double luckFactor) {
-        this.id = id;
-        this.horseId = horseId;
-        this.jockeyId = jockeyId;
-        this.luckFactor = luckFactor;
-    }
-
     public ParticipantDto(Integer horseId, Integer jockeyId, Double luckFactor) {
-        this.id = null;
         this.horseId = horseId;
         this.jockeyId = jockeyId;
         this.luckFactor = luckFactor;
-    }
-
-    public Integer getId() {
-        return id;
-    }
-
-    public void setId(Integer id) {
-        this.id = id;
     }
 
     public Integer getHorseId() {
@@ -62,8 +45,7 @@ public class ParticipantDto {
         if (this == o) return true;
         if (o == null || getClass() != o.getClass()) return false;
         ParticipantDto participantDto = (ParticipantDto) o;
-        return Objects.equals(id, participantDto.id) &&
-            Objects.equals(horseId, participantDto.horseId) &&
+        return Objects.equals(horseId, participantDto.horseId) &&
             Objects.equals(jockeyId, participantDto.jockeyId) &&
             Objects.equals(luckFactor, participantDto.luckFactor);
     }
@@ -71,13 +53,12 @@ public class ParticipantDto {
     @Override
     public int hashCode() {
 
-        return Objects.hash(id, horseId, jockeyId, luckFactor);
+        return Objects.hash(horseId, jockeyId, luckFactor);
     }
 
     @Override
     public String toString() {
         return "ParticipantDto{" +
-            "id=" + id +
             "horseId=" + horseId +
             ", jockeyId=" + jockeyId +
             ", luckFactor=" + luckFactor +
