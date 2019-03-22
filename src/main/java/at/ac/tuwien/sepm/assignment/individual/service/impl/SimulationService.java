@@ -8,6 +8,7 @@ import at.ac.tuwien.sepm.assignment.individual.persistence.IParticipantDao;
 import at.ac.tuwien.sepm.assignment.individual.persistence.ISimulationDao;
 import at.ac.tuwien.sepm.assignment.individual.persistence.exceptions.PersistenceException;
 import at.ac.tuwien.sepm.assignment.individual.service.ICalcService;
+import at.ac.tuwien.sepm.assignment.individual.service.IParticipantService;
 import at.ac.tuwien.sepm.assignment.individual.service.ISimulationService;
 import at.ac.tuwien.sepm.assignment.individual.service.exceptions.ServiceException;
 import org.slf4j.Logger;
@@ -24,20 +25,20 @@ import java.util.Comparator;
 @Service
 public class SimulationService implements ISimulationService {
 
-    private static final Logger LOGGER = LoggerFactory.getLogger(HorseService.class);
+    private static final Logger LOGGER = LoggerFactory.getLogger(SimulationService.class);
     private final IHorseDao horseDao;
     private final IJockeyDao jockeyDao;
     private final ISimulationDao simulationDao;
-    private final IParticipantDao participantDao;
     private final ICalcService calcService;
+    private final IParticipantService participantService;
 
     @Autowired
-    public SimulationService(IHorseDao horseDao, IJockeyDao jockeyDao, ISimulationDao simulationDao, IParticipantDao participantDao, ICalcService calcService) {
+    public SimulationService(IHorseDao horseDao, IJockeyDao jockeyDao, ISimulationDao simulationDao, ICalcService calcService, IParticipantService participantService) {
         this.horseDao = horseDao;
         this.jockeyDao = jockeyDao;
         this.simulationDao = simulationDao;
-        this.participantDao = participantDao;
         this.calcService = calcService;
+        this.participantService = participantService;
     }
 
     @Override
@@ -65,11 +66,8 @@ public class SimulationService implements ISimulationService {
     private ArrayList<ParticipantResult> insertParticipantResults(int simulationId, ArrayList<ParticipantResult> participantResults) throws ServiceException {
         for (int i = 0; i < participantResults.size(); i++) {
             ParticipantResult tmpParticipant = participantResults.get(i);
-            try {
-                tmpParticipant = participantDao.insertParticipant(simulationId, tmpParticipant);
-            } catch (PersistenceException e) {
-                throw new ServiceException(e.getMessage(), e);
-            }
+            tmpParticipant = participantService.insertParticipant(simulationId, tmpParticipant);
+
             participantResults.set(i, tmpParticipant);
         }
 
