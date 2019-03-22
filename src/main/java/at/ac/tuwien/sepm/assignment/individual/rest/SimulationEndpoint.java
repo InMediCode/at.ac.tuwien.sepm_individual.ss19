@@ -1,5 +1,6 @@
 package at.ac.tuwien.sepm.assignment.individual.rest;
 
+import at.ac.tuwien.sepm.assignment.individual.exceptions.NotFoundException;
 import at.ac.tuwien.sepm.assignment.individual.rest.dto.SimulationDto;
 import at.ac.tuwien.sepm.assignment.individual.rest.dto.SimulationResultDto;
 import at.ac.tuwien.sepm.assignment.individual.service.ISimulationService;
@@ -29,6 +30,18 @@ public class SimulationEndpoint {
         this.simulationService = simulationService;
         this.simulationMapper = simulationMapper;
         this.simulationResultMapper = simulationResultMapper;
+    }
+
+    @RequestMapping(value = "/{id}", method = RequestMethod.GET)
+    public SimulationResultDto getOneById(@PathVariable("id") Integer id) {
+        LOGGER.info("GET " + BASE_URL + "/" + id);
+        try {
+            return simulationResultMapper.entityToDto(simulationService.findOneById(id));
+        } catch (ServiceException e) {
+            throw new ResponseStatusException(HttpStatus.INTERNAL_SERVER_ERROR, "Error during read jockey with id " + id, e);
+        } catch (NotFoundException e) {
+            throw new ResponseStatusException(HttpStatus.NOT_FOUND, "Error during reading jockey: " + e.getMessage(), e);
+        }
     }
 
     @RequestMapping(value = "", method = RequestMethod.POST)

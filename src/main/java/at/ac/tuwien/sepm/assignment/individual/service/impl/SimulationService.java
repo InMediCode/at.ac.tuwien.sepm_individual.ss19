@@ -42,6 +42,21 @@ public class SimulationService implements ISimulationService {
     }
 
     @Override
+    public SimulationResult findOneById(Integer id) throws ServiceException, NotFoundException {
+        LOGGER.info("Get simulation with id " + id);
+        try {
+            SimulationResult simulationResult = simulationDao.findOneById(id);
+
+            ArrayList<ParticipantResult> participantResults = participantService.getParticipantResultsBySimulationId(id);
+            simulationResult.setHorseJockeyCombinations(participantResults);
+
+            return simulationResult;
+        } catch (PersistenceException e) {
+            throw new ServiceException(e.getMessage(), e);
+        }
+    }
+
+    @Override
     public SimulationResult insertSimulation(Simulation simulation) throws ServiceException {
         //LOGGER.info("Insert Simulation: " + simulation);
 

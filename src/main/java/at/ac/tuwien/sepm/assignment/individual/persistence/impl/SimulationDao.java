@@ -2,6 +2,7 @@ package at.ac.tuwien.sepm.assignment.individual.persistence.impl;
 
 import at.ac.tuwien.sepm.assignment.individual.entity.Simulation;
 import at.ac.tuwien.sepm.assignment.individual.entity.SimulationResult;
+import at.ac.tuwien.sepm.assignment.individual.exceptions.NotFoundException;
 import at.ac.tuwien.sepm.assignment.individual.persistence.ISimulationDao;
 import at.ac.tuwien.sepm.assignment.individual.persistence.exceptions.PersistenceException;
 import at.ac.tuwien.sepm.assignment.individual.persistence.util.DBConnectionManager;
@@ -13,6 +14,7 @@ import org.springframework.stereotype.Repository;
 import java.sql.*;
 import java.time.LocalDateTime;
 import java.time.ZoneOffset;
+import java.util.ArrayList;
 
 @Repository
 public class SimulationDao implements ISimulationDao {
@@ -23,6 +25,37 @@ public class SimulationDao implements ISimulationDao {
     @Autowired
     public SimulationDao(DBConnectionManager dbConnectionManager) {
         this.dbConnectionManager = dbConnectionManager;
+    }
+
+    private static  SimulationResult dbResultToSimulationResultDto(ResultSet result) throws SQLException {
+        return new SimulationResult(
+            result.getInt("id"),
+            result.getString("name"),
+            result.getTimestamp("created").toLocalDateTime(),
+            new ArrayList<>());
+    }
+
+    @Override
+    public SimulationResult findOneById(Integer id) throws PersistenceException, NotFoundException {
+        LOGGER.info("Get simulation with id " + id);
+        String sql = "SELECT * FROM Simulation WHERE id=?";
+        SimulationResult simulationResult = null;
+        try {
+            PreparedStatement statement = dbConnectionManager.getConnection().prepareStatement(sql);
+            statement.setInt(1, id);
+            ResultSet result = statement.executeQuery();
+            while (result.next()) {
+                simulationResult = dbResultToSimulationResultDto(result);
+            }
+        } catch (SQLException e) {
+            LOGGER.error("Problem while executing SQL select statement for reading simulation with id " + id, e);
+            throw new PersistenceException("Could not read simulation with id " + id, e);
+        }
+        if (simulationResult != null) {
+            return simulationResult;
+        } else {
+            throw new NotFoundException("Could not find simulation with id " + id);
+        }
     }
 
     @Override

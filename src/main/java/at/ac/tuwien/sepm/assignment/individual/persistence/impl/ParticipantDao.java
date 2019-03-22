@@ -13,6 +13,7 @@ import java.sql.PreparedStatement;
 import java.sql.ResultSet;
 import java.sql.SQLException;
 import java.sql.Statement;
+import java.util.ArrayList;
 
 @Repository
 public class ParticipantDao implements IParticipantDao {
@@ -23,6 +24,42 @@ public class ParticipantDao implements IParticipantDao {
     @Autowired
     public ParticipantDao(DBConnectionManager dbConnectionManager) {
         this.dbConnectionManager = dbConnectionManager;
+    }
+
+    private static  ParticipantResult dbResultToParticipantResultDto(ResultSet result) throws SQLException {
+        return new ParticipantResult(
+            result.getInt("id"),
+            result.getInt("rank"),
+            result.getString("horse_name"),
+            result.getString("jockey_name"),
+            result.getDouble("avg_speed"),
+            result.getDouble("horse_speed"),
+            result.getDouble("skill"),
+            result.getDouble("luck_factor"));
+    }
+
+    @Override
+    public ArrayList<ParticipantResult> getParticipantResultsBySimulationId(int simulationId) throws PersistenceException {
+        LOGGER.info("Get all participantResults for simulatioId " + simulationId);
+
+        String sql = "SELECT * FROM Participants WHERE simulation_id=? ORDER BY rank ASC";
+
+        ArrayList<ParticipantResult> participantResults = new ArrayList<>();
+
+        try {
+            PreparedStatement statement = dbConnectionManager.getConnection().prepareStatement(sql);
+            statement.setInt(1, simulationId);
+            ResultSet result = statement.executeQuery();
+
+            while (result.next()) {
+                participantResults.add(dbResultToParticipantResultDto(result));
+            }
+        } catch (SQLException e) {
+            LOGGER.error("Problem while executing SQL select statement for reading participantResults ", e);
+            throw new PersistenceException("Could not read participantResults", e);
+        }
+
+        return participantResults;
     }
 
     @Override
