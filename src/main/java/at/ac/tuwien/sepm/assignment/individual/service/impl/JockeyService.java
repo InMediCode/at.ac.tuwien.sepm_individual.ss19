@@ -56,6 +56,9 @@ public class JockeyService implements IJockeyService {
     public Jockey insertJockey(Jockey jockey) throws  ServiceException {
         LOGGER.info("Insert jockey: " + jockey);
         try {
+            //validate jockey variables
+            checkJockey(jockey);
+
             return jockeyDao.insertJockey(jockey);
         } catch (PersistenceException e) {
             throw new ServiceException(e.getMessage(), e);
@@ -96,6 +99,10 @@ public class JockeyService implements IJockeyService {
         } catch (PersistenceException e) {
             throw new ServiceException(e.getMessage(), e);
         }
+    }
+
+    private Boolean checkJockey(Jockey jockey) throws ServiceException {
+        return checkName(jockey.getName()) && checkSkill(jockey.getSkill());
     }
 
     private Boolean checkName(String name) throws ServiceException {

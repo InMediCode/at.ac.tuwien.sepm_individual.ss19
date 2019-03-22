@@ -58,7 +58,9 @@ public class HorseService implements IHorseService {
     public Horse insertHorse(Horse horse) throws  ServiceException {
         LOGGER.info("Insert horse: " + horse);
         try {
+            //validate horse variables
             checkHorse(horse);
+            
             return horseDao.insertHorse(horse);
         } catch (PersistenceException e) {
             throw new ServiceException(e.getMessage(), e);
