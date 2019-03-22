@@ -39,6 +39,15 @@ public interface IJockeyService {
     Jockey insertJockey(Jockey jockey) throws  ServiceException;
 
     /**
+     * @param id of the jockey to update
+     * @param jockey to update in table
+     * @return the updated jockey
+     * @throws ServiceException will be thrown if something goes wrong during data processing.
+     * @throws NotFoundException will be thrown if the jockey could not be found in the system.
+     */
+    Jockey updateJockey(int id, Jockey jockey) throws  ServiceException, NotFoundException;
+
+    /**
      * @param id of the jockey to delete.
      * @throws ServiceException  will be thrown if something goes wrong during data processing.
      * @throws NotFoundException will be thrown if the jockey could not be found in the system.

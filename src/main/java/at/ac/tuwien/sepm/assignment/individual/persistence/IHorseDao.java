@@ -65,7 +65,7 @@ public interface IHorseDao {
      * @throws PersistenceException will be thrown if something goes wrong during the database access.
      * @throws NotFoundException    will be thrown if the horse could not be found in the database.
      */
-    LocalDateTime updateHorseminSpeed(int id, Double minSpeed) throws PersistenceException, NotFoundException;
+    LocalDateTime updateHorseMinSpeed(int id, Double minSpeed) throws PersistenceException, NotFoundException;
 
     /**
      * @param id of the horse to update
@@ -74,7 +74,7 @@ public interface IHorseDao {
      * @throws PersistenceException will be thrown if something goes wrong during the database access.
      * @throws NotFoundException    will be thrown if the horse could not be found in the database.
      */
-    LocalDateTime updateHorsemaxSpeed(int id, Double maxSpeed) throws PersistenceException, NotFoundException;
+    LocalDateTime updateHorseMaxSpeed(int id, Double maxSpeed) throws PersistenceException, NotFoundException;
 
     /**
      * @param id of the horse to delete.

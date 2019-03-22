@@ -4,6 +4,7 @@ import at.ac.tuwien.sepm.assignment.individual.entity.Jockey;
 import at.ac.tuwien.sepm.assignment.individual.exceptions.NotFoundException;
 import at.ac.tuwien.sepm.assignment.individual.persistence.exceptions.PersistenceException;
 
+import java.time.LocalDateTime;
 import java.util.ArrayList;
 
 public interface IJockeyDao {
@@ -38,10 +39,27 @@ public interface IJockeyDao {
     Jockey insertJockey(Jockey jockey) throws PersistenceException;
 
     /**
+     * @param id of the jockey to update
+     * @param name to update in table
+     * @return the updated DateTime
+     * @throws PersistenceException will be thrown if something goes wrong during the database access.
+     * @throws NotFoundException    will be thrown if the jockey could not be found in the database.
+     */
+    LocalDateTime updateJockeyName(int id, String name) throws PersistenceException, NotFoundException;
+
+    /**
+     * @param id of the jockey to update
+     * @param skill to update in table
+     * @return the updated DateTime
+     * @throws PersistenceException will be thrown if something goes wrong during the database access.
+     * @throws NotFoundException    will be thrown if the jockey could not be found in the database.
+     */
+    LocalDateTime updateJockeySkill(int id, Double skill) throws PersistenceException, NotFoundException;
+
+    /**
      * @param id of the jockey to delete.
      * @throws PersistenceException will be thrown if something goes wrong during the database access.
      * @throws NotFoundException    will be thrown if the jockey could not be found in the database.
      */
     void deleteOneById(Integer id) throws PersistenceException, NotFoundException;
-
 }

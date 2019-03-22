@@ -8,7 +8,6 @@ import at.ac.tuwien.sepm.assignment.individual.persistence.util.DBConnectionMana
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.http.ResponseEntity;
 import org.springframework.stereotype.Repository;
 
 import java.sql.*;
@@ -123,6 +122,58 @@ public class JockeyDao implements IJockeyDao {
         }
 
         return jockey;
+    }
+
+    @Override
+    public LocalDateTime updateJockeyName(int id, String name) throws PersistenceException, NotFoundException {
+        LOGGER.info("Update jockey " + id + " with name " + name);
+
+        String sql = "UPDATE Jockey SET name=?, updated=? WHERE id=? AND deleted IS NOT TRUE";
+        int count = 0;
+        try {
+            LocalDateTime updated = LocalDateTime.now();
+
+            PreparedStatement statement = dbConnectionManager.getConnection().prepareStatement(sql);
+            statement.setString(1, name);
+            statement.setTimestamp(2, new Timestamp(updated.toInstant(ZoneOffset.ofTotalSeconds(0)).toEpochMilli()));
+            statement.setInt(3, id);
+            count = statement.executeUpdate();
+
+            if (count == 0) {
+                throw new NotFoundException("Could not update jockey " + id + " with name " + name);
+            } else {
+                return updated;
+            }
+        } catch (SQLException e) {
+            LOGGER.error("Problem while executing SQL select statement for updating jockey name", e);
+            throw new PersistenceException("Could not update jockey name", e);
+        }
+    }
+
+    @Override
+    public LocalDateTime updateJockeySkill(int id, Double skill) throws PersistenceException, NotFoundException {
+        LOGGER.info("Update jockey " + id + " with skill " + skill);
+
+        String sql = "UPDATE Jockey SET skill=?, updated=? WHERE id=? AND deleted IS NOT TRUE";
+        int count = 0;
+        try {
+            LocalDateTime updated = LocalDateTime.now();
+
+            PreparedStatement statement = dbConnectionManager.getConnection().prepareStatement(sql);
+            statement.setDouble(1, skill);
+            statement.setTimestamp(2, new Timestamp(updated.toInstant(ZoneOffset.ofTotalSeconds(0)).toEpochMilli()));
+            statement.setInt(3, id);
+            count = statement.executeUpdate();
+
+            if (count == 0) {
+                throw new NotFoundException("Could not update jockey " + id + " with skill " + skill);
+            } else {
+                return updated;
+            }
+        } catch (SQLException e) {
+            LOGGER.error("Problem while executing SQL select statement for updating jockey skill", e);
+            throw new PersistenceException("Could not update jockey skill", e);
+        }
     }
 
     @Override

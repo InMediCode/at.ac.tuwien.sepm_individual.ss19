@@ -98,4 +98,15 @@ public class JockeyEndpoint {
             throw new ResponseStatusException(HttpStatus.INTERNAL_SERVER_ERROR, "Error during inserting new jockey: " + jockeyDto, e);
         }
     }
+
+    @RequestMapping(value = "/{id}", method = RequestMethod.PUT)
+    public @ResponseBody JockeyDto updateJockey(@PathVariable("id") Integer id, @RequestBody JockeyDto jockeyDto) {
+        try {
+            return jockeyMapper.entityToDto(jockeyService.updateJockey(id, jockeyMapper.dtoToEntity(jockeyDto)));
+        } catch (ServiceException e) {
+            throw new ResponseStatusException(HttpStatus.INTERNAL_SERVER_ERROR, "Error during inserting new jockey: " + jockeyDto, e);
+        } catch (NotFoundException e) {
+            throw new ResponseStatusException(HttpStatus.NOT_FOUND, "Error during updating jockey: " + e.getMessage(), e);
+        }
+    }
 }

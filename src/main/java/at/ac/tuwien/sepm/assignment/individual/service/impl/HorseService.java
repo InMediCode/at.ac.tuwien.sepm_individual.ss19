@@ -111,11 +111,11 @@ public class HorseService implements IHorseService {
                 oldHorse.setBreed(horse.getBreed());
             }
             if (updateMinSpeed) {
-                oldHorse.setUpdated(horseDao.updateHorseminSpeed(id, horse.getMinSpeed()));
+                oldHorse.setUpdated(horseDao.updateHorseMinSpeed(id, horse.getMinSpeed()));
                 oldHorse.setMinSpeed(horse.getMinSpeed());
             }
             if (updateMaxSpeed) {
-                oldHorse.setUpdated(horseDao.updateHorsemaxSpeed(id, horse.getMaxSpeed()));
+                oldHorse.setUpdated(horseDao.updateHorseMaxSpeed(id, horse.getMaxSpeed()));
                 oldHorse.setMaxSpeed(horse.getMaxSpeed());
             }
 

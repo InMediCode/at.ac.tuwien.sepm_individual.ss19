@@ -191,7 +191,7 @@ public class HorseDao implements IHorseDao {
     }
 
     @Override
-    public LocalDateTime updateHorseminSpeed(int id, Double minSpeed) throws PersistenceException, NotFoundException {
+    public LocalDateTime updateHorseMinSpeed(int id, Double minSpeed) throws PersistenceException, NotFoundException {
         LOGGER.info("Update horse " + id + " with minSpeed " + minSpeed);
 
         String sql = "UPDATE Horse SET min_speed=?, updated=? WHERE id=? AND deleted IS NOT TRUE";
@@ -217,7 +217,7 @@ public class HorseDao implements IHorseDao {
     }
 
     @Override
-    public LocalDateTime updateHorsemaxSpeed(int id, Double maxSpeed) throws PersistenceException, NotFoundException {
+    public LocalDateTime updateHorseMaxSpeed(int id, Double maxSpeed) throws PersistenceException, NotFoundException {
         LOGGER.info("Update horse " + id + " with maxSpeed " + maxSpeed);
 
         String sql = "UPDATE Horse SET max_speed=?, updated=? WHERE id=? AND deleted IS NOT TRUE";

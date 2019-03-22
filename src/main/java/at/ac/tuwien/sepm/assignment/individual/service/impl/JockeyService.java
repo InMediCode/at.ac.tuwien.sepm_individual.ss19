@@ -63,12 +63,54 @@ public class JockeyService implements IJockeyService {
     }
 
     @Override
+    public Jockey updateJockey(int id, Jockey jockey) throws  ServiceException, NotFoundException {
+        LOGGER.info("Update jockey " + jockey + "with id " + id);
+
+        try {
+            Jockey oldJockey = findOneById(id);
+
+            Boolean updateName = checkName(jockey.getName());
+            Boolean updateSkill = checkSkill(jockey.getSkill());
+
+            //update here to be sure no exceptions thrown and that not only a part is updated in DB
+            if (updateName) {
+                oldJockey.setUpdated(jockeyDao.updateJockeyName(id, jockey.getName()));
+                oldJockey.setName(jockey.getName());
+            }
+            if (updateSkill) {
+                oldJockey.setUpdated(jockeyDao.updateJockeySkill(id, jockey.getSkill()));
+                oldJockey.setSkill(jockey.getSkill());
+            }
+
+            return oldJockey;
+        } catch (PersistenceException e) {
+            throw new ServiceException(e.getMessage(), e);
+        }
+    }
+
+    @Override
     public void deleteOneById(Integer id) throws  ServiceException, NotFoundException {
         LOGGER.info("Delete jockey with id " + id);
         try {
             jockeyDao.deleteOneById(id);
         } catch (PersistenceException e) {
             throw new ServiceException(e.getMessage(), e);
+        }
+    }
+
+    private Boolean checkName(String name) throws ServiceException {
+        if (name != null && name != "") {
+            return true;
+        } else {
+            throw new ServiceException("name must be set");
+        }
+    }
+
+    private Boolean checkSkill(Double skill) throws ServiceException {
+        if (skill != null && !Double.isInfinite(skill) && !Double.isNaN(skill)) {
+            return true;
+        } else {
+            throw  new ServiceException("skill not in range");
         }
     }
 }
