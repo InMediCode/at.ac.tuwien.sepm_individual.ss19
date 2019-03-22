@@ -27,4 +27,12 @@ public class SimulationResultMapper {
 
         return new SimulationResultDto(simulationResult.getId(), simulationResult.getName(), simulationResult.getCreated(), participantResultDtoList);
     }
+
+    public SimulationResultDto[] entityListToDtoArray(ArrayList<SimulationResult> list) {
+        SimulationResultDto[] array = new SimulationResultDto[list.size()];
+        for (int i = 0; i < list.size(); i++) {
+            array[i] = this.entityToDto(list.get(i));
+        }
+        return array;
+    }
 }

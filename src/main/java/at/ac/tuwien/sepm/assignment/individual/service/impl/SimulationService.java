@@ -46,11 +46,29 @@ public class SimulationService implements ISimulationService {
         LOGGER.info("Get simulation with id " + id);
         try {
             SimulationResult simulationResult = simulationDao.findOneById(id);
+            return addParticipantsToSimulation(simulationResult);
+        } catch (PersistenceException e) {
+            throw new ServiceException(e.getMessage(), e);
+        }
+    }
 
-            ArrayList<ParticipantResult> participantResults = participantService.getParticipantResultsBySimulationId(id);
-            simulationResult.setHorseJockeyCombinations(participantResults);
+    @Override
+    public ArrayList<SimulationResult> getAll() throws ServiceException {
+        LOGGER.info("Get all simulations");
+        try {
+            ArrayList<SimulationResult> simulationResults = simulationDao.getAll();
+            return addParticipantsToSimulationList(simulationResults);
+        } catch (PersistenceException e) {
+            throw new ServiceException(e.getMessage(), e);
+        }
+    }
 
-            return simulationResult;
+    @Override
+    public ArrayList<SimulationResult> getAllFilteredBy(String name) throws ServiceException {
+        LOGGER.info("Get all simulations filtered by name " + name);
+        try {
+            ArrayList<SimulationResult> simulationResults = simulationDao.getAllFilteredBy(name);
+            return addParticipantsToSimulationList(simulationResults);
         } catch (PersistenceException e) {
             throw new ServiceException(e.getMessage(), e);
         }
@@ -127,5 +145,24 @@ public class SimulationService implements ISimulationService {
         }
 
         return rankedList;
+    }
+
+    private ArrayList<SimulationResult> addParticipantsToSimulationList(ArrayList<SimulationResult> list) throws ServiceException {
+        for (int i = 0; i < list.size(); i++){
+            SimulationResult tmpResult = list.get(i);
+            tmpResult = addParticipantsToSimulation(tmpResult);
+            list.set(i, tmpResult);
+        }
+
+        return list;
+    }
+
+    private SimulationResult addParticipantsToSimulation(SimulationResult simulationResult) throws ServiceException {
+        int id = simulationResult.getId();
+
+        ArrayList<ParticipantResult> participantResults = participantService.getParticipantResultsBySimulationId(id);
+        simulationResult.setHorseJockeyCombinations(participantResults);
+
+        return simulationResult;
     }
 }

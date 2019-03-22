@@ -5,6 +5,8 @@ import at.ac.tuwien.sepm.assignment.individual.entity.SimulationResult;
 import at.ac.tuwien.sepm.assignment.individual.exceptions.NotFoundException;
 import at.ac.tuwien.sepm.assignment.individual.service.exceptions.ServiceException;
 
+import java.util.ArrayList;
+
 public interface ISimulationService {
     /**
      * @param id of the simulation to find.
@@ -13,6 +15,19 @@ public interface ISimulationService {
      * @throws NotFoundException will be thrown if the simulation could not be found in the system.
      */
     SimulationResult findOneById(Integer id) throws ServiceException, NotFoundException;
+
+    /**
+     * @return all simulations as arrayList
+     * @throws ServiceException  will be thrown if something goes wrong during data processing.
+     */
+    ArrayList<SimulationResult> getAll() throws ServiceException;
+
+    /**
+     * @param name the simulation contains.
+     * @return all horses as arraylist that contains the name
+     * @throws ServiceException  will be thrown if something goes wrong during data processing.
+     */
+    ArrayList<SimulationResult> getAllFilteredBy(String name) throws ServiceException;
 
     /**
      *

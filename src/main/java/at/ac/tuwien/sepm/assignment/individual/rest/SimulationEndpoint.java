@@ -5,6 +5,7 @@ import at.ac.tuwien.sepm.assignment.individual.rest.dto.SimulationDto;
 import at.ac.tuwien.sepm.assignment.individual.rest.dto.SimulationResultDto;
 import at.ac.tuwien.sepm.assignment.individual.service.ISimulationService;
 import at.ac.tuwien.sepm.assignment.individual.service.exceptions.ServiceException;
+import at.ac.tuwien.sepm.assignment.individual.service.impl.SimulationService;
 import at.ac.tuwien.sepm.assignment.individual.util.mapper.SimulationMapper;
 import at.ac.tuwien.sepm.assignment.individual.util.mapper.SimulationResultMapper;
 import org.slf4j.Logger;
@@ -14,6 +15,9 @@ import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 import org.springframework.web.server.ResponseStatusException;
+
+import java.util.ArrayList;
+import java.util.Map;
 
 @RestController
 @RequestMapping("/api/v1/simulations")
@@ -41,6 +45,30 @@ public class SimulationEndpoint {
             throw new ResponseStatusException(HttpStatus.INTERNAL_SERVER_ERROR, "Error during read jockey with id " + id, e);
         } catch (NotFoundException e) {
             throw new ResponseStatusException(HttpStatus.NOT_FOUND, "Error during reading jockey: " + e.getMessage(), e);
+        }
+    }
+
+    private SimulationResultDto[] getAll() {
+        LOGGER.info("GET " + BASE_URL);
+        try {
+            return simulationResultMapper.entityListToDtoArray(simulationService.getAll());
+        } catch (ServiceException e) {
+            throw new ResponseStatusException(HttpStatus.INTERNAL_SERVER_ERROR, "Error during reading simulations", e);
+        }
+    }
+
+    @RequestMapping(value = "", method = RequestMethod.GET)
+    public SimulationResultDto[] getAllFilteredOrNot(@RequestParam Map<String, String> requestParams) {
+        String name = requestParams.get("name");
+
+        if (name == null) {
+            return this.getAll();
+        } else {
+            try {
+                return simulationResultMapper.entityListToDtoArray(simulationService.getAllFilteredBy(name));
+            } catch (ServiceException e) {
+                throw new ResponseStatusException(HttpStatus.INTERNAL_SERVER_ERROR, "Error during reading simulations with name " + name, e);
+            }
         }
     }
 

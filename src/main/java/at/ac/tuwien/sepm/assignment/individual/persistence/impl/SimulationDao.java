@@ -59,6 +59,43 @@ public class SimulationDao implements ISimulationDao {
     }
 
     @Override
+    public ArrayList<SimulationResult> getAll() throws PersistenceException {
+        LOGGER.info("Get all simulations");
+        String sql = "SELECT * FROM Simulation";
+        ArrayList<SimulationResult> simulationResults = new ArrayList<>();
+        try {
+            PreparedStatement statement = dbConnectionManager.getConnection().prepareStatement(sql);
+            ResultSet result = statement.executeQuery();
+            while (result.next()) {
+                simulationResults.add(dbResultToSimulationResultDto(result));
+            }
+        } catch (SQLException e) {
+            LOGGER.error("Problem while executing SQL select statement for reading all simulations", e);
+            throw new PersistenceException("Could not read all simulations ", e);
+        }
+        return simulationResults;
+    }
+
+    @Override
+    public ArrayList<SimulationResult> getAllFilteredBy(String name) throws PersistenceException {
+        LOGGER.info("Get all simulations filtered by name " + name);
+        String sql = "SELECT * FROM Simulation WHERE name LIKE ?";
+        ArrayList<SimulationResult> simulationResults = new ArrayList<>();
+        try {
+            PreparedStatement statement = dbConnectionManager.getConnection().prepareStatement(sql);
+            statement.setString(1, "%"+name+"%");
+            ResultSet result = statement.executeQuery();
+            while (result.next()) {
+                simulationResults.add(dbResultToSimulationResultDto(result));
+            }
+        } catch (SQLException e) {
+            LOGGER.error("Problem while executing SQL select statement for reading all simulations filtered by name " + name, e);
+            throw new PersistenceException("Could not read all simulations filtered by name " + name, e);
+        }
+        return simulationResults;
+    }
+
+    @Override
     public SimulationResult insertSimulation(SimulationResult simulationResult) throws PersistenceException {
         LOGGER.info("Insert Simulation: " + simulationResult);
 
