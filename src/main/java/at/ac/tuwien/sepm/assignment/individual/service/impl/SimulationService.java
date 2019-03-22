@@ -17,10 +17,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
 import javax.servlet.http.Part;
-import java.util.ArrayList;
-import java.util.Collection;
-import java.util.Collections;
-import java.util.Comparator;
+import java.util.*;
 
 @Service
 public class SimulationService implements ISimulationService {
@@ -76,7 +73,10 @@ public class SimulationService implements ISimulationService {
 
     @Override
     public SimulationResult insertSimulation(Simulation simulation) throws ServiceException {
-        //LOGGER.info("Insert Simulation: " + simulation);
+        LOGGER.info("Insert Simulation: " + simulation);
+
+        //validate simulation values incl. participants
+        checkSimulation(simulation);
 
         SimulationResult simulationResult = new SimulationResult();
         simulationResult.setName(simulation.getName());
@@ -164,5 +164,54 @@ public class SimulationService implements ISimulationService {
         simulationResult.setHorseJockeyCombinations(participantResults);
 
         return simulationResult;
+    }
+
+    private Boolean checkSimulation(Simulation simulation) throws ServiceException {
+        return checkName(simulation.getName()) && checkHorseJockeyCombinations(simulation.getParticipants());
+    }
+
+    private Boolean checkName(String name) throws ServiceException {
+        if (name != null && name != "") {
+            return true;
+        } else {
+            throw new ServiceException("name must be set");
+        }
+    }
+
+    private Boolean checkHorseJockeyCombinations(ArrayList<Participant> participants) throws ServiceException {
+        if (participants != null) {
+            HashSet<Integer> horseControlSet = new HashSet<>();
+            HashSet<Integer> jockeyControlSet = new HashSet<>();
+
+            for (Participant participant: participants) {
+                horseControlSet.add(participant.getHorseId());
+                jockeyControlSet.add(participant.getJockeyId());
+
+                checkParticipant(participant);
+            }
+
+            //check for multiple entries
+            if (participants.size() == horseControlSet.size() && participants.size() == jockeyControlSet.size()) {
+                return true;
+            } else {
+                throw new ServiceException("horses and jockeys are not allowed to be used multiple times in one simulation");
+            }
+        } else {
+            throw new ServiceException("horseJockeyCombinations are not allowed to be null");
+        }
+    }
+
+    private Boolean checkParticipant(Participant participant) throws ServiceException {
+        if (participant.getHorseId() != null && participant.getJockeyId() != null && participant.getHorseId() !=null) {
+            return true;
+        } else if (participant.getHorseId() == null) {
+            throw new ServiceException("participant horseId must be set");
+        } else if (participant.getJockeyId() == null) {
+            throw new ServiceException("participant jockeyId must be set");
+        } else if (participant.getLuckFactor() == null) {
+            throw new ServiceException("participant luckFactor must be set");
+        } else {
+            return false;
+        }
     }
 }
