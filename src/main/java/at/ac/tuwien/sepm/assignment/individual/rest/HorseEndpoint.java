@@ -111,7 +111,7 @@ public class HorseEndpoint {
     @RequestMapping(value = "/{id}", method = RequestMethod.PUT)
     public @ResponseBody HorseDto updateHorse(@PathVariable("id") Integer id, @RequestBody HorseDto horseDto) {
         try {
-            return horseMapper.entityToDto(horseService.updateHorse(horseMapper.dtoToEntity(horseDto)));
+            return horseMapper.entityToDto(horseService.updateHorse(id, horseMapper.dtoToEntity(horseDto)));
         } catch (ServiceException e) {
             throw new ResponseStatusException(HttpStatus.INTERNAL_SERVER_ERROR, "Error during inserting new horse: " + horseDto, e);
         } catch (NotFoundException e) {

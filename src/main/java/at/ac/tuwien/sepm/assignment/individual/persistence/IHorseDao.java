@@ -4,6 +4,7 @@ import at.ac.tuwien.sepm.assignment.individual.entity.Horse;
 import at.ac.tuwien.sepm.assignment.individual.exceptions.NotFoundException;
 import at.ac.tuwien.sepm.assignment.individual.persistence.exceptions.PersistenceException;
 
+import java.time.LocalDateTime;
 import java.util.ArrayList;
 
 public interface IHorseDao {
@@ -40,12 +41,40 @@ public interface IHorseDao {
     Horse insertHorse(Horse horse) throws PersistenceException;
 
     /**
-     * @param horse to update in table
-     * @return the updated horse
+     * @param id of the horse to update
+     * @param name to update in table
+     * @return the updated DateTime
      * @throws PersistenceException will be thrown if something goes wrong during the database access.
      * @throws NotFoundException    will be thrown if the horse could not be found in the database.
      */
-    Horse updateHorse(Horse horse) throws PersistenceException, NotFoundException;
+    LocalDateTime updateHorseName(int id, String name) throws PersistenceException, NotFoundException;
+
+    /**
+     * @param id of the horse to update
+     * @param breed to update in table
+     * @return the updated DateTime
+     * @throws PersistenceException will be thrown if something goes wrong during the database access.
+     * @throws NotFoundException    will be thrown if the horse could not be found in the database.
+     */
+    LocalDateTime updateHorseBreed(int id, String breed) throws PersistenceException, NotFoundException;
+
+    /**
+     * @param id of the horse to update
+     * @param minSpeed to update in table
+     * @return the updated DateTime
+     * @throws PersistenceException will be thrown if something goes wrong during the database access.
+     * @throws NotFoundException    will be thrown if the horse could not be found in the database.
+     */
+    LocalDateTime updateHorseminSpeed(int id, Double minSpeed) throws PersistenceException, NotFoundException;
+
+    /**
+     * @param id of the horse to update
+     * @param maxSpeed to update in table
+     * @return the updated DateTime
+     * @throws PersistenceException will be thrown if something goes wrong during the database access.
+     * @throws NotFoundException    will be thrown if the horse could not be found in the database.
+     */
+    LocalDateTime updateHorsemaxSpeed(int id, Double maxSpeed) throws PersistenceException, NotFoundException;
 
     /**
      * @param id of the horse to delete.

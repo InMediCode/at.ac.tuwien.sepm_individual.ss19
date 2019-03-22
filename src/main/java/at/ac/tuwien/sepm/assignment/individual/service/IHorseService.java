@@ -41,13 +41,13 @@ public interface IHorseService {
     Horse insertHorse(Horse horse) throws  ServiceException;
 
     /**
-     *
+     * @param id of the horse to update
      * @param horse to update in table
      * @return the updated horse
      * @throws ServiceException will be thrown if something goes wrong during data processing.
      * @throws NotFoundException will be thrown if the horse could not be found in the system.
      */
-    Horse updateHorse(Horse horse) throws  ServiceException, NotFoundException;
+    Horse updateHorse(int id, Horse horse) throws  ServiceException, NotFoundException;
 
     /**
      * @param id of the horse to delete.
