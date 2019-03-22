@@ -43,5 +43,6 @@ CREATE  TABLE  IF NOT EXISTS participants (
   avg_speed       DOUBLE        NOT NULL,
   horse_speed     DOUBLE        NOT NULL,
   skill           DOUBLE        NOT NULL,
-  luck_factor     DOUBLE        NOT NULL
+  luck_factor     DOUBLE        NOT NULL,
+  FOREIGN KEY (simulation_id) REFERENCES simulation (id)
 );

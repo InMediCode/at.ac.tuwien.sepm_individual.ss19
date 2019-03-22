@@ -60,7 +60,7 @@ public class HorseService implements IHorseService {
         try {
             //validate horse variables
             checkHorse(horse);
-            
+
             return horseDao.insertHorse(horse);
         } catch (PersistenceException e) {
             throw new ServiceException(e.getMessage(), e);
