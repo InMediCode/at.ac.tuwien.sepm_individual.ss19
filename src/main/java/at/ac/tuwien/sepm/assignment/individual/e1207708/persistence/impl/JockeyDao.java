@@ -76,14 +76,14 @@ public class JockeyDao implements IJockeyDao {
     }
 
     @Override
-    public ArrayList<Jockey> getAllFilteredBy(String name, Double skill) throws PersistenceException {
-        LOGGER.info("Get all jockeys filtered by name ", name, skill);
+    public ArrayList<Jockey> getAllFilteredBy(Jockey jockey) throws PersistenceException {
+        LOGGER.info("Get all jockeys filtered by " + jockey);
         String sql = "SELECT * FROM Jockey WHERE name LIKE ? AND  skill>=? AND deleted IS NOT TRUE";
         ArrayList<Jockey> jockeys = new ArrayList<Jockey>();
         try {
             PreparedStatement statement = dbConnectionManager.getConnection().prepareStatement(sql);
-            statement.setString(1, "%"+name+"%");
-            statement.setDouble(2, skill);
+            statement.setString(1, "%"+jockey.getName()+"%");
+            statement.setDouble(2, jockey.getSkill());
             ResultSet result = statement.executeQuery();
             while (result.next()) {
                 jockeys.add(dbResultToJockeyDto(result));

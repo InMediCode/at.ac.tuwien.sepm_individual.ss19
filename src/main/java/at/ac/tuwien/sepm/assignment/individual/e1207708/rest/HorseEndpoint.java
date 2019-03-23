@@ -2,6 +2,7 @@ package at.ac.tuwien.sepm.assignment.individual.e1207708.rest;
 
 import at.ac.tuwien.sepm.assignment.individual.e1207708.rest.dto.HorseDto;
 import at.ac.tuwien.sepm.assignment.individual.e1207708.service.exceptions.BadRequestException;
+import at.ac.tuwien.sepm.assignment.individual.entity.Horse;
 import at.ac.tuwien.sepm.assignment.individual.exceptions.NotFoundException;
 import at.ac.tuwien.sepm.assignment.individual.e1207708.service.IHorseService;
 import at.ac.tuwien.sepm.assignment.individual.e1207708.service.exceptions.ServiceException;
@@ -65,11 +66,13 @@ public class HorseEndpoint {
             return this.getAll();
         } else {
             LOGGER.info("GET ALL filtered " + BASE_URL + " - by name: " + name + " breed: " + breed + " minSpeed: " + minSpeed + " maxSpeed: " + maxSpeed);
-
+            Horse filterHorse = new Horse(null, name, breed, minSpeed, maxSpeed, null, null, false);
             try {
-                return horseMapper.entityListToDtoArray(horseService.getAllFilteredBy(name, breed, minSpeed, maxSpeed));
+                return horseMapper.entityListToDtoArray(horseService.getAllFilteredBy(filterHorse));
             } catch (ServiceException e) {
                 throw new ResponseStatusException(HttpStatus.INTERNAL_SERVER_ERROR, "Error during read horse with name " + name, e);
+            } catch (BadRequestException e) {
+                throw new ResponseStatusException(HttpStatus.BAD_REQUEST, "Error during filtering horses with " + filterHorse + " - " + e.getMessage(), e);
             }
         }
     }

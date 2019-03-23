@@ -2,6 +2,7 @@ package at.ac.tuwien.sepm.assignment.individual.e1207708.rest;
 
 import at.ac.tuwien.sepm.assignment.individual.e1207708.rest.dto.JockeyDto;
 import at.ac.tuwien.sepm.assignment.individual.e1207708.service.exceptions.BadRequestException;
+import at.ac.tuwien.sepm.assignment.individual.entity.Jockey;
 import at.ac.tuwien.sepm.assignment.individual.exceptions.NotFoundException;
 import at.ac.tuwien.sepm.assignment.individual.e1207708.service.IJockeyService;
 import at.ac.tuwien.sepm.assignment.individual.e1207708.service.exceptions.ServiceException;
@@ -62,11 +63,13 @@ public class JockeyEndpoint {
             return this.getAll();
         } else {
             LOGGER.info("GET ALL filtered " + BASE_URL + " - by name: " + name + " skill: " + skill);
-
+            Jockey filterJockey = new Jockey(null, name, skill, null, null, false);
             try {
-                return jockeyMapper.entityListToDtoArray(jockeyService.getAllFilteredBy(name, skill));
+                return jockeyMapper.entityListToDtoArray(jockeyService.getAllFilteredBy(filterJockey));
             } catch (ServiceException e) {
                 throw new ResponseStatusException(HttpStatus.INTERNAL_SERVER_ERROR, "Error during read jockey with name " + name, e);
+            } catch (BadRequestException e) {
+                throw new ResponseStatusException(HttpStatus.BAD_REQUEST, "Error during filtering jockeys with " + filterJockey + " - " + e.getMessage(), e);
             }
         }
     }
@@ -92,7 +95,7 @@ public class JockeyEndpoint {
         } catch (ServiceException e) {
             throw new ResponseStatusException(HttpStatus.INTERNAL_SERVER_ERROR, "Error during inserting new jockey: " + jockeyDto, e);
         } catch (BadRequestException e) {
-            throw  new ResponseStatusException(HttpStatus.BAD_REQUEST, "Error during inserting jockey: " + jockeyDto + " - " + e.getMessage(), e);
+            throw new ResponseStatusException(HttpStatus.BAD_REQUEST, "Error during inserting jockey: " + jockeyDto + " - " + e.getMessage(), e);
         }
     }
 
@@ -106,7 +109,7 @@ public class JockeyEndpoint {
         } catch (NotFoundException e) {
             throw new ResponseStatusException(HttpStatus.NOT_FOUND, "Error during updating jockey: " + e.getMessage(), e);
         } catch (BadRequestException e) {
-            throw  new ResponseStatusException(HttpStatus.BAD_REQUEST, "Error during updating jockey: " + jockeyDto + " - " + e.getMessage(), e);
+            throw new ResponseStatusException(HttpStatus.BAD_REQUEST, "Error during updating jockey: " + jockeyDto + " - " + e.getMessage(), e);
         }
     }
 }

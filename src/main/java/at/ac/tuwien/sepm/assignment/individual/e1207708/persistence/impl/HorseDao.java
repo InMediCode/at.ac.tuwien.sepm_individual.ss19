@@ -82,16 +82,16 @@ public class HorseDao implements IHorseDao {
     }
 
     @Override
-    public ArrayList<Horse> getAllFilteredBy(String name, String breed, Double minSpeed, Double maxSpeed) throws PersistenceException {
-        LOGGER.info("Get all horses filtered by name ", name, breed, minSpeed, maxSpeed);
+    public ArrayList<Horse> getAllFilteredBy(Horse horse) throws PersistenceException {
+        LOGGER.info("Get all horses filtered by " + horse);
         String sql = "SELECT * FROM Horse WHERE name LIKE ? AND breed LIKE ? AND min_speed>=? AND max_speed<=? AND deleted IS NOT TRUE";
         ArrayList<Horse> horses = new ArrayList<Horse>();
         try {
             PreparedStatement statement = dbConnectionManager.getConnection().prepareStatement(sql);
-            statement.setString(1, "%"+name+"%");
-            statement.setString(2, "%"+breed+"%");
-            statement.setDouble(3, minSpeed);
-            statement.setDouble(4, maxSpeed);
+            statement.setString(1, "%"+horse.getName()+"%");
+            statement.setString(2, "%"+horse.getBreed()+"%");
+            statement.setDouble(3, horse.getMinSpeed());
+            statement.setDouble(4, horse.getMaxSpeed());
             ResultSet result = statement.executeQuery();
             while (result.next()) {
                 horses.add(dbResultToHorseDto(result));

@@ -24,14 +24,10 @@ public interface IHorseDao {
     ArrayList<Horse> getAll() throws PersistenceException;
 
     /**
-     * @param name the horse contains.
-     * @param breed the horse contains.
-     * @param minSpeed greater or equal of the horse.
-     * @param maxSpeed smaller or equal of the horse.
-     * @return all horses as arraylist that are not marked as deleted
+     * @param horse with the name, breed, minSpeed and maxSpeed to filter
      * @throws PersistenceException will be thrown if something goes wrong during the database access.
      */
-    ArrayList<Horse> getAllFilteredBy(String name, String breed, Double minSpeed, Double maxSpeed) throws PersistenceException;
+    ArrayList<Horse> getAllFilteredBy(Horse horse) throws PersistenceException;
 
     /**
      * @param horse to insert into table

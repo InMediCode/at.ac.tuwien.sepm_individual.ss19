@@ -24,12 +24,12 @@ public interface IJockeyService {
     ArrayList<Jockey> getAll() throws ServiceException;
 
     /**
-     * @param name the jockey contains.
-     * @param skill the jockey contains.
+     * @param jockey with the name and skill to filter
      * @return all jockeys as arraylist that are not marked as deleted
      * @throws ServiceException  will be thrown if something goes wrong during data processing.
+     * @throws BadRequestException will be thrown if params not valid.
      */
-    ArrayList<Jockey> getAllFilteredBy(String name, Double skill) throws ServiceException;
+    ArrayList<Jockey> getAllFilteredBy(Jockey jockey) throws ServiceException, BadRequestException;
 
     /**
      *

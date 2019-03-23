@@ -44,13 +44,13 @@ public class JockeyService implements IJockeyService {
     }
 
     @Override
-    public ArrayList<Jockey> getAllFilteredBy(String name, Double skill) throws ServiceException {
-        LOGGER.info("Get all jockeys with name " + name);
+    public ArrayList<Jockey> getAllFilteredBy(Jockey jockey) throws ServiceException, BadRequestException {
+        LOGGER.info("Get all jockeys filtered by " + jockey);
         try {
             //validate jockey variables
-            //checkJockey(jockey);
+            checkJockey(jockey);
 
-            return jockeyDao.getAllFilteredBy(name, skill);
+            return jockeyDao.getAllFilteredBy(jockey);
         } catch (PersistenceException e) {
             throw new ServiceException(e.getMessage(), e);
         }

@@ -24,12 +24,11 @@ public interface IJockeyDao {
     ArrayList<Jockey> getAll() throws PersistenceException;
 
     /**
-     * @param name the jockey contains.
-     * @param skill the jockey contains.
+     * @param jockey with the name and skill to filter
      * @return all jockeys as arraylist that are not marked as deleted
      * @throws PersistenceException will be thrown if something goes wrong during the database access.
      */
-    ArrayList<Jockey> getAllFilteredBy(String name, Double skill) throws PersistenceException;
+    ArrayList<Jockey> getAllFilteredBy(Jockey jockey) throws PersistenceException;
 
     /**
      * @param jockey to insert into table
