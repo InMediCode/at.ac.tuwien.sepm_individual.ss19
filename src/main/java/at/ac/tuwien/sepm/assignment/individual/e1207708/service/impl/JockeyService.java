@@ -47,6 +47,9 @@ public class JockeyService implements IJockeyService {
     public ArrayList<Jockey> getAllFilteredBy(String name, Double skill) throws ServiceException {
         LOGGER.info("Get all jockeys with name " + name);
         try {
+            //validate jockey variables
+            //checkJockey(jockey);
+
             return jockeyDao.getAllFilteredBy(name, skill);
         } catch (PersistenceException e) {
             throw new ServiceException(e.getMessage(), e);
@@ -68,7 +71,7 @@ public class JockeyService implements IJockeyService {
 
     @Override
     public Jockey updateJockey(int id, Jockey jockey) throws  ServiceException, NotFoundException, BadRequestException {
-        LOGGER.info("Update jockey " + jockey + "with id " + id);
+        LOGGER.info("Update jockey " + id + " with " + jockey);
 
         try {
             Jockey oldJockey = findOneById(id);
@@ -103,6 +106,7 @@ public class JockeyService implements IJockeyService {
     }
 
     private Boolean checkJockey(Jockey jockey) throws BadRequestException {
+        LOGGER.info("Validate Jockey");
         return checkName(jockey.getName()) && checkSkill(jockey.getSkill());
     }
 
@@ -110,6 +114,7 @@ public class JockeyService implements IJockeyService {
         if (name != null && name != "") {
             return true;
         } else {
+            LOGGER.error("Problem while validating jockey - name must be set");
             throw new BadRequestException("name must be set");
         }
     }
@@ -118,6 +123,7 @@ public class JockeyService implements IJockeyService {
         if (skill != null && !Double.isInfinite(skill) && !Double.isNaN(skill)) {
             return true;
         } else {
+            LOGGER.error("Problem while validating jockey - skill not in range");
             throw  new BadRequestException("skill not in range");
         }
     }

@@ -47,8 +47,11 @@ public class HorseService implements IHorseService {
 
     @Override
     public ArrayList<Horse> getAllFilteredBy(String name, String breed, Double minSpeed, Double maxSpeed) throws ServiceException {
-        LOGGER.info("Get all horses with name " + name);
+        LOGGER.info("Get all horses filtered");
         try {
+            //validate horse variables
+            //checkHorse(horse);
+
             return horseDao.getAllFilteredBy(name, breed, minSpeed, maxSpeed);
         } catch (PersistenceException e) {
             throw new ServiceException(e.getMessage(), e);
@@ -70,7 +73,7 @@ public class HorseService implements IHorseService {
 
     @Override
     public Horse updateHorse(int id, Horse horse) throws  ServiceException, NotFoundException, BadRequestException {
-        LOGGER.info("Update horse " + horse + "with id " + id);
+        LOGGER.info("Update horse " + id + " with " + horse);
 
         try {
             Horse oldHorse = findOneById(id);
@@ -139,6 +142,7 @@ public class HorseService implements IHorseService {
     }
 
     private Boolean checkHorse(Horse horse) throws BadRequestException {
+        LOGGER.info("Validate Horse");
         return checkName(horse.getName()) && checkMinSpeedAndMaxSpeedValues(horse.getMinSpeed(), horse.getMaxSpeed());
     }
 
@@ -146,6 +150,7 @@ public class HorseService implements IHorseService {
         if (name != null && name != "") {
             return true;
         } else {
+            LOGGER.error("Problem while validating horse - name must be set");
             throw new BadRequestException("name must be set");
         }
     }
@@ -158,6 +163,7 @@ public class HorseService implements IHorseService {
         if (minSpeed != null && minSpeed >= 40.0) {
             return true;
         } else {
+            LOGGER.error("Problem while validating horse - " + minSpeed + " must be greather than or equal 40.0");
             throw new BadRequestException("minSpeed " + minSpeed + " must be greather than or equal 40.0");
         }
     }
@@ -166,7 +172,8 @@ public class HorseService implements IHorseService {
         if (maxSpeed != null && maxSpeed <= 60.0) {
             return true;
         } else {
-            throw new BadRequestException("maxSpeed " + maxSpeed + "must be smaller than or equal 60.0");
+            LOGGER.error("Problem while validating horse - " + maxSpeed + " must be smaller than or equal 60.0");
+            throw new BadRequestException("maxSpeed " + maxSpeed + " must be smaller than or equal 60.0");
         }
     }
 
@@ -174,6 +181,7 @@ public class HorseService implements IHorseService {
         if (minSpeed != null && maxSpeed != null && minSpeed < maxSpeed) {
             return true;
         } else {
+            LOGGER.error("Problem while validating horse - "+ "minSpeed " + minSpeed + " must be smaller than maxSpeed " + maxSpeed);
             throw new BadRequestException("minSpeed " + minSpeed + " must be smaller than maxSpeed " + maxSpeed);
         }
     }

@@ -85,8 +85,8 @@ public class ParticipantDao implements IParticipantDao {
 
             participantResult.setId(result.getInt(1));
         } catch (SQLException e) {
-            LOGGER.error("ToDo: Simulation can not be inserted", e);
-            throw new PersistenceException("asdfsadf", e);
+            LOGGER.error("Problem while executing SQL select statement for inserting participantResults ", e);
+            throw new PersistenceException("Could not insert participantResults", e);
         }
 
         return participantResult;

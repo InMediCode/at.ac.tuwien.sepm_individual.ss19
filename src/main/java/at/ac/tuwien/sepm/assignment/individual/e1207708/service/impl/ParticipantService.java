@@ -24,6 +24,7 @@ public class ParticipantService implements IParticipantService {
 
     @Override
     public ArrayList<ParticipantResult> getParticipantResultsBySimulationId(int simulationId) throws ServiceException {
+        LOGGER.info("Get ParticipantResult with simulationId " + simulationId);
         try {
             return participantDao.getParticipantResultsBySimulationId(simulationId);
         } catch (PersistenceException e) {
@@ -33,6 +34,7 @@ public class ParticipantService implements IParticipantService {
 
     @Override
     public ParticipantResult insertParticipant(int simulationId, ParticipantResult participantResult) throws ServiceException {
+        LOGGER.info("Insert ParticipantResult with simulationId " + simulationId);
         try {
             return participantDao.insertParticipant(simulationId, participantResult);
         } catch (PersistenceException e) {

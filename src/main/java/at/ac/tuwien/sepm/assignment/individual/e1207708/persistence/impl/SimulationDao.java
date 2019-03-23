@@ -115,8 +115,8 @@ public class SimulationDao implements ISimulationDao {
 
             simulationResult.setId(result.getInt(1));
         } catch (SQLException e) {
-            LOGGER.error("asdfasfd", e);
-            throw new PersistenceException("asdfasfd", e);
+            LOGGER.error("Problem while executing SQL select statement for inserting simulation ", e);
+            throw new PersistenceException("Could not insert simulation ", e);
         }
 
         return simulationResult;

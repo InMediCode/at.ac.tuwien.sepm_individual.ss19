@@ -48,7 +48,7 @@ public class SimulationEndpoint {
     }
 
     private SimulationResultDto[] getAll() {
-        LOGGER.info("GET " + BASE_URL);
+        LOGGER.info("GET ALL " + BASE_URL);
         try {
             return simulationResultMapper.entityListToDtoArray(simulationService.getAll());
         } catch (ServiceException e) {
@@ -59,6 +59,7 @@ public class SimulationEndpoint {
     @RequestMapping(value = "", method = RequestMethod.GET)
     public SimulationResultDto[] getAllFilteredOrNot(@RequestParam Map<String, String> requestParams) {
         String name = requestParams.get("name");
+        LOGGER.info("GET ALL filtered " + BASE_URL + " - by name: " + name);
 
         if (name == null) {
             return this.getAll();
@@ -67,21 +68,22 @@ public class SimulationEndpoint {
                 return simulationResultMapper.entityListToDtoArray(simulationService.getAllFilteredBy(name));
             } catch (ServiceException e) {
                 throw new ResponseStatusException(HttpStatus.INTERNAL_SERVER_ERROR, "Error during reading simulations with name " + name, e);
+            } catch (BadRequestException e) {
+                throw new ResponseStatusException(HttpStatus.BAD_REQUEST, "Error during filtering simulations " + e.getMessage(), e);
             }
         }
     }
 
     @RequestMapping(value = "", method = RequestMethod.POST)
-    public @ResponseBody ResponseEntity <SimulationResultDto> insertSimulation(@RequestBody SimulationDto simulationDto) {
-
-
+    public @ResponseBody ResponseEntity <SimulationResultDto> insertSimulation(@RequestBody SimulationDto simulationDto) throws NotFoundException {
+        LOGGER.info("INSERT " + BASE_URL + " - " + simulationDto);
         try {
             SimulationResultDto simulationResultDto = simulationResultMapper.entityToDto(simulationService.insertSimulation(simulationMapper.dtoToEntity(simulationDto)));
             return ResponseEntity.status(HttpStatus.CREATED).body(simulationResultDto);
         } catch (ServiceException e) {
             throw new ResponseStatusException(HttpStatus.INTERNAL_SERVER_ERROR, "Error during inserting new simulation: " + simulationDto, e);
         } catch (BadRequestException e) {
-            throw  new ResponseStatusException(HttpStatus.BAD_REQUEST, "Error during inserting simulation: " + simulationDto + " - " + e.getMessage(), e);
+            throw new ResponseStatusException(HttpStatus.BAD_REQUEST, "Error during inserting simulation: " + simulationDto + " - " + e.getMessage(), e);
         }
     }
 }

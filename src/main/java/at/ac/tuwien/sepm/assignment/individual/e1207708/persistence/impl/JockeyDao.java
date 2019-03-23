@@ -52,6 +52,7 @@ public class JockeyDao implements IJockeyDao {
         if (jockey != null) {
             return jockey;
         } else {
+            LOGGER.error("Could not find jockey with id " + id);
             throw new NotFoundException("Could not find jockey with id " + id);
         }
     }
@@ -118,8 +119,8 @@ public class JockeyDao implements IJockeyDao {
 
             jockey.setId(result.getInt(1));
         } catch (SQLException e) {
-            LOGGER.error("asdfasfd", e);
-            throw new PersistenceException("asdfasfd", e);
+            LOGGER.error("Problem while executing SQL select statement for inserting jockey ", e);
+            throw new PersistenceException("Could not insert jockey", e);
         }
 
         return jockey;
@@ -141,6 +142,7 @@ public class JockeyDao implements IJockeyDao {
             count = statement.executeUpdate();
 
             if (count == 0) {
+                LOGGER.error("Could not update jockey " + id + " with name " + name);
                 throw new NotFoundException("Could not update jockey " + id + " with name " + name);
             } else {
                 return updated;
@@ -167,6 +169,7 @@ public class JockeyDao implements IJockeyDao {
             count = statement.executeUpdate();
 
             if (count == 0) {
+                LOGGER.error("Could not update jockey " + id + " with skill " + skill);
                 throw new NotFoundException("Could not update jockey " + id + " with skill " + skill);
             } else {
                 return updated;
@@ -191,6 +194,7 @@ public class JockeyDao implements IJockeyDao {
             throw new PersistenceException("Could not delete jockeys with id " + id, e);
         }
         if (count == 0) {
+            LOGGER.error("Could not delete jockey with id " + id);
             throw new NotFoundException("Could not delete jockey with id " + id);
         }
     }

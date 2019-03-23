@@ -44,7 +44,7 @@ public class HorseEndpoint {
     }
 
     private HorseDto[] getAll() {
-        LOGGER.info("GET " + BASE_URL);
+        LOGGER.info("GET ALL " + BASE_URL);
         try {
             return horseMapper.entityListToDtoArray(horseService.getAll());
         } catch (ServiceException e) {
@@ -64,8 +64,9 @@ public class HorseEndpoint {
         if (name == null || breed == null || minSpeed == null || maxSpeed == null ) {
             return this.getAll();
         } else {
+            LOGGER.info("GET ALL filtered " + BASE_URL + " - by name: " + name + " breed: " + breed + " minSpeed: " + minSpeed + " maxSpeed: " + maxSpeed);
+
             try {
-                LOGGER.info("HERE");
                 return horseMapper.entityListToDtoArray(horseService.getAllFilteredBy(name, breed, minSpeed, maxSpeed));
             } catch (ServiceException e) {
                 throw new ResponseStatusException(HttpStatus.INTERNAL_SERVER_ERROR, "Error during read horse with name " + name, e);
@@ -87,15 +88,7 @@ public class HorseEndpoint {
 
     @RequestMapping(value = "", method = RequestMethod.POST)
     public @ResponseBody ResponseEntity<HorseDto> insertHorse(@RequestBody HorseDto horseDto) {
-        if (horseDto != null) {
-            LOGGER.info("Name: " + horseDto.getName());
-            LOGGER.info("Breed: " + horseDto.getBreed());
-            LOGGER.info("minSpeed: " + horseDto.getMinSpeed());
-            LOGGER.info("maxSpeed: " + horseDto.getMaxSpeed());
-        } else {
-            LOGGER.info("NO DATA");
-        }
-
+        LOGGER.info("INSERT " + BASE_URL + " - " + horseDto);
         try {
             horseDto = horseMapper.entityToDto(horseService.insertHorse(horseMapper.dtoToEntity(horseDto)));
             return  ResponseEntity.status(HttpStatus.CREATED).body(horseDto);
@@ -108,6 +101,7 @@ public class HorseEndpoint {
 
     @RequestMapping(value = "/{id}", method = RequestMethod.PUT)
     public @ResponseBody HorseDto updateHorse(@PathVariable("id") Integer id, @RequestBody HorseDto horseDto) {
+        LOGGER.info("UPDATE " + BASE_URL + "/" + id + " - " + horseDto);
         try {
             return horseMapper.entityToDto(horseService.updateHorse(id, horseMapper.dtoToEntity(horseDto)));
         } catch (ServiceException e) {

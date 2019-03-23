@@ -58,6 +58,7 @@ public class HorseDao implements IHorseDao {
         if (horse != null) {
             return horse;
         } else {
+            LOGGER.error("Could not find horse with id " + id);
             throw new NotFoundException("Could not find horse with id " + id);
         }
     }
@@ -129,8 +130,8 @@ public class HorseDao implements IHorseDao {
 
             horse.setId(result.getInt(1));
         } catch (SQLException e) {
-            LOGGER.error("asdfasfd", e);
-            throw new PersistenceException("asdfasfd", e);
+            LOGGER.error("Problem while executing SQL select statement for inserting horse ", e);
+            throw new PersistenceException("Could not insert horse", e);
         }
 
         return horse;
@@ -152,6 +153,7 @@ public class HorseDao implements IHorseDao {
             count = statement.executeUpdate();
 
             if (count == 0) {
+                LOGGER.error("Could not update horse " + id + " with name " + name);
                 throw new NotFoundException("Could not update horse " + id + " with name " + name);
             } else {
                 return updated;
@@ -178,6 +180,7 @@ public class HorseDao implements IHorseDao {
             count = statement.executeUpdate();
 
             if (count == 0) {
+                LOGGER.error("Could not update horse " + id + " with breed " + breed);
                 throw new NotFoundException("Could not update horse " + id + " with breed " + breed);
             } else {
                 return updated;
@@ -204,6 +207,7 @@ public class HorseDao implements IHorseDao {
             count = statement.executeUpdate();
 
             if (count == 0) {
+                LOGGER.error("Could not update horse " + id + " with minSpeed " + minSpeed);
                 throw new NotFoundException("Could not update horse " + id + " with minSpeed " + minSpeed);
             } else {
                 return updated;
@@ -230,6 +234,7 @@ public class HorseDao implements IHorseDao {
             count = statement.executeUpdate();
 
             if (count == 0) {
+                LOGGER.error("Could not update horse " + id + " with maxSpeed " + maxSpeed);
                 throw new NotFoundException("Could not update horse " + id + " with maxSpeed " + maxSpeed);
             } else {
                 return updated;
@@ -254,6 +259,7 @@ public class HorseDao implements IHorseDao {
             throw new PersistenceException("Could not delete horses with id " + id, e);
         }
         if (count == 0) {
+            LOGGER.error("Could not delete horse with id " + id);
             throw new NotFoundException("Could not delete horse with id " + id);
         }
     }

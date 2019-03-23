@@ -2,45 +2,62 @@ package at.ac.tuwien.sepm.assignment.individual.e1207708.service.impl;
 
 import at.ac.tuwien.sepm.assignment.individual.e1207708.service.ICalcService;
 import at.ac.tuwien.sepm.assignment.individual.e1207708.service.exceptions.BadRequestException;
-import at.ac.tuwien.sepm.assignment.individual.e1207708.service.exceptions.ServiceException;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 import org.springframework.stereotype.Service;
 
 @Service
 public class CalcService implements ICalcService {
+    private static final Logger LOGGER = LoggerFactory.getLogger(HorseService.class);
+
     @Override
     public Double calcAvgSpeed(Double minSpeed, Double maxSpeed, Double skill, Double luckFactor) throws BadRequestException {
+        LOGGER.info("Calculate Simulation AVG Speed");
+
+        //validation only (needed) because it's a service and that it can be uses later somewhere else than SimulationService
         //minSpeed >= 40
         //maxSpeed <= 60
         //skill != null && Double value
         //luckFactor >= 0,95 && <= 1,05
         if (minSpeed < 40.0 || minSpeed == null) {
+            LOGGER.error("Problem while validating simulation minSpeed - not >= 40");
             throw new BadRequestException("minSpeed not >= 40");
         } else if (maxSpeed > 60.0 || maxSpeed == null) {
+            LOGGER.error("Problem while validating simulation maxSpeed - not <= 60");
             throw new BadRequestException("maxSpeed not <= 60");
         } else if (minSpeed > maxSpeed) {
+            LOGGER.error("Problem while validating simulation minSpeed/maxSpeed - minSpeed greather than maxSpeed");
             throw new BadRequestException("minSpeed greather than maxSpeed");
         } else if (skill == null || Double.isInfinite(skill) || Double.isNaN(skill)) {
+            LOGGER.error("Problem while validating simulation skill - not in given range");
             throw new BadRequestException("skill not in given range");
         } else if (luckFactor == null || luckFactor < 0.95 || luckFactor > 1.05) {
+            LOGGER.error("Problem while validating simulation luckFactor - not in given range");
             throw new BadRequestException("luckFactor not in range");
         }
-
 
         return calcD(minSpeed, maxSpeed, skill, luckFactor);
     }
 
     @Override
     public Double calcHorseSpeed(Double minSpeed, Double maxSpeed, Double luckFactor) throws BadRequestException {
+        LOGGER.info("Calculate Simulation Horse Speed");
+
+        //validation only (needed) because it's a service and that it can be uses later somewhere else than SimulationService
         //minSpeed >= 40
         //maxSpeed <= 60
         //luckFactor >= 0,95 && <= 1,05
         if (minSpeed < 40.0 || minSpeed == null) {
+            LOGGER.error("Problem while validating simulation minSpeed - not >= 40");
             throw new BadRequestException("minSpeed not >= 40");
         } else if (maxSpeed > 60.0 || maxSpeed == null) {
+            LOGGER.error("Problem while validating simulation maxSpeed - not <= 60");
             throw new BadRequestException("maxSpeed not <= 60");
         } else if (minSpeed > maxSpeed) {
+            LOGGER.error("Problem while validating simulation minSpeed/maxSpeed - minSpeed greather than maxSpeed");
             throw new BadRequestException("minSpeed greather than maxSpeed");
         } else if (luckFactor == null || luckFactor < 0.95 || luckFactor > 1.05) {
+            LOGGER.error("Problem while validating simulation luckFactor - not in given range");
             throw new BadRequestException("luckFactor not in range");
         }
 
@@ -49,8 +66,12 @@ public class CalcService implements ICalcService {
 
     @Override
     public Double calcSkill(Double skill) throws BadRequestException {
+        LOGGER.info("Calculate Simulation Skill");
+
+        //validation only (needed) because it's a service and that it can be uses later somewhere else than SimulationService
         //skill != null && Double value
         if (skill == null || Double.isInfinite(skill) || Double.isNaN(skill)) {
+            LOGGER.error("Problem while validating simulation skill - not in given range");
             throw new BadRequestException("skill not in given range");
         }
 
