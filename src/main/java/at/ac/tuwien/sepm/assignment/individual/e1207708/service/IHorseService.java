@@ -1,5 +1,6 @@
 package at.ac.tuwien.sepm.assignment.individual.e1207708.service;
 
+import at.ac.tuwien.sepm.assignment.individual.e1207708.service.exceptions.BadRequestException;
 import at.ac.tuwien.sepm.assignment.individual.entity.Horse;
 import at.ac.tuwien.sepm.assignment.individual.exceptions.NotFoundException;
 import at.ac.tuwien.sepm.assignment.individual.e1207708.service.exceptions.ServiceException;
@@ -37,8 +38,9 @@ public interface IHorseService {
      * @param horse to insert into table
      * @return the horse with the id
      * @throws ServiceException will be thrown if something goes wrong during data processing.
+     * @throws BadRequestException will be thrown if params not valid.
      */
-    Horse insertHorse(Horse horse) throws  ServiceException;
+    Horse insertHorse(Horse horse) throws  ServiceException, BadRequestException;
 
     /**
      * @param id of the horse to update
@@ -46,8 +48,9 @@ public interface IHorseService {
      * @return the updated horse
      * @throws ServiceException will be thrown if something goes wrong during data processing.
      * @throws NotFoundException will be thrown if the horse could not be found in the system.
+     * @throws BadRequestException will be thrown if params not valid.
      */
-    Horse updateHorse(int id, Horse horse) throws  ServiceException, NotFoundException;
+    Horse updateHorse(int id, Horse horse) throws  ServiceException, NotFoundException, BadRequestException;
 
     /**
      * @param id of the horse to delete.

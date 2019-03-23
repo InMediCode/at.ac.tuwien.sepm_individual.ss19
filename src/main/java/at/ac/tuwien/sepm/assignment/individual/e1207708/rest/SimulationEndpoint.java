@@ -2,6 +2,7 @@ package at.ac.tuwien.sepm.assignment.individual.e1207708.rest;
 
 import at.ac.tuwien.sepm.assignment.individual.e1207708.rest.dto.SimulationDto;
 import at.ac.tuwien.sepm.assignment.individual.e1207708.rest.dto.SimulationResultDto;
+import at.ac.tuwien.sepm.assignment.individual.e1207708.service.exceptions.BadRequestException;
 import at.ac.tuwien.sepm.assignment.individual.exceptions.NotFoundException;
 import at.ac.tuwien.sepm.assignment.individual.e1207708.service.ISimulationService;
 import at.ac.tuwien.sepm.assignment.individual.e1207708.service.exceptions.ServiceException;
@@ -79,6 +80,8 @@ public class SimulationEndpoint {
             return ResponseEntity.status(HttpStatus.CREATED).body(simulationResultDto);
         } catch (ServiceException e) {
             throw new ResponseStatusException(HttpStatus.INTERNAL_SERVER_ERROR, "Error during inserting new simulation: " + simulationDto, e);
+        } catch (BadRequestException e) {
+            throw  new ResponseStatusException(HttpStatus.BAD_REQUEST, "Error during inserting simulation: " + simulationDto + " - " + e.getMessage(), e);
         }
     }
 }

@@ -1,27 +1,28 @@
 package at.ac.tuwien.sepm.assignment.individual.e1207708.service.impl;
 
 import at.ac.tuwien.sepm.assignment.individual.e1207708.service.ICalcService;
+import at.ac.tuwien.sepm.assignment.individual.e1207708.service.exceptions.BadRequestException;
 import at.ac.tuwien.sepm.assignment.individual.e1207708.service.exceptions.ServiceException;
 import org.springframework.stereotype.Service;
 
 @Service
 public class CalcService implements ICalcService {
     @Override
-    public Double calcAvgSpeed(Double minSpeed, Double maxSpeed, Double skill, Double luckFactor) throws ServiceException {
+    public Double calcAvgSpeed(Double minSpeed, Double maxSpeed, Double skill, Double luckFactor) throws BadRequestException {
         //minSpeed >= 40
         //maxSpeed <= 60
         //skill != null && Double value
         //luckFactor >= 0,95 && <= 1,05
         if (minSpeed < 40.0 || minSpeed == null) {
-            throw new ServiceException("minSpeed not >= 40");
+            throw new BadRequestException("minSpeed not >= 40");
         } else if (maxSpeed > 60.0 || maxSpeed == null) {
-            throw new ServiceException("maxSpeed not <= 60");
+            throw new BadRequestException("maxSpeed not <= 60");
         } else if (minSpeed > maxSpeed) {
-            throw new ServiceException("minSpeed greather than maxSpeed");
+            throw new BadRequestException("minSpeed greather than maxSpeed");
         } else if (skill == null || Double.isInfinite(skill) || Double.isNaN(skill)) {
-            throw new ServiceException("skill not in given range");
+            throw new BadRequestException("skill not in given range");
         } else if (luckFactor == null || luckFactor < 0.95 || luckFactor > 1.05) {
-            throw new ServiceException("luckFactor not in range");
+            throw new BadRequestException("luckFactor not in range");
         }
 
 
@@ -29,28 +30,28 @@ public class CalcService implements ICalcService {
     }
 
     @Override
-    public Double calcHorseSpeed(Double minSpeed, Double maxSpeed, Double luckFactor) throws ServiceException {
+    public Double calcHorseSpeed(Double minSpeed, Double maxSpeed, Double luckFactor) throws BadRequestException {
         //minSpeed >= 40
         //maxSpeed <= 60
         //luckFactor >= 0,95 && <= 1,05
         if (minSpeed < 40.0 || minSpeed == null) {
-            throw new ServiceException("minSpeed not >= 40");
+            throw new BadRequestException("minSpeed not >= 40");
         } else if (maxSpeed > 60.0 || maxSpeed == null) {
-            throw new ServiceException("maxSpeed not <= 60");
+            throw new BadRequestException("maxSpeed not <= 60");
         } else if (minSpeed > maxSpeed) {
-            throw new ServiceException("minSpeed greather than maxSpeed");
+            throw new BadRequestException("minSpeed greather than maxSpeed");
         } else if (luckFactor == null || luckFactor < 0.95 || luckFactor > 1.05) {
-            throw new ServiceException("luckFactor not in range");
+            throw new BadRequestException("luckFactor not in range");
         }
 
         return calcP(minSpeed, maxSpeed, luckFactor);
     }
 
     @Override
-    public Double calcSkill(Double skill) throws ServiceException {
+    public Double calcSkill(Double skill) throws BadRequestException {
         //skill != null && Double value
         if (skill == null || Double.isInfinite(skill) || Double.isNaN(skill)) {
-            throw new ServiceException("skill not in given range");
+            throw new BadRequestException("skill not in given range");
         }
 
         return calcK(skill);

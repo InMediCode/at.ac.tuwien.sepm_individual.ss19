@@ -1,5 +1,6 @@
 package at.ac.tuwien.sepm.assignment.individual.e1207708.service.impl;
 
+import at.ac.tuwien.sepm.assignment.individual.e1207708.service.exceptions.BadRequestException;
 import at.ac.tuwien.sepm.assignment.individual.entity.*;
 import at.ac.tuwien.sepm.assignment.individual.exceptions.NotFoundException;
 import at.ac.tuwien.sepm.assignment.individual.e1207708.persistence.IHorseDao;
@@ -70,7 +71,7 @@ public class SimulationService implements ISimulationService {
     }
 
     @Override
-    public SimulationResult insertSimulation(Simulation simulation) throws ServiceException {
+    public SimulationResult insertSimulation(Simulation simulation) throws ServiceException, BadRequestException {
         LOGGER.info("Insert Simulation: " + simulation);
 
         //validate simulation values incl. participants
@@ -105,7 +106,7 @@ public class SimulationService implements ISimulationService {
         return participantResults;
     }
 
-    private ArrayList<ParticipantResult> getParticipantResult(ArrayList<Participant> participantList) throws ServiceException {
+    private ArrayList<ParticipantResult> getParticipantResult(ArrayList<Participant> participantList) throws ServiceException, BadRequestException {
         ArrayList<ParticipantResult> list = new ArrayList<>();
 
         try {
@@ -164,19 +165,19 @@ public class SimulationService implements ISimulationService {
         return simulationResult;
     }
 
-    private Boolean checkSimulation(Simulation simulation) throws ServiceException {
+    private Boolean checkSimulation(Simulation simulation) throws BadRequestException {
         return checkName(simulation.getName()) && checkHorseJockeyCombinations(simulation.getParticipants());
     }
 
-    private Boolean checkName(String name) throws ServiceException {
+    private Boolean checkName(String name) throws BadRequestException {
         if (name != null && name != "") {
             return true;
         } else {
-            throw new ServiceException("name must be set");
+            throw new BadRequestException("name must be set");
         }
     }
 
-    private Boolean checkHorseJockeyCombinations(ArrayList<Participant> participants) throws ServiceException {
+    private Boolean checkHorseJockeyCombinations(ArrayList<Participant> participants) throws BadRequestException {
         if (participants != null) {
             HashSet<Integer> horseControlSet = new HashSet<>();
             HashSet<Integer> jockeyControlSet = new HashSet<>();
@@ -192,22 +193,22 @@ public class SimulationService implements ISimulationService {
             if (participants.size() == horseControlSet.size() && participants.size() == jockeyControlSet.size()) {
                 return true;
             } else {
-                throw new ServiceException("horses and jockeys are not allowed to be used multiple times in one simulation");
+                throw new BadRequestException("horses and jockeys are not allowed to be used multiple times in one simulation");
             }
         } else {
-            throw new ServiceException("horseJockeyCombinations are not allowed to be null");
+            throw new BadRequestException("horseJockeyCombinations are not allowed to be null");
         }
     }
 
-    private Boolean checkParticipant(Participant participant) throws ServiceException {
+    private Boolean checkParticipant(Participant participant) throws BadRequestException {
         if (participant.getHorseId() != null && participant.getJockeyId() != null && participant.getHorseId() !=null) {
             return true;
         } else if (participant.getHorseId() == null) {
-            throw new ServiceException("participant horseId must be set");
+            throw new BadRequestException("participant horseId must be set");
         } else if (participant.getJockeyId() == null) {
-            throw new ServiceException("participant jockeyId must be set");
+            throw new BadRequestException("participant jockeyId must be set");
         } else if (participant.getLuckFactor() == null) {
-            throw new ServiceException("participant luckFactor must be set");
+            throw new BadRequestException("participant luckFactor must be set");
         } else {
             return false;
         }

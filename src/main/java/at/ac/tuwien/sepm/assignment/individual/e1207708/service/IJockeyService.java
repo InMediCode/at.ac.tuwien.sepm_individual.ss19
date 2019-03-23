@@ -1,5 +1,6 @@
 package at.ac.tuwien.sepm.assignment.individual.e1207708.service;
 
+import at.ac.tuwien.sepm.assignment.individual.e1207708.service.exceptions.BadRequestException;
 import at.ac.tuwien.sepm.assignment.individual.entity.Jockey;
 import at.ac.tuwien.sepm.assignment.individual.exceptions.NotFoundException;
 import at.ac.tuwien.sepm.assignment.individual.e1207708.service.exceptions.ServiceException;
@@ -35,8 +36,9 @@ public interface IJockeyService {
      * @param jockey to insert into table
      * @return the jockey with the id
      * @throws ServiceException will be thrown if something goes wrong during data processing.
+     * @throws BadRequestException will be thrown if params not valid.
      */
-    Jockey insertJockey(Jockey jockey) throws  ServiceException;
+    Jockey insertJockey(Jockey jockey) throws  ServiceException, BadRequestException;
 
     /**
      * @param id of the jockey to update
@@ -44,8 +46,9 @@ public interface IJockeyService {
      * @return the updated jockey
      * @throws ServiceException will be thrown if something goes wrong during data processing.
      * @throws NotFoundException will be thrown if the jockey could not be found in the system.
+     * @throws BadRequestException will be thrown if params not valid.
      */
-    Jockey updateJockey(int id, Jockey jockey) throws  ServiceException, NotFoundException;
+    Jockey updateJockey(int id, Jockey jockey) throws  ServiceException, NotFoundException, BadRequestException;
 
     /**
      * @param id of the jockey to delete.

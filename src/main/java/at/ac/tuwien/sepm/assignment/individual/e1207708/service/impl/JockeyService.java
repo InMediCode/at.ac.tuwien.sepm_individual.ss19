@@ -1,5 +1,6 @@
 package at.ac.tuwien.sepm.assignment.individual.e1207708.service.impl;
 
+import at.ac.tuwien.sepm.assignment.individual.e1207708.service.exceptions.BadRequestException;
 import at.ac.tuwien.sepm.assignment.individual.entity.Jockey;
 import at.ac.tuwien.sepm.assignment.individual.exceptions.NotFoundException;
 import at.ac.tuwien.sepm.assignment.individual.e1207708.persistence.IJockeyDao;
@@ -53,7 +54,7 @@ public class JockeyService implements IJockeyService {
     }
 
     @Override
-    public Jockey insertJockey(Jockey jockey) throws  ServiceException {
+    public Jockey insertJockey(Jockey jockey) throws  ServiceException, BadRequestException {
         LOGGER.info("Insert jockey: " + jockey);
         try {
             //validate jockey variables
@@ -66,7 +67,7 @@ public class JockeyService implements IJockeyService {
     }
 
     @Override
-    public Jockey updateJockey(int id, Jockey jockey) throws  ServiceException, NotFoundException {
+    public Jockey updateJockey(int id, Jockey jockey) throws  ServiceException, NotFoundException, BadRequestException {
         LOGGER.info("Update jockey " + jockey + "with id " + id);
 
         try {
@@ -101,23 +102,23 @@ public class JockeyService implements IJockeyService {
         }
     }
 
-    private Boolean checkJockey(Jockey jockey) throws ServiceException {
+    private Boolean checkJockey(Jockey jockey) throws BadRequestException {
         return checkName(jockey.getName()) && checkSkill(jockey.getSkill());
     }
 
-    private Boolean checkName(String name) throws ServiceException {
+    private Boolean checkName(String name) throws BadRequestException {
         if (name != null && name != "") {
             return true;
         } else {
-            throw new ServiceException("name must be set");
+            throw new BadRequestException("name must be set");
         }
     }
 
-    private Boolean checkSkill(Double skill) throws ServiceException {
+    private Boolean checkSkill(Double skill) throws BadRequestException {
         if (skill != null && !Double.isInfinite(skill) && !Double.isNaN(skill)) {
             return true;
         } else {
-            throw  new ServiceException("skill not in range");
+            throw  new BadRequestException("skill not in range");
         }
     }
 }

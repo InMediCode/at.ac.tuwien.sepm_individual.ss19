@@ -1,5 +1,6 @@
 package at.ac.tuwien.sepm.assignment.individual.e1207708.service;
 
+import at.ac.tuwien.sepm.assignment.individual.e1207708.service.exceptions.BadRequestException;
 import at.ac.tuwien.sepm.assignment.individual.e1207708.service.exceptions.ServiceException;
 import at.ac.tuwien.sepm.assignment.individual.e1207708.service.impl.CalcService;
 import org.junit.Test;
@@ -65,8 +66,8 @@ public class CalcServiceTest {
         assertEquals(true, result.equals(64.4660));
     }
 
-    @Test(expected=ServiceException.class)
-    public void givenMinSpeedNotInRangeTest() throws ServiceException{
+    @Test(expected=BadRequestException.class)
+    public void givenMinSpeedNotInRangeTest() throws BadRequestException {
         Double maxSpeed = 60.0;
         Double skill = 2134.567;
         Double luckFactor = 1.00;
@@ -76,8 +77,8 @@ public class CalcServiceTest {
         iCalcService.calcAvgSpeed(minSpeedWrong, maxSpeed, skill, luckFactor);
     }
 
-    @Test(expected=ServiceException.class)
-    public void givenMaxSpeedNotInRangeTest() throws ServiceException{
+    @Test(expected=BadRequestException.class)
+    public void givenMaxSpeedNotInRangeTest() throws BadRequestException {
         Double minSpeed = 40.0;
         Double skill = 2134.567;
         Double luckFactor = 1.00;
@@ -87,8 +88,8 @@ public class CalcServiceTest {
         iCalcService.calcAvgSpeed(minSpeed, maxSpeedWrong, skill, luckFactor);
     }
 
-    @Test(expected=ServiceException.class)
-    public void givenMinAndMaxSwappedTest() throws ServiceException{
+    @Test(expected=BadRequestException.class)
+    public void givenMinAndMaxSwappedTest() throws BadRequestException {
         Double minSpeed = 40.0;
         Double maxSpeed = 60.0;
         Double skill = 2134.567;
@@ -97,8 +98,8 @@ public class CalcServiceTest {
         iCalcService.calcAvgSpeed(maxSpeed, minSpeed, skill, luckFactor);
     }
 
-    @Test(expected=ServiceException.class)
-    public void givenSkillIsPositiveInfinityTest() throws ServiceException{
+    @Test(expected=BadRequestException.class)
+    public void givenSkillIsPositiveInfinityTest() throws BadRequestException {
         Double minSpeed = 40.0;
         Double maxSpeed = 60.0;
         Double luckFactor = 1.00;
@@ -108,8 +109,8 @@ public class CalcServiceTest {
         iCalcService.calcAvgSpeed(minSpeed, maxSpeed, skillWrong, luckFactor);
     }
 
-    @Test(expected=ServiceException.class)
-    public void givenSkillIsNegativeInfinityTest() throws ServiceException{
+    @Test(expected=BadRequestException.class)
+    public void givenSkillIsNegativeInfinityTest() throws BadRequestException{
         Double minSpeed = 40.0;
         Double maxSpeed = 60.0;
         Double luckFactor = 1.00;
@@ -119,8 +120,8 @@ public class CalcServiceTest {
         iCalcService.calcAvgSpeed(minSpeed, maxSpeed, skillWrong, luckFactor);
     }
 
-    @Test(expected=ServiceException.class)
-    public void givenSkillIsNaNTest() throws ServiceException{
+    @Test(expected=BadRequestException.class)
+    public void givenSkillIsNaNTest() throws BadRequestException{
         Double minSpeed = 40.0;
         Double maxSpeed = 60.0;
         Double luckFactor = 1.00;
@@ -130,8 +131,8 @@ public class CalcServiceTest {
         iCalcService.calcAvgSpeed(minSpeed, maxSpeed, skillWrong, luckFactor);
     }
 
-    @Test(expected=ServiceException.class)
-    public void givenLuckFactorToSmallTest() throws ServiceException{
+    @Test(expected=BadRequestException.class)
+    public void givenLuckFactorToSmallTest() throws BadRequestException{
         Double minSpeed = 40.0;
         Double maxSpeed = 60.0;
         Double skill = 2134.567;
@@ -141,8 +142,8 @@ public class CalcServiceTest {
         iCalcService.calcAvgSpeed(minSpeed, maxSpeed, skill, luckFactorWrong1);
     }
 
-    @Test(expected=ServiceException.class)
-    public void givenLuckFactorToBigTest() throws ServiceException{
+    @Test(expected=BadRequestException.class)
+    public void givenLuckFactorToBigTest() throws BadRequestException{
         Double minSpeed = 40.0;
         Double maxSpeed = 60.0;
         Double skill = 2134.567;
@@ -153,7 +154,7 @@ public class CalcServiceTest {
     }
 
     @Test
-    public void iCalcAvgSpeedRadiansTest() throws ServiceException {
+    public void iCalcAvgSpeedRadiansTest() throws BadRequestException {
         Double minSpeed = 40.0;
         Double maxSpeed = 60.0;
         Double skill = 999.999;
@@ -164,7 +165,7 @@ public class CalcServiceTest {
     }
 
     @Test
-    public void iCalcAvgSpeedDegreeTest() throws ServiceException {
+    public void iCalcAvgSpeedDegreeTest() throws BadRequestException {
         Double minSpeed = 40.0;
         Double maxSpeed = 60.0;
         Double skill = 999.999;

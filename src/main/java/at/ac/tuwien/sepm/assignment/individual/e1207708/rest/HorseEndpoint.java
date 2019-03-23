@@ -1,6 +1,7 @@
 package at.ac.tuwien.sepm.assignment.individual.e1207708.rest;
 
 import at.ac.tuwien.sepm.assignment.individual.e1207708.rest.dto.HorseDto;
+import at.ac.tuwien.sepm.assignment.individual.e1207708.service.exceptions.BadRequestException;
 import at.ac.tuwien.sepm.assignment.individual.exceptions.NotFoundException;
 import at.ac.tuwien.sepm.assignment.individual.e1207708.service.IHorseService;
 import at.ac.tuwien.sepm.assignment.individual.e1207708.service.exceptions.ServiceException;
@@ -100,9 +101,9 @@ public class HorseEndpoint {
             return  ResponseEntity.status(HttpStatus.CREATED).body(horseDto);
         } catch (ServiceException e) {
             throw new ResponseStatusException(HttpStatus.INTERNAL_SERVER_ERROR, "Error during inserting new horse: " + horseDto, e);
+        } catch (BadRequestException e) {
+            throw new ResponseStatusException(HttpStatus.BAD_REQUEST, "Error during inserting horse: " + horseDto + " - " + e.getMessage(), e);
         }
-
-        //rotating log files
     }
 
     @RequestMapping(value = "/{id}", method = RequestMethod.PUT)
@@ -113,6 +114,8 @@ public class HorseEndpoint {
             throw new ResponseStatusException(HttpStatus.INTERNAL_SERVER_ERROR, "Error during inserting new horse: " + horseDto, e);
         } catch (NotFoundException e) {
             throw new ResponseStatusException(HttpStatus.NOT_FOUND, "Error during updating horse: " + e.getMessage(), e);
+        } catch (BadRequestException e) {
+            throw new ResponseStatusException(HttpStatus.BAD_REQUEST, "Error during updating horse: " + horseDto + " - " + e. getMessage(), e);
         }
     }
 }

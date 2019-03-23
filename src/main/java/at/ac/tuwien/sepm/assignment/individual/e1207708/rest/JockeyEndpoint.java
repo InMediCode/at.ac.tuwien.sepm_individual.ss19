@@ -1,6 +1,7 @@
 package at.ac.tuwien.sepm.assignment.individual.e1207708.rest;
 
 import at.ac.tuwien.sepm.assignment.individual.e1207708.rest.dto.JockeyDto;
+import at.ac.tuwien.sepm.assignment.individual.e1207708.service.exceptions.BadRequestException;
 import at.ac.tuwien.sepm.assignment.individual.exceptions.NotFoundException;
 import at.ac.tuwien.sepm.assignment.individual.e1207708.service.IJockeyService;
 import at.ac.tuwien.sepm.assignment.individual.e1207708.service.exceptions.ServiceException;
@@ -95,6 +96,8 @@ public class JockeyEndpoint {
             return  ResponseEntity.status(HttpStatus.CREATED).body(jockeyDto);
         } catch (ServiceException e) {
             throw new ResponseStatusException(HttpStatus.INTERNAL_SERVER_ERROR, "Error during inserting new jockey: " + jockeyDto, e);
+        } catch (BadRequestException e) {
+            throw  new ResponseStatusException(HttpStatus.BAD_REQUEST, "Error during inserting jockey: " + jockeyDto + " - " + e.getMessage(), e);
         }
     }
 
@@ -106,6 +109,8 @@ public class JockeyEndpoint {
             throw new ResponseStatusException(HttpStatus.INTERNAL_SERVER_ERROR, "Error during inserting new jockey: " + jockeyDto, e);
         } catch (NotFoundException e) {
             throw new ResponseStatusException(HttpStatus.NOT_FOUND, "Error during updating jockey: " + e.getMessage(), e);
+        } catch (BadRequestException e) {
+            throw  new ResponseStatusException(HttpStatus.BAD_REQUEST, "Error during updating jockey: " + jockeyDto + " - " + e.getMessage(), e);
         }
     }
 }

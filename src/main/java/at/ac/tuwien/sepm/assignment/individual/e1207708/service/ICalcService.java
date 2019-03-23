@@ -1,5 +1,6 @@
 package at.ac.tuwien.sepm.assignment.individual.e1207708.service;
 
+import at.ac.tuwien.sepm.assignment.individual.e1207708.service.exceptions.BadRequestException;
 import at.ac.tuwien.sepm.assignment.individual.e1207708.service.exceptions.ServiceException;
 
 public interface ICalcService {
@@ -9,23 +10,23 @@ public interface ICalcService {
      * @param  skill of the jockey
      * @param luckFactor of the participant
      * @return the calculated avg speed
-     * @throws ServiceException will be thrown if something goes wrong during data processing.
+     * @throws BadRequestException will be thrown if params not valid.
      */
-    Double calcAvgSpeed(Double minSpeed, Double maxSpeed, Double skill, Double luckFactor) throws ServiceException;
+    Double calcAvgSpeed(Double minSpeed, Double maxSpeed, Double skill, Double luckFactor) throws BadRequestException;
 
     /**
      * @param minSpeed of the horse
      * @param  maxSpeed of the horse
      * @param luckFactor of the participant
      * @return the calculated horse speed
-     * @throws ServiceException will be thrown if something goes wrong during data processing.
+     * @throws BadRequestException will be thrown if params not valid.
      */
-    Double calcHorseSpeed(Double minSpeed, Double maxSpeed, Double luckFactor) throws ServiceException;
+    Double calcHorseSpeed(Double minSpeed, Double maxSpeed, Double luckFactor) throws BadRequestException;
 
     /**
      * @param skill of the jockey
      * @return the calculated skill
-     * @throws ServiceException will be thrown if something goes wrong during data processing.
+     * @throws BadRequestException will be thrown if params not valid.
      */
-    Double calcSkill(Double skill) throws ServiceException;
+    Double calcSkill(Double skill) throws BadRequestException;
 }

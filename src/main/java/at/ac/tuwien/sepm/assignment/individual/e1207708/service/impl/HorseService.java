@@ -1,5 +1,6 @@
 package at.ac.tuwien.sepm.assignment.individual.e1207708.service.impl;
 
+import at.ac.tuwien.sepm.assignment.individual.e1207708.service.exceptions.BadRequestException;
 import at.ac.tuwien.sepm.assignment.individual.entity.Horse;
 import at.ac.tuwien.sepm.assignment.individual.exceptions.NotFoundException;
 import at.ac.tuwien.sepm.assignment.individual.e1207708.persistence.IHorseDao;
@@ -55,7 +56,7 @@ public class HorseService implements IHorseService {
     }
 
     @Override
-    public Horse insertHorse(Horse horse) throws  ServiceException {
+    public Horse insertHorse(Horse horse) throws  ServiceException, BadRequestException {
         LOGGER.info("Insert horse: " + horse);
         try {
             //validate horse variables
@@ -68,7 +69,7 @@ public class HorseService implements IHorseService {
     }
 
     @Override
-    public Horse updateHorse(int id, Horse horse) throws  ServiceException, NotFoundException {
+    public Horse updateHorse(int id, Horse horse) throws  ServiceException, NotFoundException, BadRequestException {
         LOGGER.info("Update horse " + horse + "with id " + id);
 
         try {
@@ -90,7 +91,7 @@ public class HorseService implements IHorseService {
                     //update MinSpeed
                     updateMinSpeed = true;
                 } else {
-                    throw new ServiceException("new minSpeed " + horse.getMinSpeed() + " must be smaller than old maxSpeed" + oldHorse.getMaxSpeed());
+                    throw new BadRequestException("new minSpeed " + horse.getMinSpeed() + " must be smaller than old maxSpeed" + oldHorse.getMaxSpeed());
                 }
             }
             if (horse.getMaxSpeed() != null) {
@@ -99,7 +100,7 @@ public class HorseService implements IHorseService {
                     //update MaxSpeed
                     updateMaxSpeed = true;
                 } else {
-                    throw new ServiceException("new maxSpeed " + horse.getMaxSpeed() + " must be bigger than old minSpeed" + oldHorse.getMinSpeed());
+                    throw new BadRequestException("new maxSpeed " + horse.getMaxSpeed() + " must be bigger than old minSpeed" + oldHorse.getMinSpeed());
                 }
             }
 
@@ -137,43 +138,43 @@ public class HorseService implements IHorseService {
         }
     }
 
-    private Boolean checkHorse(Horse horse) throws ServiceException {
+    private Boolean checkHorse(Horse horse) throws BadRequestException {
         return checkName(horse.getName()) && checkMinSpeedAndMaxSpeedValues(horse.getMinSpeed(), horse.getMaxSpeed());
     }
 
-    private Boolean checkName(String name) throws ServiceException {
+    private Boolean checkName(String name) throws BadRequestException {
         if (name != null && name != "") {
             return true;
         } else {
-            throw new ServiceException("name must be set");
+            throw new BadRequestException("name must be set");
         }
     }
 
-    private Boolean checkMinSpeedAndMaxSpeedValues(Double minSpeed, Double maxSpeed) throws ServiceException {
+    private Boolean checkMinSpeedAndMaxSpeedValues(Double minSpeed, Double maxSpeed) throws BadRequestException {
         return checkMinSpeedValue(minSpeed) && checkMaxSpeedValue(maxSpeed) && checkMinSpeedISSmallerThanMaxSpeed(minSpeed, maxSpeed);
     }
 
-    private Boolean checkMinSpeedValue(Double minSpeed) throws ServiceException {
+    private Boolean checkMinSpeedValue(Double minSpeed) throws BadRequestException {
         if (minSpeed != null && minSpeed >= 40.0) {
             return true;
         } else {
-            throw new ServiceException("minSpeed " + minSpeed + " must be greather than or equal 40.0");
+            throw new BadRequestException("minSpeed " + minSpeed + " must be greather than or equal 40.0");
         }
     }
 
-    private Boolean checkMaxSpeedValue(Double maxSpeed) throws ServiceException {
+    private Boolean checkMaxSpeedValue(Double maxSpeed) throws BadRequestException {
         if (maxSpeed != null && maxSpeed <= 60.0) {
             return true;
         } else {
-            throw new ServiceException("maxSpeed " + maxSpeed + "must be smaller than or equal 60.0");
+            throw new BadRequestException("maxSpeed " + maxSpeed + "must be smaller than or equal 60.0");
         }
     }
 
-    private Boolean checkMinSpeedISSmallerThanMaxSpeed(Double minSpeed, Double maxSpeed) throws ServiceException {
+    private Boolean checkMinSpeedISSmallerThanMaxSpeed(Double minSpeed, Double maxSpeed) throws BadRequestException {
         if (minSpeed != null && maxSpeed != null && minSpeed < maxSpeed) {
             return true;
         } else {
-            throw new ServiceException("minSpeed " + minSpeed + " must be smaller than maxSpeed " + maxSpeed);
+            throw new BadRequestException("minSpeed " + minSpeed + " must be smaller than maxSpeed " + maxSpeed);
         }
     }
 }
