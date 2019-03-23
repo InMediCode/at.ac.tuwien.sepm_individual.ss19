@@ -30,7 +30,7 @@ public class SimulationDao implements ISimulationDao {
         return new SimulationResult(
             result.getInt("id"),
             result.getString("name"),
-            result.getTimestamp("created").toLocalDateTime(),
+            result.getTimestamp("created").toLocalDateTime().minusHours(1),
             new ArrayList<>());
     }
 
@@ -101,7 +101,8 @@ public class SimulationDao implements ISimulationDao {
         String sql = "INSERT INTO Simulation (name, created) VALUES (?, ?)";
 
         try {
-            LocalDateTime localDateTime = LocalDateTime.now();
+            //remove nano because saved in DB only with EpochMilli
+            LocalDateTime localDateTime = LocalDateTime.now().withNano(0);
             simulationResult.setCreated(localDateTime);
 
             PreparedStatement statement = dbConnectionManager.getConnection().prepareStatement(sql, Statement.RETURN_GENERATED_KEYS);

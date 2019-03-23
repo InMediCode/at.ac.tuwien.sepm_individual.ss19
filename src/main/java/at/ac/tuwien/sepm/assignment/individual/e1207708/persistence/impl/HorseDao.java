@@ -34,8 +34,8 @@ public class HorseDao implements IHorseDao {
             result.getString("breed"),
             result.getDouble("min_speed"),
             result.getDouble("max_speed"),
-            result.getTimestamp("created").toLocalDateTime(),
-            result.getTimestamp("updated").toLocalDateTime());
+            result.getTimestamp("created").toLocalDateTime().minusHours(1),
+            result.getTimestamp("updated").toLocalDateTime().minusHours(1));
     }
 
 
@@ -109,7 +109,8 @@ public class HorseDao implements IHorseDao {
         String sql = "INSERT INTO Horse (name, breed, min_speed, max_speed, created, updated, deleted) VALUES (?, ?, ?, ?, ?, ?, false)";
 
         try {
-            LocalDateTime localDateTime = LocalDateTime.now();
+            //remove nano because saved in DB only with EpochMilli
+            LocalDateTime localDateTime = LocalDateTime.now().withNano(0);
             horse.setCreated(localDateTime);
             horse.setUpdated(localDateTime);
 

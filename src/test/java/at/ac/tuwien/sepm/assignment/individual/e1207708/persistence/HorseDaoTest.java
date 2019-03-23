@@ -33,7 +33,7 @@ public class HorseDaoTest {
     }
 
     @Test
-    public void insertTest() throws PersistenceException {
+    public void insertHorseTest() throws PersistenceException {
         Horse horse = new Horse(null, "HorseName 1", "Breed 1", 40.0, 60.0, null, null);
         Horse newHorse = horseDao.insertHorse(horse);
         assertEquals(horse.getName(), newHorse.getName());
@@ -46,7 +46,7 @@ public class HorseDaoTest {
     }
 
     @Test
-    public void updateNameTest() throws PersistenceException, NotFoundException {
+    public void updateHorseNameTest() throws PersistenceException, NotFoundException {
         Horse horse = new Horse(null, "HorseName 1", "Breed 1", 40.0, 60.0, null, null);
         Horse newHorse = horseDao.insertHorse(horse);
         String newName = "newName";
@@ -56,12 +56,12 @@ public class HorseDaoTest {
         assertEquals(updatedHorse.getBreed(), newHorse.getBreed());
         assertEquals(updatedHorse.getMinSpeed(), newHorse.getMinSpeed());
         assertEquals(updatedHorse.getMaxSpeed(), newHorse.getMaxSpeed());
-        //assertEquals(updatedJockey.getCreated(), newJockey.getCreated());
+        assertEquals(updatedHorse.getCreated(), newHorse.getCreated());
         assertTrue(updatedHorse.getUpdated().isAfter(newHorse.getUpdated()));
     }
 
     @Test
-    public void updateBreedTest() throws PersistenceException, NotFoundException {
+    public void updateHorseBreedTest() throws PersistenceException, NotFoundException {
         Horse horse = new Horse(null, "HorseName 1", "Breed 1", 40.0, 60.0, null, null);
         Horse newHorse = horseDao.insertHorse(horse);
         String newBreed = "newBreed";
@@ -71,12 +71,12 @@ public class HorseDaoTest {
         assertEquals(updatedHorse.getBreed(), newBreed);
         assertEquals(updatedHorse.getMinSpeed(), newHorse.getMinSpeed());
         assertEquals(updatedHorse.getMaxSpeed(), newHorse.getMaxSpeed());
-        //assertEquals(updatedJockey.getCreated(), newJockey.getCreated());
+        assertEquals(updatedHorse.getCreated(), newHorse.getCreated());
         assertTrue(updatedHorse.getUpdated().isAfter(newHorse.getUpdated()));
     }
 
     @Test
-    public void updateMinSpeedTest() throws PersistenceException, NotFoundException {
+    public void updateHorseMinSpeedTest() throws PersistenceException, NotFoundException {
         Horse horse = new Horse(null, "HorseName 1", "Breed 1", 40.0, 60.0, null, null);
         Horse newHorse = horseDao.insertHorse(horse);
         Double newMinSpeed = 45.0;
@@ -86,12 +86,12 @@ public class HorseDaoTest {
         assertEquals(updatedHorse.getBreed(), newHorse.getBreed());
         assertEquals(updatedHorse.getMinSpeed(), newMinSpeed);
         assertEquals(updatedHorse.getMaxSpeed(), newHorse.getMaxSpeed());
-        //assertEquals(updatedJockey.getCreated(), newJockey.getCreated());
+        assertEquals(updatedHorse.getCreated(), newHorse.getCreated());
         assertTrue(updatedHorse.getUpdated().isAfter(newHorse.getUpdated()));
     }
 
     @Test
-    public void updateMaxSpeedTest() throws PersistenceException, NotFoundException {
+    public void updateHorseMaxSpeedTest() throws PersistenceException, NotFoundException {
         Horse horse = new Horse(null, "HorseName 1", "Breed 1", 40.0, 60.0, null, null);
         Horse newHorse = horseDao.insertHorse(horse);
         Double newMaxSpeed = 45.0;
@@ -101,12 +101,12 @@ public class HorseDaoTest {
         assertEquals(updatedHorse.getBreed(), newHorse.getBreed());
         assertEquals(updatedHorse.getMinSpeed(), newHorse.getMinSpeed());
         assertEquals(updatedHorse.getMaxSpeed(), newMaxSpeed);
-        //assertEquals(updatedJockey.getCreated(), newJockey.getCreated());
+        assertEquals(updatedHorse.getCreated(), newHorse.getCreated());
         assertTrue(updatedHorse.getUpdated().isAfter(newHorse.getUpdated()));
     }
 
     @Test(expected = NotFoundException.class)
-    public void deleteTest() throws PersistenceException, NotFoundException {
+    public void deleteHorseTest() throws PersistenceException, NotFoundException {
         Horse horse = new Horse(null, "HorseName 1", "Breed 1", 40.0, 60.0, null, null);
         Horse newHorse = horseDao.insertHorse(horse);
         horseDao.deleteOneById(newHorse.getId());

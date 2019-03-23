@@ -33,13 +33,13 @@ public class JockeyDaoTest {
     }
 
     @Test(expected = NotFoundException.class)
-    public void givenNothing_whenFindHorseByIdWhichNotExists_thenNotFoundException()
+    public void givenNothing_whenFindJockeyByIdWhichNotExists_thenNotFoundException()
         throws PersistenceException, NotFoundException {
         jockeyDao.findOneById(1);
     }
 
     @Test
-    public void insertTest() throws PersistenceException {
+    public void insertJockeyTest() throws PersistenceException {
         Jockey jockey = new Jockey(null, "JockeyName 1", 23.1, null, null);
         Jockey newJockey = jockeyDao.insertJockey(jockey);
         assertEquals(jockey.getName(), newJockey.getName());
@@ -50,7 +50,7 @@ public class JockeyDaoTest {
     }
 
     @Test
-    public void updateNameTest() throws PersistenceException, NotFoundException {
+    public void updateJockeyNameTest() throws PersistenceException, NotFoundException {
         Jockey jockey = new Jockey(null, "JockeyName 1", 23.1, null, null);
         Jockey newJockey = jockeyDao.insertJockey(jockey);
         String newName = "newName";
@@ -58,14 +58,12 @@ public class JockeyDaoTest {
         Jockey updatedJockey = jockeyDao.findOneById(newJockey.getId());
         assertEquals(updatedJockey.getName(), newName);
         assertEquals(updatedJockey.getSkill(), newJockey.getSkill());
-        //assertEquals(updatedJockey.getCreated(), newJockey.getCreated());
-        System.out.println(updatedJockey.getCreated());
-        System.out.println(newJockey.getCreated());
+        assertEquals(updatedJockey.getCreated(), newJockey.getCreated());
         assertTrue(updatedJockey.getUpdated().isAfter(newJockey.getUpdated()));
     }
 
     @Test
-    public void updateSkillTest() throws PersistenceException, NotFoundException {
+    public void updateJockeySkillTest() throws PersistenceException, NotFoundException {
         Jockey jockey = new Jockey(null, "JockeyName 1", 23.1, null, null);
         Jockey newJockey = jockeyDao.insertJockey(jockey);
         Double newSkill = 2345.01;
@@ -73,13 +71,12 @@ public class JockeyDaoTest {
         Jockey updatedJockey = jockeyDao.findOneById(newJockey.getId());
         assertEquals(updatedJockey.getName(), newJockey.getName());
         assertEquals(updatedJockey.getSkill(), newSkill);
-        //assertTrue(updatedJockey.getCreated().isEqual(newJockey.getCreated()));
-        //assertEquals(updatedJockey.getCreated(), newJockey.getCreated());
+        assertEquals(updatedJockey.getCreated(), newJockey.getCreated());
         assertTrue(updatedJockey.getUpdated().isAfter(newJockey.getUpdated()));
     }
 
     @Test(expected = NotFoundException.class)
-    public void deleteTest() throws PersistenceException, NotFoundException {
+    public void deleteJockeyTest() throws PersistenceException, NotFoundException {
         Jockey jockey = new Jockey(null, "JockeyName 1", 23.1, null, null);
         Jockey newJockey = jockeyDao.insertJockey(jockey);
         jockeyDao.deleteOneById(newJockey.getId());

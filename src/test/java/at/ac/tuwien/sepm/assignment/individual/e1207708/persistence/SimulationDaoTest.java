@@ -18,10 +18,6 @@ public class SimulationDaoTest {
     @Autowired
     ISimulationDao simulationDao;
     @Autowired
-    IHorseDao horseDao;
-    @Autowired
-    IJockeyDao jockeyDao;
-    @Autowired
     DBConnectionManager dbConnectionManager;
 
     /**
@@ -33,7 +29,7 @@ public class SimulationDaoTest {
     }
 
     @Test(expected = NotFoundException.class)
-    public void givenNothing_whenFindHorseByIdWhichNotExists_thenNotFoundException()
+    public void givenNothing_whenFindSimulationByIdWhichNotExists_thenNotFoundException()
         throws PersistenceException, NotFoundException {
         simulationDao.findOneById(1);
     }

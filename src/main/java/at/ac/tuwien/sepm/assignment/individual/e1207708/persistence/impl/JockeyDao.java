@@ -29,8 +29,8 @@ public class JockeyDao implements IJockeyDao {
                 result.getInt("id"),
                 result.getString("name"),
                 result.getDouble("skill"),
-                result.getTimestamp("created").toLocalDateTime(),
-                result.getTimestamp("updated").toLocalDateTime());
+                result.getTimestamp("created").toLocalDateTime().minusHours(1),
+                result.getTimestamp("updated").toLocalDateTime().minusHours(1));
     }
 
     @Override
@@ -101,7 +101,8 @@ public class JockeyDao implements IJockeyDao {
         String sql = "INSERT INTO Jockey (name, skill, created, updated, deleted) VALUES (?, ?, ?, ?, false)";
 
         try {
-            LocalDateTime localDateTime = LocalDateTime.now();
+            //remove nano because saved in DB only with EpochMilli
+            LocalDateTime localDateTime = LocalDateTime.now().withNano(0);
             jockey.setCreated(localDateTime);
             jockey.setUpdated(localDateTime);
 
