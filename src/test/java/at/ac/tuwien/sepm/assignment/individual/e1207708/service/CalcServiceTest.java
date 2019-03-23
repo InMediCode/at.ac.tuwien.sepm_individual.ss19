@@ -1,8 +1,11 @@
 package at.ac.tuwien.sepm.assignment.individual.e1207708.service;
 
+import at.ac.tuwien.sepm.assignment.individual.e1207708.persistence.exceptions.PersistenceException;
+import at.ac.tuwien.sepm.assignment.individual.e1207708.persistence.util.DBConnectionManager;
 import at.ac.tuwien.sepm.assignment.individual.e1207708.service.exceptions.BadRequestException;
 import at.ac.tuwien.sepm.assignment.individual.e1207708.service.exceptions.ServiceException;
 import at.ac.tuwien.sepm.assignment.individual.e1207708.service.impl.CalcService;
+import org.junit.After;
 import org.junit.Test;
 import org.junit.runner.RunWith;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -20,6 +23,16 @@ public class CalcServiceTest {
 
     @Autowired CalcService calcService;
     @Autowired ICalcService iCalcService;
+    @Autowired
+    private DBConnectionManager dbConnectionManager;
+
+    /**
+     * It is important to close the database connection after each test in order to clean the in-memory database
+     */
+    @After
+    public void afterEachTest() throws PersistenceException {
+        dbConnectionManager.closeConnection();
+    }
 
     @Test
     public void givenValueNotRound() {
