@@ -2,8 +2,8 @@ package at.ac.tuwien.sepm.assignment.individual.integration;
 
 
 import at.ac.tuwien.sepm.assignment.individual.integration.dto.*;
-import at.ac.tuwien.sepm.assignment.individual.persistence.exceptions.PersistenceException;
-import at.ac.tuwien.sepm.assignment.individual.persistence.util.DBConnectionManager;
+import at.ac.tuwien.sepm.assignment.individual.e1207708.persistence.exceptions.PersistenceException;
+import at.ac.tuwien.sepm.assignment.individual.e1207708.persistence.util.DBConnectionManager;
 import org.junit.After;
 import org.junit.Before;
 import org.junit.Test;

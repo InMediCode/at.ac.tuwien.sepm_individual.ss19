@@ -4,7 +4,7 @@
     <modelVersion>4.0.0</modelVersion>
 
     <groupId>at.ac.tuwien.sepm.assignment.individual</groupId>
-    <artifactId>e01234567 <!-- add  your matriculation number here --></artifactId>
+    <artifactId>e01207708</artifactId>
     <version>0.0.1-SNAPSHOT</version>
     <name>wendys-rennpferde</name>
     <description>A backend system for managing wendy's horses, jockeys, and performing race simulations</description>

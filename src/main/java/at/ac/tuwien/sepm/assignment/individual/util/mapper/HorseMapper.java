@@ -1,6 +1,6 @@
 package at.ac.tuwien.sepm.assignment.individual.util.mapper;
 
-import at.ac.tuwien.sepm.assignment.individual.rest.dto.HorseDto;
+import at.ac.tuwien.sepm.assignment.individual.e1207708.rest.dto.HorseDto;
 import at.ac.tuwien.sepm.assignment.individual.entity.Horse;
 import org.springframework.stereotype.Component;
 

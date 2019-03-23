@@ -2,8 +2,8 @@ package at.ac.tuwien.sepm.assignment.individual.util.mapper;
 
 import at.ac.tuwien.sepm.assignment.individual.entity.ParticipantResult;
 import at.ac.tuwien.sepm.assignment.individual.entity.SimulationResult;
-import at.ac.tuwien.sepm.assignment.individual.rest.dto.ParticipantResultDto;
-import at.ac.tuwien.sepm.assignment.individual.rest.dto.SimulationResultDto;
+import at.ac.tuwien.sepm.assignment.individual.e1207708.rest.dto.ParticipantResultDto;
+import at.ac.tuwien.sepm.assignment.individual.e1207708.rest.dto.SimulationResultDto;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Component;
 

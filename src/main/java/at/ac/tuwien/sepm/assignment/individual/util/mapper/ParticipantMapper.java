@@ -1,7 +1,7 @@
 package at.ac.tuwien.sepm.assignment.individual.util.mapper;
 
 import at.ac.tuwien.sepm.assignment.individual.entity.Participant;
-import at.ac.tuwien.sepm.assignment.individual.rest.dto.ParticipantDto;
+import at.ac.tuwien.sepm.assignment.individual.e1207708.rest.dto.ParticipantDto;
 import org.springframework.stereotype.Component;
 
 @Component

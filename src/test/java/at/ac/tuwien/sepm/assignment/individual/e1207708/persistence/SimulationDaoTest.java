@@ -1,9 +1,8 @@
-package at.ac.tuwien.sepm.assignment.individual.unit.persistence;
+package at.ac.tuwien.sepm.assignment.individual.e1207708.persistence;
 
-import at.ac.tuwien.sepm.assignment.individual.exceptions.NotFoundException;
-import at.ac.tuwien.sepm.assignment.individual.e1207708.persistence.IHorseDao;
 import at.ac.tuwien.sepm.assignment.individual.e1207708.persistence.exceptions.PersistenceException;
 import at.ac.tuwien.sepm.assignment.individual.e1207708.persistence.util.DBConnectionManager;
+import at.ac.tuwien.sepm.assignment.individual.exceptions.NotFoundException;
 import org.junit.After;
 import org.junit.Test;
 import org.junit.runner.RunWith;
@@ -15,10 +14,13 @@ import org.springframework.test.context.junit4.SpringRunner;
 @RunWith(SpringRunner.class)
 @SpringBootTest
 @ActiveProfiles(profiles = "test")
-public class HorseDaoTest {
-
+public class SimulationDaoTest {
+    @Autowired
+    ISimulationDao simulationDao;
     @Autowired
     IHorseDao horseDao;
+    @Autowired
+    IJockeyDao jockeyDao;
     @Autowired
     DBConnectionManager dbConnectionManager;
 
@@ -33,8 +35,6 @@ public class HorseDaoTest {
     @Test(expected = NotFoundException.class)
     public void givenNothing_whenFindHorseByIdWhichNotExists_thenNotFoundException()
         throws PersistenceException, NotFoundException {
-        horseDao.findOneById(1);
+        simulationDao.findOneById(1);
     }
-
 }
-

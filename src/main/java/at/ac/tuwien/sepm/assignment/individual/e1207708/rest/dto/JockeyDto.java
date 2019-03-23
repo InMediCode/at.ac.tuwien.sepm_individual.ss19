@@ -1,35 +1,24 @@
-package at.ac.tuwien.sepm.assignment.individual.entity;
+package at.ac.tuwien.sepm.assignment.individual.e1207708.rest.dto;
 
 import java.time.LocalDateTime;
 import java.util.Objects;
 
-public class Jockey {
+public class JockeyDto {
     private Integer id;
     private String name;
     private Double skill;
     private LocalDateTime created;
     private LocalDateTime updated;
-    private Boolean deleted;
 
-    public Jockey() {
+    public JockeyDto() {
     }
 
-    public Jockey(Integer id, String name, Double skill, LocalDateTime created, LocalDateTime updated) {
+    public JockeyDto(Integer id, String name, Double skill, LocalDateTime created, LocalDateTime updated) {
         this.id = id;
         this.name = name;
         this.skill = skill;
         this.created = created;
         this.updated = updated;
-        this.deleted = false;
-    }
-
-    public Jockey(Integer id, String name, Double skill, LocalDateTime created, LocalDateTime updated, Boolean deleted) {
-        this.id = id;
-        this.name = name;
-        this.skill = skill;
-        this.created = created;
-        this.updated = updated;
-        this.deleted = deleted;
     }
 
     public Integer getId() {
@@ -68,25 +57,16 @@ public class Jockey {
         this.updated = updated;
     }
 
-    public Boolean getDeleted() {
-        return deleted;
-    }
-
-    public void setDeleted(Boolean deleted) {
-        this.deleted = deleted;
-    }
-
     @Override
     public boolean equals(Object o) {
         if (this == o) return true;
-        if (!(o instanceof Jockey)) return false;
-        Jockey jockey = (Jockey) o;
-        return Objects.equals(this.id, jockey.id) &&
-                Objects.equals(this.name, jockey.name) &&
-                Objects.equals(this.skill, jockey.skill) &&
-                Objects.equals(this.created, jockey.created) &&
-                Objects.equals(this.updated, jockey.updated) &&
-                Objects.equals(deleted, jockey.deleted);
+        if (!(o instanceof JockeyDto)) return false;
+        JockeyDto jockeyDto = (JockeyDto) o;
+        return Objects.equals(this.id, jockeyDto.id) &&
+                Objects.equals(this.name, jockeyDto.name) &&
+                Objects.equals(this.skill, jockeyDto.skill) &&
+                Objects.equals(this.created, jockeyDto.created) &&
+                Objects.equals(this.updated, jockeyDto.updated);
     }
 
     @Override
@@ -103,7 +83,6 @@ public class Jockey {
                 ", skill=" + this.skill +
                 ", created=" + this.created +
                 ", updated=" + this.updated +
-                ", deleted=" + deleted +
                 '}';
     }
 }
