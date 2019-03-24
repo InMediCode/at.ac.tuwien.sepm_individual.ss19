@@ -39,3 +39,17 @@ VALUES (1, 'Rennen 1', CURRENT_TIMESTAMP()),
        (8, 'Rennen 8', CURRENT_TIMESTAMP()),
        (9, 'Rennen 9', CURRENT_TIMESTAMP()),
        (10, 'Ultra 10', CURRENT_TIMESTAMP());
+
+-- insert initial test data
+-- the id is hardcode to enable references between further test data
+INSERT INTO participants (ID, SIMULATION_ID, RANK, HORSE_NAME, JOCKEY_NAME, AVG_SPEED, HORSE_SPEED, SKILL, LUCK_FACTOR)
+VALUES (1, 1, 1, 'Jim', 'Lukas', 54.1649, 48.0, 1.0747, 1.05),
+       (2, 1, 2, 'Joe', 'Hans', 48.3747, 45.05, 1.0738, 1.0),
+       (3, 1, 3, 'Lisa', 'Lisa', 35.8587, 40.5, 0.932, 0.95),
+       (4, 2, 1, 'Jim', 'Marlon', 46.7158, 48.0, 0.9269, 1.05),
+       (5, 2, 2, 'Joe', 'Lukas', 43.8667, 42.08, 1.0747, 0.97),
+       (6, 3, 1, 'Andre', 'Walter', 51.6049, 49.6, 1.0726, 0.97),
+       (7, 3, 2, 'Lola', 'Hanna', 43.8667, 43.0, 1.0747, 1.05),
+       (8, 4, 1, 'Louis', 'Lasse', 49.95, 49.95, 1.0, 1.0),
+       (9, 4, 2, 'Jim', 'Walter', 49.8759, 46.5, 1.0726, 1.0),
+       (10, 4, 3, 'Wendy', 'Andi', 47.5142, 51.35, 0.9253, 1.0);
