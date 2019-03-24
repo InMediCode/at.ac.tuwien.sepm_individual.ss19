@@ -5,6 +5,7 @@ import at.ac.tuwien.sepm.assignment.individual.exceptions.NotFoundException;
 import at.ac.tuwien.sepm.assignment.individual.e1207708.persistence.ISimulationDao;
 import at.ac.tuwien.sepm.assignment.individual.e1207708.persistence.exceptions.PersistenceException;
 import at.ac.tuwien.sepm.assignment.individual.e1207708.persistence.util.DBConnectionManager;
+import at.ac.tuwien.sepm.assignment.individual.util.localdatetime.EpochMilliDateTimer;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -20,10 +21,12 @@ public class SimulationDao implements ISimulationDao {
 
     private static final Logger LOGGER = LoggerFactory.getLogger(SimulationDao.class);
     private final DBConnectionManager dbConnectionManager;
+    private final EpochMilliDateTimer epochMilliDateTimer;
 
     @Autowired
-    public SimulationDao(DBConnectionManager dbConnectionManager) {
+    public SimulationDao(DBConnectionManager dbConnectionManager, EpochMilliDateTimer epochMilliDateTimer) {
         this.dbConnectionManager = dbConnectionManager;
+        this.epochMilliDateTimer = epochMilliDateTimer;
     }
 
     private static  SimulationResult dbResultToSimulationResultDto(ResultSet result) throws SQLException {
@@ -101,8 +104,9 @@ public class SimulationDao implements ISimulationDao {
         String sql = "INSERT INTO Simulation (name, created) VALUES (?, ?)";
 
         try {
-            //remove nano because saved in DB only with EpochMilli
-            LocalDateTime localDateTime = LocalDateTime.now().withNano(0);
+            //replaced nano because saved in DB only with EpochMilli
+            LocalDateTime localDateTime = epochMilliDateTimer.getLocalDateTime();
+
             simulationResult.setCreated(localDateTime);
 
             PreparedStatement statement = dbConnectionManager.getConnection().prepareStatement(sql, Statement.RETURN_GENERATED_KEYS);

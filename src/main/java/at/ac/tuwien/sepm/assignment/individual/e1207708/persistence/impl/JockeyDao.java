@@ -5,6 +5,7 @@ import at.ac.tuwien.sepm.assignment.individual.exceptions.NotFoundException;
 import at.ac.tuwien.sepm.assignment.individual.e1207708.persistence.IJockeyDao;
 import at.ac.tuwien.sepm.assignment.individual.e1207708.persistence.exceptions.PersistenceException;
 import at.ac.tuwien.sepm.assignment.individual.e1207708.persistence.util.DBConnectionManager;
+import at.ac.tuwien.sepm.assignment.individual.util.localdatetime.EpochMilliDateTimer;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -20,9 +21,13 @@ public class JockeyDao implements IJockeyDao {
 
     private static final Logger LOGGER = LoggerFactory.getLogger(JockeyDao.class);
     private final DBConnectionManager dbConnectionManager;
+    private final EpochMilliDateTimer epochMilliDateTimer;
 
     @Autowired
-    public JockeyDao(DBConnectionManager dbConnectionManager) { this.dbConnectionManager = dbConnectionManager; }
+    public JockeyDao(DBConnectionManager dbConnectionManager, EpochMilliDateTimer epochMilliDateTimer) {
+        this.dbConnectionManager = dbConnectionManager;
+        this.epochMilliDateTimer = epochMilliDateTimer;
+    }
 
     private static  Jockey dbResultToJockeyDto(ResultSet result) throws SQLException {
         return new Jockey(
@@ -102,8 +107,9 @@ public class JockeyDao implements IJockeyDao {
         String sql = "INSERT INTO Jockey (name, skill, created, updated, deleted) VALUES (?, ?, ?, ?, false)";
 
         try {
-            //remove nano because saved in DB only with EpochMilli
-            LocalDateTime localDateTime = LocalDateTime.now().withNano(0);
+            //replaced nano because saved in DB only with EpochMilli
+            LocalDateTime localDateTime = epochMilliDateTimer.getLocalDateTime();
+
             jockey.setCreated(localDateTime);
             jockey.setUpdated(localDateTime);
 
@@ -133,7 +139,8 @@ public class JockeyDao implements IJockeyDao {
         String sql = "UPDATE Jockey SET name=?, updated=? WHERE id=? AND deleted IS NOT TRUE";
         int count = 0;
         try {
-            LocalDateTime updated = LocalDateTime.now();
+            //replaced nano because saved in DB only with EpochMilli
+            LocalDateTime updated = epochMilliDateTimer.getLocalDateTime();
 
             PreparedStatement statement = dbConnectionManager.getConnection().prepareStatement(sql);
             statement.setString(1, name);
@@ -160,7 +167,8 @@ public class JockeyDao implements IJockeyDao {
         String sql = "UPDATE Jockey SET skill=?, updated=? WHERE id=? AND deleted IS NOT TRUE";
         int count = 0;
         try {
-            LocalDateTime updated = LocalDateTime.now();
+            //replaced nano because saved in DB only with EpochMilli
+            LocalDateTime updated = epochMilliDateTimer.getLocalDateTime();
 
             PreparedStatement statement = dbConnectionManager.getConnection().prepareStatement(sql);
             statement.setDouble(1, skill);
@@ -194,8 +202,8 @@ public class JockeyDao implements IJockeyDao {
             throw new PersistenceException("Could not delete jockeys with id " + id, e);
         }
         if (count == 0) {
-            LOGGER.error("Could not delete jockey with id " + id);
-            throw new NotFoundException("Could not delete jockey with id " + id);
+            LOGGER.error("Could not find jockey with id " + id);
+            throw new NotFoundException("Could not find jockey with id " + id);
         }
     }
 }

@@ -5,6 +5,7 @@ import at.ac.tuwien.sepm.assignment.individual.exceptions.NotFoundException;
 import at.ac.tuwien.sepm.assignment.individual.e1207708.persistence.IHorseDao;
 import at.ac.tuwien.sepm.assignment.individual.e1207708.persistence.exceptions.PersistenceException;
 import at.ac.tuwien.sepm.assignment.individual.e1207708.persistence.util.DBConnectionManager;
+import at.ac.tuwien.sepm.assignment.individual.util.localdatetime.EpochMilliDateTimer;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -21,10 +22,12 @@ public class HorseDao implements IHorseDao {
 
     private static final Logger LOGGER = LoggerFactory.getLogger(HorseDao.class);
     private final DBConnectionManager dbConnectionManager;
+    private final EpochMilliDateTimer epochMilliDateTimer;
 
     @Autowired
-    public HorseDao(DBConnectionManager dbConnectionManager) {
+    public HorseDao(DBConnectionManager dbConnectionManager, EpochMilliDateTimer epochMilliDateTimer) {
         this.dbConnectionManager = dbConnectionManager;
+        this.epochMilliDateTimer = epochMilliDateTimer;
     }
 
     private static Horse dbResultToHorseDto(ResultSet result) throws SQLException {
@@ -110,8 +113,9 @@ public class HorseDao implements IHorseDao {
         String sql = "INSERT INTO Horse (name, breed, min_speed, max_speed, created, updated, deleted) VALUES (?, ?, ?, ?, ?, ?, false)";
 
         try {
-            //remove nano because saved in DB only with EpochMilli
-            LocalDateTime localDateTime = LocalDateTime.now().withNano(0);
+            //replaced nano because saved in DB only with EpochMilli
+            LocalDateTime localDateTime = epochMilliDateTimer.getLocalDateTime();
+
             horse.setCreated(localDateTime);
             horse.setUpdated(localDateTime);
 
@@ -144,7 +148,8 @@ public class HorseDao implements IHorseDao {
         String sql = "UPDATE Horse SET name=?, updated=? WHERE id=? AND deleted IS NOT TRUE";
         int count = 0;
         try {
-            LocalDateTime updated = LocalDateTime.now();
+            //replaced nano because saved in DB only with EpochMilli
+            LocalDateTime updated = epochMilliDateTimer.getLocalDateTime();
 
             PreparedStatement statement = dbConnectionManager.getConnection().prepareStatement(sql);
             statement.setString(1, name);
@@ -171,7 +176,8 @@ public class HorseDao implements IHorseDao {
         String sql = "UPDATE Horse SET breed=?, updated=? WHERE id=? AND deleted IS NOT TRUE";
         int count = 0;
         try {
-            LocalDateTime updated = LocalDateTime.now();
+            //replaced nano because saved in DB only with EpochMilli
+            LocalDateTime updated = epochMilliDateTimer.getLocalDateTime();
 
             PreparedStatement statement = dbConnectionManager.getConnection().prepareStatement(sql);
             statement.setString(1, breed);
@@ -198,7 +204,8 @@ public class HorseDao implements IHorseDao {
         String sql = "UPDATE Horse SET min_speed=?, updated=? WHERE id=? AND deleted IS NOT TRUE";
         int count = 0;
         try {
-            LocalDateTime updated = LocalDateTime.now();
+            //replaced nano because saved in DB only with EpochMilli
+            LocalDateTime updated = epochMilliDateTimer.getLocalDateTime();
 
             PreparedStatement statement = dbConnectionManager.getConnection().prepareStatement(sql);
             statement.setDouble(1, minSpeed);
@@ -225,7 +232,8 @@ public class HorseDao implements IHorseDao {
         String sql = "UPDATE Horse SET max_speed=?, updated=? WHERE id=? AND deleted IS NOT TRUE";
         int count = 0;
         try {
-            LocalDateTime updated = LocalDateTime.now();
+            //replaced nano because saved in DB only with EpochMilli
+            LocalDateTime updated = epochMilliDateTimer.getLocalDateTime();
 
             PreparedStatement statement = dbConnectionManager.getConnection().prepareStatement(sql);
             statement.setDouble(1, maxSpeed);
@@ -259,8 +267,8 @@ public class HorseDao implements IHorseDao {
             throw new PersistenceException("Could not delete horses with id " + id, e);
         }
         if (count == 0) {
-            LOGGER.error("Could not delete horse with id " + id);
-            throw new NotFoundException("Could not delete horse with id " + id);
+            LOGGER.error("Could not find horse with id " + id);
+            throw new NotFoundException("Could not find horse with id " + id);
         }
     }
 }
