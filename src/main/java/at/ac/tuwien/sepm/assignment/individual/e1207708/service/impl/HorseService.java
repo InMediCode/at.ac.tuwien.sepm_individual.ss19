@@ -111,65 +111,8 @@ public class HorseService implements IHorseService {
             horse.setDeleted(oldHorse.getDeleted());
 
             horse.setUpdated(horseDao.updateHorse(id, horse));
-            oldHorse.setMaxSpeed(horse.getMaxSpeed());
 
             return horse;
-
-            /*//first check if all values can be validated before update
-            Boolean updateName = checkName(horse.getName());
-            Boolean updateBreed = horse.getBreed() != null;
-            Boolean updateMinSpeed = false;
-            Boolean updateMaxSpeed = false;
-
-            if (horse.getMinSpeed() != null && horse.getMaxSpeed() != null) {
-                //check if new minSpeed is smaller than new maxSpeed
-                checkMinSpeedISSmallerThanMaxSpeed(horse.getMinSpeed(), horse.getMaxSpeed());
-            }
-
-            if (horse.getMinSpeed() != null) {
-                checkMinSpeedValue(horse.getMinSpeed());
-                //check if both will get updated or not => check with old or new maxSpeed
-                Double checkMaxSpeed = horse.getMaxSpeed() == null ? oldHorse.getMaxSpeed() : horse.getMaxSpeed();
-
-                if (horse.getMinSpeed() < checkMaxSpeed) {
-                    //update MinSpeed
-                    updateMinSpeed = true;
-                } else {
-                    throw new BadRequestException("new minSpeed " + horse.getMinSpeed() + " must be smaller than old maxSpeed" + oldHorse.getMaxSpeed());
-                }
-            }
-            if (horse.getMaxSpeed() != null) {
-                checkMaxSpeedValue(horse.getMaxSpeed());
-                //check if both will get updated or not => check with old or new minSpeed
-                Double checkMinSpeed = horse.getMinSpeed() == null ? oldHorse.getMinSpeed() : horse.getMinSpeed();
-
-                if (checkMinSpeed > oldHorse.getMinSpeed()) {
-                    //update MaxSpeed
-                    updateMaxSpeed = true;
-                } else {
-                    throw new BadRequestException("new maxSpeed " + horse.getMaxSpeed() + " must be bigger than old minSpeed" + oldHorse.getMinSpeed());
-                }
-            }
-
-            //update here to be sure no exceptions thrown and that not only a part is updated in DB
-            if (updateName) {
-                oldHorse.setUpdated(horseDao.updateHorseName(id, horse.getName()));
-                oldHorse.setName(horse.getName());
-            }
-            if (updateBreed) {
-                oldHorse.setUpdated(horseDao.updateHorseBreed(id, horse.getBreed()));
-                oldHorse.setBreed(horse.getBreed());
-            }
-            if (updateMinSpeed) {
-                oldHorse.setUpdated(horseDao.updateHorseMinSpeed(id, horse.getMinSpeed()));
-                oldHorse.setMinSpeed(horse.getMinSpeed());
-            }
-            if (updateMaxSpeed) {
-                oldHorse.setUpdated(horseDao.updateHorseMaxSpeed(id, horse.getMaxSpeed()));
-                oldHorse.setMaxSpeed(horse.getMaxSpeed());
-            }
-
-            return oldHorse;*/
         } catch (PersistenceException e) {
             throw new ServiceException(e.getMessage(), e);
         }

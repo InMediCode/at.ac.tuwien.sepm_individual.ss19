@@ -83,20 +83,22 @@ public class JockeyService implements IJockeyService {
         try {
             Jockey oldJockey = findOneById(id);
 
-            Boolean updateName = checkName(jockey.getName());
-            Boolean updateSkill = checkSkill(jockey.getSkill());
-
-            //update here to be sure no exceptions thrown and that not only a part is updated in DB
-            if (updateName) {
-                oldJockey.setUpdated(jockeyDao.updateJockeyName(id, jockey.getName()));
-                oldJockey.setName(jockey.getName());
+            if (jockey.getName() == null) {
+                jockey.setName(oldJockey.getName());
             }
-            if (updateSkill) {
-                oldJockey.setUpdated(jockeyDao.updateJockeySkill(id, jockey.getSkill()));
-                oldJockey.setSkill(jockey.getSkill());
+            if (jockey.getSkill() == null) {
+                jockey.setSkill(oldJockey.getSkill());
             }
 
-            return oldJockey;
+            checkJockey(jockey);
+            jockey.setId(id);
+            jockey.setCreated(oldJockey.getCreated());
+            jockey.setUpdated(oldJockey.getUpdated());
+            jockey.setDeleted(oldJockey.getDeleted());
+
+            jockey.setUpdated(jockeyDao.updateJockey(id, jockey));;
+
+            return jockey;
         } catch (PersistenceException e) {
             throw new ServiceException(e.getMessage(), e);
         }

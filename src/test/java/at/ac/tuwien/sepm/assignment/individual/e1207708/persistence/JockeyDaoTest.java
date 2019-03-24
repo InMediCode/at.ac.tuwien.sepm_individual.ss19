@@ -50,29 +50,21 @@ public class JockeyDaoTest {
     }
 
     @Test
-    public void updateJockeyNameTest() throws PersistenceException, NotFoundException {
+    public void updateJockeyTest() throws PersistenceException, NotFoundException {
         Jockey jockey = new Jockey(null, "JockeyName 1", 23.1, null, null);
-        Jockey newJockey = jockeyDao.insertJockey(jockey);
-        String newName = "newName";
-        jockeyDao.updateJockeyName(newJockey.getId(), newName);
-        Jockey updatedJockey = jockeyDao.findOneById(newJockey.getId());
-        assertEquals(updatedJockey.getName(), newName);
-        assertEquals(updatedJockey.getSkill(), newJockey.getSkill());
-        assertEquals(updatedJockey.getCreated(), newJockey.getCreated());
-        assertTrue(updatedJockey.getUpdated().isAfter(newJockey.getUpdated()));
-    }
+        Jockey insertedJockey = jockeyDao.insertJockey(jockey);
+        Jockey newJockey = new Jockey(null, "newName", 50.0, null, null);
+        newJockey.setId(insertedJockey.getId());
+        newJockey.setCreated(insertedJockey.getCreated());
+        newJockey.setDeleted(insertedJockey.getDeleted());
 
-    @Test
-    public void updateJockeySkillTest() throws PersistenceException, NotFoundException {
-        Jockey jockey = new Jockey(null, "JockeyName 1", 23.1, null, null);
-        Jockey newJockey = jockeyDao.insertJockey(jockey);
-        Double newSkill = 2345.01;
-        jockeyDao.updateJockeySkill(newJockey.getId(), newSkill);
+        newJockey.setUpdated(jockeyDao.updateJockey(newJockey.getId(), newJockey));
+
         Jockey updatedJockey = jockeyDao.findOneById(newJockey.getId());
         assertEquals(updatedJockey.getName(), newJockey.getName());
-        assertEquals(updatedJockey.getSkill(), newSkill);
+        assertEquals(updatedJockey.getSkill(), newJockey.getSkill());
         assertEquals(updatedJockey.getCreated(), newJockey.getCreated());
-        assertTrue(updatedJockey.getUpdated().isAfter(newJockey.getUpdated()));
+        assertTrue(updatedJockey.getUpdated().isAfter(insertedJockey.getUpdated()));
     }
 
     @Test(expected = NotFoundException.class)

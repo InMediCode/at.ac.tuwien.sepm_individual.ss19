@@ -39,21 +39,12 @@ public interface IJockeyDao {
 
     /**
      * @param id of the jockey to update
-     * @param name to update in table
+     * @param jockey to update in table
      * @return the updated DateTime
      * @throws PersistenceException will be thrown if something goes wrong during the database access.
      * @throws NotFoundException    will be thrown if the jockey could not be found in the database.
      */
-    LocalDateTime updateJockeyName(int id, String name) throws PersistenceException, NotFoundException;
-
-    /**
-     * @param id of the jockey to update
-     * @param skill to update in table
-     * @return the updated DateTime
-     * @throws PersistenceException will be thrown if something goes wrong during the database access.
-     * @throws NotFoundException    will be thrown if the jockey could not be found in the database.
-     */
-    LocalDateTime updateJockeySkill(int id, Double skill) throws PersistenceException, NotFoundException;
+    LocalDateTime updateJockey(int id, Jockey jockey) throws PersistenceException, NotFoundException;
 
     /**
      * @param id of the jockey to delete.

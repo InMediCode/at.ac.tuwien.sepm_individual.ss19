@@ -133,58 +133,31 @@ public class JockeyDao implements IJockeyDao {
     }
 
     @Override
-    public LocalDateTime updateJockeyName(int id, String name) throws PersistenceException, NotFoundException {
-        LOGGER.info("Update jockey " + id + " with name " + name);
+    public LocalDateTime updateJockey(int id, Jockey jockey) throws PersistenceException, NotFoundException {
+        LOGGER.info("Update jockey " + jockey);
 
-        String sql = "UPDATE Jockey SET name=?, updated=? WHERE id=? AND deleted IS NOT TRUE";
+        String sql = "UPDATE Jockey SET name=?, skill=?, updated=? WHERE id=? AND deleted IS NOT TRUE";
         int count = 0;
         try {
             //replaced nano because saved in DB only with EpochMilli
             LocalDateTime updated = epochMilliDateTimer.getLocalDateTime();
 
             PreparedStatement statement = dbConnectionManager.getConnection().prepareStatement(sql);
-            statement.setString(1, name);
-            statement.setTimestamp(2, new Timestamp(updated.toInstant(ZoneOffset.ofTotalSeconds(0)).toEpochMilli()));
-            statement.setInt(3, id);
+            statement.setString(1, jockey.getName());
+            statement.setDouble(2, jockey.getSkill());
+            statement.setTimestamp(3, new Timestamp(updated.toInstant(ZoneOffset.ofTotalSeconds(0)).toEpochMilli()));
+            statement.setInt(4, id);
             count = statement.executeUpdate();
 
             if (count == 0) {
-                LOGGER.error("Could not update jockey " + id + " with name " + name);
-                throw new NotFoundException("Could not update jockey " + id + " with name " + name);
+                LOGGER.error("Could not update jockey");
+                throw new NotFoundException("Could not update jockey");
             } else {
                 return updated;
             }
         } catch (SQLException e) {
-            LOGGER.error("Problem while executing SQL select statement for updating jockey name", e);
-            throw new PersistenceException("Could not update jockey name", e);
-        }
-    }
-
-    @Override
-    public LocalDateTime updateJockeySkill(int id, Double skill) throws PersistenceException, NotFoundException {
-        LOGGER.info("Update jockey " + id + " with skill " + skill);
-
-        String sql = "UPDATE Jockey SET skill=?, updated=? WHERE id=? AND deleted IS NOT TRUE";
-        int count = 0;
-        try {
-            //replaced nano because saved in DB only with EpochMilli
-            LocalDateTime updated = epochMilliDateTimer.getLocalDateTime();
-
-            PreparedStatement statement = dbConnectionManager.getConnection().prepareStatement(sql);
-            statement.setDouble(1, skill);
-            statement.setTimestamp(2, new Timestamp(updated.toInstant(ZoneOffset.ofTotalSeconds(0)).toEpochMilli()));
-            statement.setInt(3, id);
-            count = statement.executeUpdate();
-
-            if (count == 0) {
-                LOGGER.error("Could not update jockey " + id + " with skill " + skill);
-                throw new NotFoundException("Could not update jockey " + id + " with skill " + skill);
-            } else {
-                return updated;
-            }
-        } catch (SQLException e) {
-            LOGGER.error("Problem while executing SQL select statement for updating jockey skill", e);
-            throw new PersistenceException("Could not update jockey skill", e);
+            LOGGER.error("Problem while executing SQL select statement for updating jockey", e);
+            throw new PersistenceException("Could not update jockey", e);
         }
     }
 
