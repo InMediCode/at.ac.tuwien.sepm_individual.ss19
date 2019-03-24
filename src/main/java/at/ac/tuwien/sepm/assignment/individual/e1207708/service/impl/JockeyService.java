@@ -47,8 +47,15 @@ public class JockeyService implements IJockeyService {
     public ArrayList<Jockey> getAllFilteredBy(Jockey jockey) throws ServiceException, BadRequestException {
         LOGGER.info("Get all jockeys filtered by " + jockey);
         try {
-            //validate jockey variables
-            checkJockey(jockey);
+            if (jockey.getName() == null) {
+                jockey.setName("");
+            }
+            if (jockey.getSkill() == null) {
+                jockey.setSkill(-4.9E-324);
+            }
+            //validate only skill because name can be ""
+            checkSkill(jockey.getSkill());
+
 
             return jockeyDao.getAllFilteredBy(jockey);
         } catch (PersistenceException e) {

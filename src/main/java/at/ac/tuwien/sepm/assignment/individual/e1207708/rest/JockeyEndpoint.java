@@ -57,9 +57,17 @@ public class JockeyEndpoint {
     public JockeyDto[] getAllFilteredOrNot(@RequestParam Map<String, String> requestParams) {
         String name = requestParams.get("name");
         String skillString = requestParams.get("skill");
-        Double skill = skillString == null ? null : Double.parseDouble(skillString);
 
-        if (name == null || skill == null) {
+        Double skill = null;
+        if (skillString != null) {
+            try {
+                skill = Double.parseDouble(skillString);
+            } catch (NumberFormatException e) {
+                throw new ResponseStatusException(HttpStatus.BAD_REQUEST, "Error during filtering" + " - " + e.getMessage(), e);
+            }
+        }
+
+        if (name == null && skill == null) {
             return this.getAll();
         } else {
             LOGGER.info("GET ALL filtered " + BASE_URL + " - by name: " + name + " skill: " + skill);
