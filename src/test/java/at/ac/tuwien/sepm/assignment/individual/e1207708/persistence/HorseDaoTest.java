@@ -46,63 +46,23 @@ public class HorseDaoTest {
     }
 
     @Test
-    public void updateHorseNameTest() throws PersistenceException, NotFoundException {
+    public void updateHorseTest() throws PersistenceException, NotFoundException {
         Horse horse = new Horse(null, "HorseName 1", "Breed 1", 40.0, 60.0, null, null);
-        Horse newHorse = horseDao.insertHorse(horse);
-        String newName = "newName";
-        horseDao.updateHorseName(newHorse.getId(), newName);
-        Horse updatedHorse = horseDao.findOneById(newHorse.getId());
-        assertEquals(updatedHorse.getName(), newName);
-        assertEquals(updatedHorse.getBreed(), newHorse.getBreed());
-        assertEquals(updatedHorse.getMinSpeed(), newHorse.getMinSpeed());
-        assertEquals(updatedHorse.getMaxSpeed(), newHorse.getMaxSpeed());
-        assertEquals(updatedHorse.getCreated(), newHorse.getCreated());
-        assertTrue(updatedHorse.getUpdated().isAfter(newHorse.getUpdated()));
-    }
+        Horse insertedHorse = horseDao.insertHorse(horse);
+        Horse newHorse = new Horse(null, "newName", "newBreed", 45.0, 55.0, null, null);
+        newHorse.setId(insertedHorse.getId());
+        newHorse.setCreated(insertedHorse.getCreated());
+        newHorse.setDeleted(insertedHorse.getDeleted());
 
-    @Test
-    public void updateHorseBreedTest() throws PersistenceException, NotFoundException {
-        Horse horse = new Horse(null, "HorseName 1", "Breed 1", 40.0, 60.0, null, null);
-        Horse newHorse = horseDao.insertHorse(horse);
-        String newBreed = "newBreed";
-        horseDao.updateHorseBreed(newHorse.getId(), newBreed);
-        Horse updatedHorse = horseDao.findOneById(newHorse.getId());
-        assertEquals(updatedHorse.getName(), newHorse.getName());
-        assertEquals(updatedHorse.getBreed(), newBreed);
-        assertEquals(updatedHorse.getMinSpeed(), newHorse.getMinSpeed());
-        assertEquals(updatedHorse.getMaxSpeed(), newHorse.getMaxSpeed());
-        assertEquals(updatedHorse.getCreated(), newHorse.getCreated());
-        assertTrue(updatedHorse.getUpdated().isAfter(newHorse.getUpdated()));
-    }
+        newHorse.setUpdated(horseDao.updateHorse(newHorse.getId(), newHorse));
 
-    @Test
-    public void updateHorseMinSpeedTest() throws PersistenceException, NotFoundException {
-        Horse horse = new Horse(null, "HorseName 1", "Breed 1", 40.0, 60.0, null, null);
-        Horse newHorse = horseDao.insertHorse(horse);
-        Double newMinSpeed = 45.0;
-        horseDao.updateHorseMinSpeed(newHorse.getId(), newMinSpeed);
-        Horse updatedHorse = horseDao.findOneById(newHorse.getId());
-        assertEquals(updatedHorse.getName(), newHorse.getName());
-        assertEquals(updatedHorse.getBreed(), newHorse.getBreed());
-        assertEquals(updatedHorse.getMinSpeed(), newMinSpeed);
-        assertEquals(updatedHorse.getMaxSpeed(), newHorse.getMaxSpeed());
-        assertEquals(updatedHorse.getCreated(), newHorse.getCreated());
-        assertTrue(updatedHorse.getUpdated().isAfter(newHorse.getUpdated()));
-    }
-
-    @Test
-    public void updateHorseMaxSpeedTest() throws PersistenceException, NotFoundException {
-        Horse horse = new Horse(null, "HorseName 1", "Breed 1", 40.0, 60.0, null, null);
-        Horse newHorse = horseDao.insertHorse(horse);
-        Double newMaxSpeed = 45.0;
-        horseDao.updateHorseMaxSpeed(newHorse.getId(), newMaxSpeed);
         Horse updatedHorse = horseDao.findOneById(newHorse.getId());
         assertEquals(updatedHorse.getName(), newHorse.getName());
         assertEquals(updatedHorse.getBreed(), newHorse.getBreed());
         assertEquals(updatedHorse.getMinSpeed(), newHorse.getMinSpeed());
-        assertEquals(updatedHorse.getMaxSpeed(), newMaxSpeed);
+        assertEquals(updatedHorse.getMaxSpeed(), newHorse.getMaxSpeed());
         assertEquals(updatedHorse.getCreated(), newHorse.getCreated());
-        assertTrue(updatedHorse.getUpdated().isAfter(newHorse.getUpdated()));
+        assertTrue(updatedHorse.getUpdated().isAfter(insertedHorse.getUpdated()));
     }
 
     @Test(expected = NotFoundException.class)

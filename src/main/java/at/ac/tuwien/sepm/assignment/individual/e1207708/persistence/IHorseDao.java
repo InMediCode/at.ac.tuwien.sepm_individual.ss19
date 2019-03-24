@@ -38,39 +38,12 @@ public interface IHorseDao {
 
     /**
      * @param id of the horse to update
-     * @param name to update in table
+     * @param horse to update in table
      * @return the updated DateTime
      * @throws PersistenceException will be thrown if something goes wrong during the database access.
      * @throws NotFoundException    will be thrown if the horse could not be found in the database.
      */
-    LocalDateTime updateHorseName(int id, String name) throws PersistenceException, NotFoundException;
-
-    /**
-     * @param id of the horse to update
-     * @param breed to update in table
-     * @return the updated DateTime
-     * @throws PersistenceException will be thrown if something goes wrong during the database access.
-     * @throws NotFoundException    will be thrown if the horse could not be found in the database.
-     */
-    LocalDateTime updateHorseBreed(int id, String breed) throws PersistenceException, NotFoundException;
-
-    /**
-     * @param id of the horse to update
-     * @param minSpeed to update in table
-     * @return the updated DateTime
-     * @throws PersistenceException will be thrown if something goes wrong during the database access.
-     * @throws NotFoundException    will be thrown if the horse could not be found in the database.
-     */
-    LocalDateTime updateHorseMinSpeed(int id, Double minSpeed) throws PersistenceException, NotFoundException;
-
-    /**
-     * @param id of the horse to update
-     * @param maxSpeed to update in table
-     * @return the updated DateTime
-     * @throws PersistenceException will be thrown if something goes wrong during the database access.
-     * @throws NotFoundException    will be thrown if the horse could not be found in the database.
-     */
-    LocalDateTime updateHorseMaxSpeed(int id, Double maxSpeed) throws PersistenceException, NotFoundException;
+    LocalDateTime updateHorse(int id, Horse horse) throws PersistenceException, NotFoundException;
 
     /**
      * @param id of the horse to delete.

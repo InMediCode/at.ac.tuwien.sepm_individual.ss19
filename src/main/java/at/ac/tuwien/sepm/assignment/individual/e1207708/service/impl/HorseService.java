@@ -91,6 +91,31 @@ public class HorseService implements IHorseService {
         try {
             Horse oldHorse = findOneById(id);
 
+            if (horse.getName() == null) {
+                horse.setName(oldHorse.getName());
+            }
+            if (horse.getBreed() == null) {
+                horse.setBreed(oldHorse.getBreed());
+            }
+            if (horse.getMinSpeed() == null) {
+                horse.setMinSpeed(oldHorse.getMinSpeed());
+            }
+            if (horse.getMaxSpeed() == null) {
+                horse.setMaxSpeed(oldHorse.getMaxSpeed());
+            }
+
+            checkHorse(horse);
+            horse.setId(id);
+            horse.setCreated(oldHorse.getCreated());
+            horse.setUpdated(oldHorse.getUpdated());
+            horse.setDeleted(oldHorse.getDeleted());
+
+            horse.setUpdated(horseDao.updateHorse(id, horse));
+            oldHorse.setMaxSpeed(horse.getMaxSpeed());
+
+            return horse;
+
+            /*//first check if all values can be validated before update
             Boolean updateName = checkName(horse.getName());
             Boolean updateBreed = horse.getBreed() != null;
             Boolean updateMinSpeed = false;
@@ -103,7 +128,10 @@ public class HorseService implements IHorseService {
 
             if (horse.getMinSpeed() != null) {
                 checkMinSpeedValue(horse.getMinSpeed());
-                if (horse.getMinSpeed() < oldHorse.getMaxSpeed()) {
+                //check if both will get updated or not => check with old or new maxSpeed
+                Double checkMaxSpeed = horse.getMaxSpeed() == null ? oldHorse.getMaxSpeed() : horse.getMaxSpeed();
+
+                if (horse.getMinSpeed() < checkMaxSpeed) {
                     //update MinSpeed
                     updateMinSpeed = true;
                 } else {
@@ -112,7 +140,10 @@ public class HorseService implements IHorseService {
             }
             if (horse.getMaxSpeed() != null) {
                 checkMaxSpeedValue(horse.getMaxSpeed());
-                if (horse.getMaxSpeed() > oldHorse.getMinSpeed()) {
+                //check if both will get updated or not => check with old or new minSpeed
+                Double checkMinSpeed = horse.getMinSpeed() == null ? oldHorse.getMinSpeed() : horse.getMinSpeed();
+
+                if (checkMinSpeed > oldHorse.getMinSpeed()) {
                     //update MaxSpeed
                     updateMaxSpeed = true;
                 } else {
@@ -138,7 +169,7 @@ public class HorseService implements IHorseService {
                 oldHorse.setMaxSpeed(horse.getMaxSpeed());
             }
 
-            return oldHorse;
+            return oldHorse;*/
         } catch (PersistenceException e) {
             throw new ServiceException(e.getMessage(), e);
         }

@@ -142,114 +142,33 @@ public class HorseDao implements IHorseDao {
     }
 
     @Override
-    public LocalDateTime updateHorseName(int id, String name) throws PersistenceException, NotFoundException {
-        LOGGER.info("Update horse " + id + " with name " + name);
+    public LocalDateTime updateHorse(int id, Horse horse) throws PersistenceException, NotFoundException {
+        LOGGER.info("Update horse " + horse);
 
-        String sql = "UPDATE Horse SET name=?, updated=? WHERE id=? AND deleted IS NOT TRUE";
+        String sql = "UPDATE Horse SET name=?, breed=?, min_speed=?, max_speed=?, updated=? WHERE id=? AND deleted IS NOT TRUE";
         int count = 0;
         try {
             //replaced nano because saved in DB only with EpochMilli
             LocalDateTime updated = epochMilliDateTimer.getLocalDateTime();
 
             PreparedStatement statement = dbConnectionManager.getConnection().prepareStatement(sql);
-            statement.setString(1, name);
-            statement.setTimestamp(2, new Timestamp(updated.toInstant(ZoneOffset.ofTotalSeconds(0)).toEpochMilli()));
-            statement.setInt(3, id);
+            statement.setString(1, horse.getName());
+            statement.setString(2, horse.getBreed());
+            statement.setDouble(3, horse.getMinSpeed());
+            statement.setDouble(4, horse.getMaxSpeed());
+            statement.setTimestamp(5, new Timestamp(updated.toInstant(ZoneOffset.ofTotalSeconds(0)).toEpochMilli()));
+            statement.setInt(6, id);
             count = statement.executeUpdate();
 
             if (count == 0) {
-                LOGGER.error("Could not update horse " + id + " with name " + name);
-                throw new NotFoundException("Could not update horse " + id + " with name " + name);
+                LOGGER.error("Could not update horse");
+                throw new NotFoundException("Could not update horse");
             } else {
                 return updated;
             }
         } catch (SQLException e) {
-            LOGGER.error("Problem while executing SQL select statement for updating horse name ", e);
-            throw new PersistenceException("Could not update horse name", e);
-        }
-    }
-
-    @Override
-    public LocalDateTime updateHorseBreed(int id, String breed) throws PersistenceException, NotFoundException {
-        LOGGER.info("Update horse " + id + " with breed " + breed);
-
-        String sql = "UPDATE Horse SET breed=?, updated=? WHERE id=? AND deleted IS NOT TRUE";
-        int count = 0;
-        try {
-            //replaced nano because saved in DB only with EpochMilli
-            LocalDateTime updated = epochMilliDateTimer.getLocalDateTime();
-
-            PreparedStatement statement = dbConnectionManager.getConnection().prepareStatement(sql);
-            statement.setString(1, breed);
-            statement.setTimestamp(2, new Timestamp(updated.toInstant(ZoneOffset.ofTotalSeconds(0)).toEpochMilli()));
-            statement.setInt(3, id);
-            count = statement.executeUpdate();
-
-            if (count == 0) {
-                LOGGER.error("Could not update horse " + id + " with breed " + breed);
-                throw new NotFoundException("Could not update horse " + id + " with breed " + breed);
-            } else {
-                return updated;
-            }
-        } catch (SQLException e) {
-            LOGGER.error("Problem while executing SQL select statement for updating horse breed ", e);
-            throw new PersistenceException("Could not update horse breed", e);
-        }
-    }
-
-    @Override
-    public LocalDateTime updateHorseMinSpeed(int id, Double minSpeed) throws PersistenceException, NotFoundException {
-        LOGGER.info("Update horse " + id + " with minSpeed " + minSpeed);
-
-        String sql = "UPDATE Horse SET min_speed=?, updated=? WHERE id=? AND deleted IS NOT TRUE";
-        int count = 0;
-        try {
-            //replaced nano because saved in DB only with EpochMilli
-            LocalDateTime updated = epochMilliDateTimer.getLocalDateTime();
-
-            PreparedStatement statement = dbConnectionManager.getConnection().prepareStatement(sql);
-            statement.setDouble(1, minSpeed);
-            statement.setTimestamp(2, new Timestamp(updated.toInstant(ZoneOffset.ofTotalSeconds(0)).toEpochMilli()));
-            statement.setInt(3, id);
-            count = statement.executeUpdate();
-
-            if (count == 0) {
-                LOGGER.error("Could not update horse " + id + " with minSpeed " + minSpeed);
-                throw new NotFoundException("Could not update horse " + id + " with minSpeed " + minSpeed);
-            } else {
-                return updated;
-            }
-        } catch (SQLException e) {
-            LOGGER.error("Problem while executing SQL select statement for updating horse minSpeed ", e);
-            throw new PersistenceException("Could not update horse minSpeed", e);
-        }
-    }
-
-    @Override
-    public LocalDateTime updateHorseMaxSpeed(int id, Double maxSpeed) throws PersistenceException, NotFoundException {
-        LOGGER.info("Update horse " + id + " with maxSpeed " + maxSpeed);
-
-        String sql = "UPDATE Horse SET max_speed=?, updated=? WHERE id=? AND deleted IS NOT TRUE";
-        int count = 0;
-        try {
-            //replaced nano because saved in DB only with EpochMilli
-            LocalDateTime updated = epochMilliDateTimer.getLocalDateTime();
-
-            PreparedStatement statement = dbConnectionManager.getConnection().prepareStatement(sql);
-            statement.setDouble(1, maxSpeed);
-            statement.setTimestamp(2, new Timestamp(updated.toInstant(ZoneOffset.ofTotalSeconds(0)).toEpochMilli()));
-            statement.setInt(3, id);
-            count = statement.executeUpdate();
-
-            if (count == 0) {
-                LOGGER.error("Could not update horse " + id + " with maxSpeed " + maxSpeed);
-                throw new NotFoundException("Could not update horse " + id + " with maxSpeed " + maxSpeed);
-            } else {
-                return updated;
-            }
-        } catch (SQLException e) {
-            LOGGER.error("Problem while executing SQL select statement for updating horse maxSpeed ", e);
-            throw new PersistenceException("Could not update horse maxSpeed", e);
+            LOGGER.error("Problem while executing SQL select statement for updating horse", e);
+            throw new PersistenceException("Could not update horse", e);
         }
     }
 
