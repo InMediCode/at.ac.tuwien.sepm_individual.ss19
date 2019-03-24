@@ -59,10 +59,12 @@ public class HorseEndpoint {
         String breed = requestParams.get("breed");
         String minString = requestParams.get("minSpeed");
         String maxString = requestParams.get("maxSpeed");
-        Double minSpeed = minString == null ? null : Double.parseDouble(minString);
-        Double maxSpeed = maxString == null ? null : Double.parseDouble(maxString);
 
-        if (name == null || breed == null || minSpeed == null || maxSpeed == null ) {
+        Double minSpeed = getDoubleFromString(minString);
+        Double maxSpeed = getDoubleFromString(maxString);
+
+
+        if (name == null && breed == null && minSpeed == null && maxSpeed == null ) {
             return this.getAll();
         } else {
             LOGGER.info("GET ALL filtered " + BASE_URL + " - by name: " + name + " breed: " + breed + " minSpeed: " + minSpeed + " maxSpeed: " + maxSpeed);
@@ -114,5 +116,18 @@ public class HorseEndpoint {
         } catch (BadRequestException e) {
             throw new ResponseStatusException(HttpStatus.BAD_REQUEST, "Error during updating horse: " + horseDto + " - " + e. getMessage(), e);
         }
+    }
+
+    private Double getDoubleFromString(String s) {
+        if (s != null) {
+            try {
+                return Double.parseDouble(s);
+            } catch (NumberFormatException e) {
+                LOGGER.error("Error during filtering" + " - " + e.getMessage());
+                throw new ResponseStatusException(HttpStatus.BAD_REQUEST, "Error during filtering" + " - " + e.getMessage(), e);
+            }
+        }
+
+        return null;
     }
 }

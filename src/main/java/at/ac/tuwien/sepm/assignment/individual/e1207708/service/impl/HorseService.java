@@ -49,8 +49,21 @@ public class HorseService implements IHorseService {
     public ArrayList<Horse> getAllFilteredBy(Horse horse) throws ServiceException, BadRequestException {
         LOGGER.info("Get all horses filtered");
         try {
-            //validate horse variables
-            checkHorse(horse);
+            if (horse.getName() == null) {
+                horse.setName("");
+            }
+            if (horse.getBreed() == null) {
+                horse.setBreed("");
+            }
+            if (horse.getMinSpeed() == null) {
+                horse.setMinSpeed(40.0);
+            }
+            if (horse.getMaxSpeed() == null) {
+                horse.setMaxSpeed(60.0);
+            }
+
+            //validate only minSpeed and maxSpeed because name can be ""
+            checkMinSpeedAndMaxSpeedValues(horse.getMinSpeed(), horse.getMaxSpeed());
 
             return horseDao.getAllFilteredBy(horse);
         } catch (PersistenceException e) {

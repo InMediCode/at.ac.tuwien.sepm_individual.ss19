@@ -63,6 +63,7 @@ public class JockeyEndpoint {
             try {
                 skill = Double.parseDouble(skillString);
             } catch (NumberFormatException e) {
+                LOGGER.error("Error during filtering" + " - " + e.getMessage());
                 throw new ResponseStatusException(HttpStatus.BAD_REQUEST, "Error during filtering" + " - " + e.getMessage(), e);
             }
         }
