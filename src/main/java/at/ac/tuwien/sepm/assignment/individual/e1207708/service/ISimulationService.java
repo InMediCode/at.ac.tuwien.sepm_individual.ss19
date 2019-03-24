@@ -27,6 +27,7 @@ public interface ISimulationService {
      * @param name the simulation contains.
      * @return all horses as arraylist that contains the name
      * @throws ServiceException  will be thrown if something goes wrong during data processing.
+     * @throws BadRequestException will be thrown if params not valid.
      */
     ArrayList<SimulationResult> getAllFilteredBy(String name) throws ServiceException, BadRequestException;
 
@@ -34,6 +35,7 @@ public interface ISimulationService {
      *
      * @param simulation to insert into table
      * @return the calculated simulationResult
+     * @throws NotFoundException will be thrown if one of the horses or jockeys could not be found in the system.
      * @throws ServiceException will be thrown if something goes wrong during data processing.
      * @throws BadRequestException will be thrown if params not valid.
      */

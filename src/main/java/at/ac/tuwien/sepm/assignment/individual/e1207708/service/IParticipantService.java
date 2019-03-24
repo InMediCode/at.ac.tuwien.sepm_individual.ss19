@@ -11,7 +11,7 @@ public interface IParticipantService {
      * @return Arraylist of the participantResults with id
      * @throws ServiceException will be thrown if something goes wrong during data processing.
      */
-    public ArrayList<ParticipantResult> getParticipantResultsBySimulationId(int simulationId) throws ServiceException;
+    ArrayList<ParticipantResult> getParticipantResultsBySimulationId(int simulationId) throws ServiceException;
 
     /**
      * @param simulationId id of the participantResult
