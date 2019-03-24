@@ -186,4 +186,22 @@ public class CalcServiceTest {
         Double result = iCalcService.calcAvgSpeed(minSpeed, maxSpeed, skill, luckFactor);
         assertNotEquals(true, result.equals(264.175));
     }
+
+    @Test
+    public void iCalcHorseSpeedTest() throws BadRequestException {
+        Double minSpeed = 42.5;
+        Double maxSpeed = 57.1234;
+        Double luckFactor = 1.05;
+
+        Double result = iCalcService.calcHorseSpeed(minSpeed, maxSpeed, luckFactor);
+        assertEquals(true, result.equals(57.1234));
+    }
+
+    @Test
+    public void iCalcSkillTest() throws BadRequestException {
+        Double skill = 1234.56789;
+
+        Double result = iCalcService.calcSkill(skill);
+        assertEquals(true, result.equals(1.0748));
+    }
 }
